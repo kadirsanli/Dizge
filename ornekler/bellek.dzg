@@ -1,0 +1,14 @@
+# Kural 2 — Eylem çatısı = bellek modeli
+sayılar, 25, 4, 81, 16 ve 9 dizisidir.
+
+# Etken (geçişli) çatı: YENİ kopya üretir, 'sayılar' dokunulmaz
+sayıları sıralayıp kopya olarak sakla.
+sayıları ve kopyayı yazdır.
+
+# Edilgen çatı (-n-sın): bellekteki dizinin KENDİSİ sıralanır
+sayılar sıralansın.
+sayıları yazdır.
+
+# Sabit katlama: derleyici bu değeri derleme anında hesaplar
+sınır, yirmi beşin karekökünün iki katıdır.
+sınırı raporla.

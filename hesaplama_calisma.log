@@ -1,0 +1,230 @@
+[     0.17 ms] [SİSTEM   ] Dizge 0.1.0 │ Python 3.13.17 │ NumPy 2.5.3
+[     0.32 ms] [SİSTEM   ] Kaynak: hesaplama.dzg (1368 bayt, 30 satır)
+[     3.29 ms] [LEXER    ] 10 cümle, 57 token. Ön tarama ile tanımlanan adlar: anormaller, eşik, işlemler, ortalama, sapma, tutarlar
+[     3.33 ms] [LEXER    ] satır 11 │ işlemler, bin satırlık rastgele işlem tablosudur
+[     3.35 ms] [LEXER    ]         │   işlemler                   → işlemler⟨AD⟩
+[     3.37 ms] [LEXER    ]         │   bin                        → bin⟨SAYI_SÖZ⟩
+[     3.39 ms] [LEXER    ]         │   satırlık                   → satırlık⟨İSİM⟩   (+1 alternatif)
+[     3.41 ms] [LEXER    ]         │   rastgele_işlem_tablosudur  → rastgele_işlem_tablo⟨İŞLEV⟩ +su[İYELİK] +dur[EKFİİL]
+[     3.42 ms] [LEXER    ] satır 14 │ tutarlar, işlemlerin tutarlarıdır
+[     3.43 ms] [LEXER    ]         │   tutarlar                   → tutarlar⟨AD⟩
+[     3.44 ms] [LEXER    ]         │   işlemlerin                 → işlemler⟨AD⟩ +in[ilgi]
+[     3.46 ms] [LEXER    ]         │   tutarlarıdır               → tutarlar⟨AD⟩ +ı[İYELİK] +dır[EKFİİL]
+[     3.47 ms] [LEXER    ] satır 15 │ ortalama, tutarların ortalamasıdır
+[     3.52 ms] [LEXER    ]         │   ortalama                   → ortalama⟨AD⟩   (+1 alternatif)
+[     3.55 ms] [LEXER    ]         │   tutarların                 → tutarlar⟨AD⟩ +ın[ilgi]
+[     3.56 ms] [LEXER    ]         │   ortalamasıdır              → ortalama⟨AD⟩ +sı[İYELİK] +dır[EKFİİL]   (+1 alternatif)
+[     3.57 ms] [LEXER    ] satır 16 │ sapma, tutarların standart sapmasıdır
+[     3.59 ms] [LEXER    ]         │   sapma                      → sapma⟨AD⟩
+[     3.60 ms] [LEXER    ]         │   tutarların                 → tutarlar⟨AD⟩ +ın[ilgi]
+[     3.61 ms] [LEXER    ]         │   standart_sapmasıdır        → standart_sapma⟨İŞLEV⟩ +sı[İYELİK] +dır[EKFİİL]
+[     3.62 ms] [LEXER    ] satır 17 │ eşik, sapmanın iki katıdır
+[     3.63 ms] [LEXER    ]         │   eşik                       → eşik⟨AD⟩
+[     3.64 ms] [LEXER    ]         │   sapmanın                   → sapma⟨AD⟩ +nın[ilgi]
+[     3.65 ms] [LEXER    ]         │   iki                        → iki⟨SAYI_SÖZ⟩
+[     3.66 ms] [LEXER    ]         │   katıdır                    → kat⟨İŞLEV⟩ +ı[İYELİK] +dır[EKFİİL]
+[     3.67 ms] [LEXER    ] satır 21 │ tutarların ortalamadan uzaklığı eşiği aştığı takdirde işlemler "Anormal" olarak etiketlensin
+[     3.68 ms] [LEXER    ]         │   tutarların                 → tutarlar⟨AD⟩ +ın[ilgi]
+[     3.70 ms] [LEXER    ]         │   ortalamadan                → ortalama⟨AD⟩ +dan[ayrılma]   (+1 alternatif)
+[     3.71 ms] [LEXER    ]         │   uzaklığı                   → uzaklık⟨İŞLEV⟩ +ı[İYELİK]   (+1 alternatif)
+[     3.72 ms] [LEXER    ]         │   eşiği                      → eşik⟨AD⟩ +i[İYELİK]   (+1 alternatif)
+[     3.74 ms] [LEXER    ]         │   aştığı                     → aş⟨FİİL⟩ +tığ[ADFİİL] +ı[İYELİK]
+[     3.75 ms] [LEXER    ]         │   takdirde                   → takdirde⟨EDAT⟩
+[     3.76 ms] [LEXER    ]         │   işlemler                   → işlemler⟨AD⟩
+[     3.77 ms] [LEXER    ]         │   "Anormal"                  → METİN
+[     3.78 ms] [LEXER    ]         │   olarak                     → olarak⟨EDAT⟩
+[     3.80 ms] [LEXER    ]         │   etiketlensin               → etiketle⟨FİİL⟩ +n[edilgen] +sin[İSTEK]
+[     3.81 ms] [LEXER    ] satır 24 │ anormaller, işlemlerden durumu "Anormal" olanların matrisidir
+[     3.82 ms] [LEXER    ]         │   anormaller                 → anormaller⟨AD⟩
+[     3.83 ms] [LEXER    ]         │   işlemlerden                → işlemler⟨AD⟩ +den[ayrılma]
+[     3.84 ms] [LEXER    ]         │   durumu                     → durum⟨İSİM⟩ +u[İYELİK]   (+2 alternatif)
+[     3.86 ms] [LEXER    ]         │   "Anormal"                  → METİN
+[     3.87 ms] [LEXER    ]         │   olanların                  → ol⟨FİİL⟩ +an[SIFATFİİL] +lar[ÇOĞUL] +ın[ilgi]
+[     3.89 ms] [LEXER    ]         │   matrisidir                 → matris⟨İŞLEV⟩ +i[İYELİK] +dir[EKFİİL]
+[     3.89 ms] [LEXER    ] satır 27 │ ortalamayı, sapmayı ve eşiği raporla
+[     3.91 ms] [LEXER    ]         │   ortalamayı                 → ortalama⟨AD⟩ +yı[belirtme]   (+1 alternatif)
+[     3.92 ms] [LEXER    ]         │   sapmayı                    → sapma⟨AD⟩ +yı[belirtme]
+[     3.93 ms] [LEXER    ]         │   ve                         → ve⟨BAĞLAÇ⟩
+[     3.93 ms] [LEXER    ]         │   eşiği                      → eşik⟨AD⟩ +i[İYELİK]   (+1 alternatif)
+[     3.95 ms] [LEXER    ]         │   raporla                    → raporla⟨FİİL⟩ +∅[EMİR]
+[     3.96 ms] [LEXER    ] satır 28 │ anormallerin satır sayısını raporla
+[     3.97 ms] [LEXER    ]         │   anormallerin               → anormaller⟨AD⟩ +in[ilgi]
+[     3.98 ms] [LEXER    ]         │   satır_sayısını             → satır_sayı⟨İŞLEV⟩ +sı[İYELİK] +nı[belirtme]
+[     3.99 ms] [LEXER    ]         │   raporla                    → raporla⟨FİİL⟩ +∅[EMİR]
+[     3.99 ms] [LEXER    ] satır 29 │ anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır
+[     4.01 ms] [LEXER    ]         │   anormalleri                → anormaller⟨AD⟩ +i[İYELİK]   (+1 alternatif)
+[     4.02 ms] [LEXER    ]         │   tutara                     → tutar⟨İSİM⟩ +a[yönelme]   (+1 alternatif)
+[     4.03 ms] [LEXER    ]         │   göre                       → göre⟨EDAT⟩
+[     4.04 ms] [LEXER    ]         │   büyükten                   → büyük⟨SIFAT⟩ +ten[ayrılma]
+[     4.05 ms] [LEXER    ]         │   küçüğe                     → küçük⟨SIFAT⟩ +e[yönelme]
+[     4.07 ms] [LEXER    ]         │   sıralayıp                  → sırala⟨FİİL⟩ +yıp[ULAÇ_IP]
+[     4.08 ms] [LEXER    ]         │   ilk                        → ilk⟨İŞLEV⟩
+[     4.09 ms] [LEXER    ]         │   onunu                      → on⟨SAYI_SÖZ⟩ +u[İYELİK] +nu[belirtme]
+[     4.10 ms] [LEXER    ]         │   yazdır                     → yazdır⟨FİİL⟩ +∅[EMİR]
+[     4.11 ms] [LEXER    ] Bu programda işlemsel anlam taşıyan ekler:
+[     4.12 ms] [LEXER    ]     DURUM:ayrılma      = kaynak/karşılaştırma tabanı (ablatif)
+[     4.13 ms] [LEXER    ]     DURUM:belirtme     = belirli nesne: eylemin girdisi (akuzatif)
+[     4.14 ms] [LEXER    ]     DURUM:ilgi         = bağlam/sahip: 1. parametre (genitif)
+[     4.15 ms] [LEXER    ]     DURUM:yönelme      = hedef/eşik (datif)
+[     4.16 ms] [LEXER    ]     EKFİİL             = tanım/atama kopulası (A, B'dir → A := B)
+[     4.17 ms] [LEXER    ]     KİP:ADFİİL         = koşul cümleciği (…dığı takdirde) → maske
+[     4.17 ms] [LEXER    ]     KİP:EMİR           = eylem: yeni değer üretir (immutable)
+[     4.18 ms] [LEXER    ]     KİP:SIFATFİİL      = ilgi cümleciği: süzgeç/yüklem (… olanlar)
+[     4.19 ms] [LEXER    ]     KİP:ULAÇ_IP        = boru hattı: sonucu sonraki eyleme aktar (→)
+[     4.20 ms] [LEXER    ]     KİP:İSTEK          = -sın kipi: özne üzerinde eylem
+[     4.21 ms] [LEXER    ]     ÇATI:edilgen       = YERİNDE değişim (mutable, in-place)
+[     4.25 ms] [LEXER    ]     ÇOĞUL              = küme / vektörel seçim
+[     4.26 ms] [LEXER    ]     İYELİK             = sahiplik: işlev uygulaması veya öznitelik (X-in Y-si → Y(X))
+[     4.90 ms] [PARSER   ] SOV kaydır-indirge ayrıştırması tamam: 10 üst düzey düğüm
+[     4.92 ms] [PARSER   ] belirsizlik giderildi (satır 11): 'satırlık'  satırlık⟨İSİM⟩  ⇒  satır⟨İSİM⟩ +lık[LIK]   [yığın bağlamına göre]
+[     4.94 ms] [PARSER   ] belirsizlik giderildi (satır 15): 'ortalamasıdır'  ortalama⟨AD⟩ +sı[İYELİK] +dır[EKFİİL]  ⇒  ortalama⟨İŞLEV⟩ +sı[İYELİK] +dır[EKFİİL]   [yığın bağlamına göre]
+[     4.97 ms] [PARSER   ] belirsizlik giderildi (satır 21): 'eşiği'  eşik⟨AD⟩ +i[İYELİK]  ⇒  eşik⟨AD⟩ +i[belirtme]   [yığın bağlamına göre]
+[     4.98 ms] [PARSER   ] belirsizlik giderildi (satır 27): 'eşiği'  eşik⟨AD⟩ +i[İYELİK]  ⇒  eşik⟨AD⟩ +i[belirtme]   [yığın bağlamına göre]
+[     4.99 ms] [PARSER   ] belirsizlik giderildi (satır 29): 'anormalleri'  anormaller⟨AD⟩ +i[İYELİK]  ⇒  anormaller⟨AD⟩ +i[belirtme]   [yığın bağlamına göre]
+[     5.00 ms] [PARSER   ] satır 11 │ işlemler, bin satırlık rastgele işlem tablosudur
+[     5.05 ms] [PARSER   ]         │   Tanım(ad='işlemler')
+[     5.06 ms] [PARSER   ]         │   └─ değer: Uygula(işlev='rastgele_işlem_tablo')
+[     5.07 ms] [PARSER   ]         │      └─ satır: Sayı(değer=1000)
+[     5.08 ms] [PARSER   ] satır 14 │ tutarlar, işlemlerin tutarlarıdır
+[     5.11 ms] [PARSER   ]         │   Tanım(ad='tutarlar')
+[     5.12 ms] [PARSER   ]         │   └─ değer: Öznitelik(adaylar=['tutarlar', 'tutar'])
+[     5.13 ms] [PARSER   ]         │      └─ sahip: Ad(ad='işlemler')
+[     5.14 ms] [PARSER   ] satır 15 │ ortalama, tutarların ortalamasıdır
+[     5.16 ms] [PARSER   ]         │   Tanım(ad='ortalama')
+[     5.17 ms] [PARSER   ]         │   └─ değer: Uygula(işlev='ortalama')
+[     5.18 ms] [PARSER   ]         │      └─ veri: Ad(ad='tutarlar')
+[     5.19 ms] [PARSER   ] satır 16 │ sapma, tutarların standart sapmasıdır
+[     5.24 ms] [PARSER   ]         │   Tanım(ad='sapma')
+[     5.26 ms] [PARSER   ]         │   └─ değer: Uygula(işlev='standart_sapma')
+[     5.27 ms] [PARSER   ]         │      └─ veri: Ad(ad='tutarlar')
+[     5.28 ms] [PARSER   ] satır 17 │ eşik, sapmanın iki katıdır
+[     5.31 ms] [PARSER   ]         │   Tanım(ad='eşik')
+[     5.33 ms] [PARSER   ]         │   └─ değer: Uygula(işlev='kat')
+[     5.34 ms] [PARSER   ]         │      ├─ k: Sayı(değer=2)
+[     5.35 ms] [PARSER   ]         │      └─ veri: Ad(ad='sapma')
+[     5.36 ms] [PARSER   ] satır 21 │ tutarların ortalamadan uzaklığı eşiği aştığı takdirde işlemler "Anormal" olarak etiketlensin
+[     5.41 ms] [PARSER   ]         │   Zincir
+[     5.42 ms] [PARSER   ]         │   ├─ halkalar[0]: Halka(fiil='etiketle', çatı='edilgen', kip='İSTEK')
+[     5.43 ms] [PARSER   ]         │   │  ├─ özne: Ad(ad='işlemler')
+[     5.44 ms] [PARSER   ]         │   │  └─ olarak: Metin(değer='Anormal')
+[     5.45 ms] [PARSER   ]         │   └─ koşul: Karşılaştırma(işleç='>', olumsuz=False)
+[     5.46 ms] [PARSER   ]         │      ├─ sol: Uygula(işlev='uzaklık')
+[     5.46 ms] [PARSER   ]         │      │  ├─ b: Ad(ad='ortalama')
+[     5.47 ms] [PARSER   ]         │      │  └─ a: Ad(ad='tutarlar')
+[     5.48 ms] [PARSER   ]         │      └─ sağ: Ad(ad='eşik')
+[     5.49 ms] [PARSER   ] satır 24 │ anormaller, işlemlerden durumu "Anormal" olanların matrisidir
+[     5.52 ms] [PARSER   ]         │   Tanım(ad='anormaller')
+[     5.54 ms] [PARSER   ]         │   └─ değer: Uygula(işlev='matris')
+[     5.55 ms] [PARSER   ]         │      └─ veri: Süzgeç
+[     5.55 ms] [PARSER   ]         │         ├─ kaynak: Ad(ad='işlemler')
+[     5.56 ms] [PARSER   ]         │         └─ yüklem: Yüklem(işleç='==', öznitelik=['durum', 'durumu'], olumsuz=False)
+[     5.57 ms] [PARSER   ]         │            └─ değer: Metin(değer='Anormal')
+[     5.58 ms] [PARSER   ] satır 27 │ ortalamayı, sapmayı ve eşiği raporla
+[     5.62 ms] [PARSER   ]         │   Zincir
+[     5.63 ms] [PARSER   ]         │   └─ halkalar[0]: Halka(fiil='raporla', çatı='etken', kip='EMİR')
+[     5.64 ms] [PARSER   ]         │      └─ belirtme: Liste
+[     5.65 ms] [PARSER   ]         │         ├─ öğeler[0]: Ad(ad='ortalama')
+[     5.66 ms] [PARSER   ]         │         ├─ öğeler[1]: Ad(ad='sapma')
+[     5.67 ms] [PARSER   ]         │         └─ öğeler[2]: Ad(ad='eşik')
+[     5.68 ms] [PARSER   ] satır 28 │ anormallerin satır sayısını raporla
+[     5.71 ms] [PARSER   ]         │   Zincir
+[     5.72 ms] [PARSER   ]         │   └─ halkalar[0]: Halka(fiil='raporla', çatı='etken', kip='EMİR')
+[     5.73 ms] [PARSER   ]         │      └─ belirtme: Uygula(işlev='satır_sayı')
+[     5.74 ms] [PARSER   ]         │         └─ veri: Ad(ad='anormaller')
+[     5.75 ms] [PARSER   ] satır 29 │ anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır
+[     5.80 ms] [PARSER   ]         │   Zincir
+[     5.81 ms] [PARSER   ]         │   ├─ halkalar[0]: Halka(fiil='sırala', çatı='etken', kip='ULAÇ_IP', bağ='ıp')
+[     5.82 ms] [PARSER   ]         │   │  ├─ belirtme: Ad(ad='anormaller')
+[     5.83 ms] [PARSER   ]         │   │  ├─ göre: SütunAdı(adaylar=['tutar', 'tutara'])
+[     5.84 ms] [PARSER   ]         │   │  └─ yön: Yön(azalan=True)
+[     5.84 ms] [PARSER   ]         │   └─ halkalar[1]: Halka(fiil='yazdır', çatı='etken', kip='EMİR')
+[     5.85 ms] [PARSER   ]         │      └─ belirtme: Uygula(işlev='ilk')
+[     5.86 ms] [PARSER   ]         │         ├─ veri: Bağlam
+[     5.88 ms] [PARSER   ]         │         └─ n: Sayı(değer=10)
+[     6.31 ms] [OPTİMİZE ] satır 21: koşul dalsız maskeye derlendi (etiketle → maske=_k, if/else yok)
+[     6.33 ms] [OPTİMİZE ] satır 21: 'etiketle' edilgen çatı → YERİNDE (işlemler belleği değişir, kopya yok)
+[     6.34 ms] [OPTİMİZE ] satır 29: 'sırala' etken çatı → KOPYA (kaynak korunur)
+[     6.36 ms] [OPTİMİZE ] Özet: 1 kopya / 1 yerinde eylem, 1 dalsız koşul maskesi, 0 dallı koşul, 1 vektörel süzgeç, 0 sabit katlama
+[     6.37 ms] [DERLEYİCİ] Üretilen Python/NumPy kodu:
+[     6.39 ms] [DERLEYİCİ]     1 │ # -*- coding: utf-8 -*-
+[     6.40 ms] [DERLEYİCİ]     2 │ # Bu dosya dizge_compiler tarafından hesaplama.dzg kaynağından otomatik üretildi.
+[     6.41 ms] [DERLEYİCİ]     3 │ import sys
+[     6.42 ms] [DERLEYİCİ]     4 │ sys.path.insert(0, '/home/user/dizge')
+[     6.43 ms] [DERLEYİCİ]     5 │ import dizge_cekirdek as ç
+[     6.44 ms] [DERLEYİCİ]     6 │ 
+[     6.45 ms] [DERLEYİCİ]     7 │ # [satır 11] işlemler, bin satırlık rastgele işlem tablosudur
+[     6.46 ms] [DERLEYİCİ]     8 │ işlemler = ç.rastgele_işlem_tablo(satır=1000)
+[     6.46 ms] [DERLEYİCİ]     9 │ 
+[     6.47 ms] [DERLEYİCİ]    10 │ # [satır 14] tutarlar, işlemlerin tutarlarıdır
+[     6.48 ms] [DERLEYİCİ]    11 │ tutarlar = ç.öznitelik(işlemler, ['tutarlar', 'tutar'])
+[     6.49 ms] [DERLEYİCİ]    12 │ 
+[     6.50 ms] [DERLEYİCİ]    13 │ # [satır 15] ortalama, tutarların ortalamasıdır
+[     6.51 ms] [DERLEYİCİ]    14 │ ortalama = ç.ortalama(veri=tutarlar)
+[     6.52 ms] [DERLEYİCİ]    15 │ 
+[     6.53 ms] [DERLEYİCİ]    16 │ # [satır 16] sapma, tutarların standart sapmasıdır
+[     6.54 ms] [DERLEYİCİ]    17 │ sapma = ç.standart_sapma(veri=tutarlar)
+[     6.55 ms] [DERLEYİCİ]    18 │ 
+[     6.56 ms] [DERLEYİCİ]    19 │ # [satır 17] eşik, sapmanın iki katıdır
+[     6.56 ms] [DERLEYİCİ]    20 │ eşik = ç.kat(veri=sapma, k=2)
+[     6.57 ms] [DERLEYİCİ]    21 │ 
+[     6.58 ms] [DERLEYİCİ]    22 │ # [satır 21] tutarların ortalamadan uzaklığı eşiği aştığı takdirde işlemler "Anormal" olarak etiketlensin
+[     6.59 ms] [DERLEYİCİ]    23 │ _k = ç.karşılaştır('>', ç.uzaklık(a=tutarlar, b=ortalama), eşik)
+[     6.60 ms] [DERLEYİCİ]    24 │ işlemler = ç.etiketle_yerinde(işlemler, etiket='Anormal', maske=_k)
+[     6.61 ms] [DERLEYİCİ]    25 │ 
+[     6.62 ms] [DERLEYİCİ]    26 │ # [satır 24] anormaller, işlemlerden durumu "Anormal" olanların matrisidir
+[     6.63 ms] [DERLEYİCİ]    27 │ anormaller = ç.matris(veri=ç.süz(işlemler, ç.Ölçüt('==', 'Anormal', ['durum', 'durumu'], False)))
+[     6.64 ms] [DERLEYİCİ]    28 │ 
+[     6.65 ms] [DERLEYİCİ]    29 │ # [satır 27] ortalamayı, sapmayı ve eşiği raporla
+[     6.66 ms] [DERLEYİCİ]    30 │ ç.raporla(ortalama, sapma, eşik, adlar=['ortalama', 'sapma', 'eşik'])
+[     6.67 ms] [DERLEYİCİ]    31 │ 
+[     6.68 ms] [DERLEYİCİ]    32 │ # [satır 28] anormallerin satır sayısını raporla
+[     6.69 ms] [DERLEYİCİ]    33 │ ç.raporla(ç.satır_sayı(veri=anormaller), adlar=['anormallerin satır sayısı'])
+[     6.69 ms] [DERLEYİCİ]    34 │ 
+[     6.70 ms] [DERLEYİCİ]    35 │ # [satır 29] anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır
+[     6.71 ms] [DERLEYİCİ]    36 │ _b1 = ç.sırala(anormaller, ölçüt='tutar', azalan=True)
+[     6.72 ms] [DERLEYİCİ]    37 │ ç.yazdır(ç.ilk(veri=_b1, n=10), adlar=['ilk onu'])
+[     6.73 ms] [SİSTEM   ] Derleme süresi: 6.38 ms
+[     7.46 ms] [SİSTEM   ] Python modülü yazıldı: derlenmis/hesaplama.py
+[     7.56 ms] [SİSTEM   ] ────────────────────────────── ÇALIŞMA BAŞLIYOR ──────────────────────────────
+[     7.60 ms] [ÇALIŞMA  ] ▶ satır 11: işlemler, bin satırlık rastgele işlem tablosudur
+[    17.35 ms] [ÇALIŞMA  ]   ✓ işlemler ← Tablo[1.000 satır × 6 sütun]   [9.675 ms]
+[    17.39 ms] [ÇALIŞMA  ] ▶ satır 14: tutarlar, işlemlerin tutarlarıdır
+[    17.51 ms] [ÇALIŞMA  ]   ✓ tutarlar ← Dizi[1000] (float64)   [0.072 ms]
+[    17.53 ms] [ÇALIŞMA  ] ▶ satır 15: ortalama, tutarların ortalamasıdır
+[    17.62 ms] [ÇALIŞMA  ]   ✓ ortalama ← 9.239,56   [0.061 ms]
+[    17.63 ms] [ÇALIŞMA  ] ▶ satır 16: sapma, tutarların standart sapmasıdır
+[    17.75 ms] [ÇALIŞMA  ]   ✓ sapma ← 6.098,07   [0.099 ms]
+[    17.77 ms] [ÇALIŞMA  ] ▶ satır 17: eşik, sapmanın iki katıdır
+[    17.82 ms] [ÇALIŞMA  ]   ✓ eşik ← 12.196,14   [0.037 ms]
+[    17.83 ms] [ÇALIŞMA  ] ▶ satır 21: tutarların ortalamadan uzaklığı eşiği aştığı takdirde işlemler "Anormal" olarak etiketlensin
+[    18.03 ms] [ÇALIŞMA  ]     koşul maskesi: Maske[1000] (25 doğru)
+[    18.04 ms] [ÇALIŞMA  ]   ✓ işlemler YERİNDE güncellendi: nesne 0x7f6ec5149be0 korundu (kopya yok)   [0.153 ms]
+[    18.30 ms] [ÇALIŞMA  ]     durum dağılımı: Anormal=25, Normal=975
+[    18.32 ms] [ÇALIŞMA  ] ▶ satır 24: anormaller, işlemlerden durumu "Anormal" olanların matrisidir
+[    18.50 ms] [ÇALIŞMA  ]   ✓ anormaller ← Matris[25×5]   [0.155 ms]
+[    18.51 ms] [ÇALIŞMA  ] ▶ satır 27: ortalamayı, sapmayı ve eşiği raporla
+RAPOR ▸ ortalama = 9.239,56
+RAPOR ▸ sapma = 6.098,07
+RAPOR ▸ eşik = 12.196,14
+[    18.60 ms] [ÇALIŞMA  ]   ✓ tamam   [0.071 ms]
+[    18.61 ms] [ÇALIŞMA  ] ▶ satır 28: anormallerin satır sayısını raporla
+RAPOR ▸ anormallerin satır sayısı = 25
+[    18.67 ms] [ÇALIŞMA  ]   ✓ tamam   [0.039 ms]
+[    18.68 ms] [ÇALIŞMA  ] ▶ satır 29: anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır
+▸ ilk onu
+┌─ Matris: 10 × 5 (float64, bitişik bellek)
+│ işlem_no │ müşteri_no │ tutar     │ risk_puanı │ saat
+├──────────┼────────────┼───────────┼────────────┼─────
+│      461 │     667000 │ 85.638,61 │         66 │    7
+│      755 │     976339 │ 75.112,30 │         99 │    2
+│      907 │     537029 │ 59.938,76 │         56 │   19
+│      233 │     307492 │ 59.412,26 │        100 │    7
+│      193 │     823307 │ 57.818,10 │         57 │   14
+│      146 │     117331 │ 45.730,57 │         90 │    4
+│      282 │     837634 │ 44.561,52 │         99 │    7
+│      566 │     508220 │ 42.948,90 │        100 │    5
+│      562 │     859914 │ 38.658,26 │         80 │   23
+│      733 │     425600 │ 36.238,58 │         79 │    7
+└─
+[    18.90 ms] [ÇALIŞMA  ]   ✓ tamam   [0.211 ms]
+[    18.94 ms] [SİSTEM   ] Program başarıyla tamamlandı. Çalışma süresi: 11.35 ms

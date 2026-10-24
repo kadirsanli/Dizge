@@ -1,0 +1,19 @@
+# Kural 3 — Koşul cümleye yedirilir; matris ve olasılık işlemleri
+işlemler, 500 satırlık 42 tohumlu rastgele işlem tablosudur.
+
+# Etken çatı + -arak: derleyici, durdurma kopyasının atıldığını uyarır
+işlemlerin risk_puanı doksanı aştığı_takdirde işlemleri durdurarak raporla.
+
+# Doğrusu: edilgen çatı → tablo yerinde durdurulur, aynı nesne raporlanır
+işlemlerin risk puanı doksanı aştığı takdirde işlemler durdurularak raporlansın.
+
+# Olasılık dağılımı (-lı ekleri = adlandırılmış parametreler)
+örnek, 0 ortalamalı 1 sapmalı 10000 elemanlı 7 tohumlu normal dağılımdır.
+örneğin ortalamasını ve standart sapmasını raporla.
+örneğin z puanlarının en büyüğünü raporla.
+
+# Matris cebiri
+a, 3 boyutlu birim matristir.
+b, a'nın 5 katıdır.
+c, a'nın b ile çarpımıdır.
+c'nin determinantını ve izini raporla.

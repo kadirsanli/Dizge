@@ -1,0 +1,29 @@
+# ==========================================================================
+#  hesaplama.dzg — Finansal işlemlerde istatistiksel anomali tespiti
+#
+#  Görev: 1000 satırlık rastgele bir işlem veri seti oluştur, tutarların
+#  standart sapmasını hesapla, ortalamadan 2 standart sapmadan daha uzak
+#  işlemleri "Anormal" olarak etiketle ve yalnızca anormalleri yeni bir
+#  matrise ayır.
+# ==========================================================================
+
+# 1) Veri — tanım cümlesi:  AD, <ad öbeği>-dır.
+işlemler, bin satırlık rastgele işlem tablosudur.
+
+# 2) İstatistik — iyelik tamlaması işlev uygulamasıdır:  X-in Y-si = Y(X)
+tutarlar, işlemlerin tutarlarıdır.
+ortalama, tutarların ortalamasıdır.
+sapma, tutarların standart sapmasıdır.
+eşik, sapmanın iki katıdır.
+
+# 3) Koşul cümleye yedirilir (-dığı takdirde → vektörel maske).
+#    Edilgen çatı (etiketle-n-sin) → tablo YERİNDE etiketlenir, kopya yok.
+tutarların ortalamadan uzaklığı eşiği aştığı takdirde işlemler "Anormal" olarak etiketlensin.
+
+# 4) Sıfat-fiil süzgeci (… olanlar) + yeni matris
+anormaller, işlemlerden durumu "Anormal" olanların matrisidir.
+
+# 5) Rapor
+ortalamayı, sapmayı ve eşiği raporla.
+anormallerin satır sayısını raporla.
+anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır.

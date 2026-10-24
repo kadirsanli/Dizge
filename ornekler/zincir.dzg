@@ -1,0 +1,9 @@
+# Kural 1 — Sondan eklemeli işlev zinciri (alt çizgi = boşluk)
+veri_seti, 4, 36, 49, 100, 2 ve 81 dizisidir.
+
+# -nin: bağlam  |  karekökünü alıp: işlev 1 + ardışıklık  |  beşten büyüklerini ayıkla: süzgeç
+veri_setinin_karekökünü_alıp_beşten_büyüklerini_ayıklayıp_yazdır.
+
+# Aynı zincir, boşluklu ve sonucu adlandırarak
+veri setinin karekökünü alıp beşten büyüklerini ayıklayıp seçilmişler olarak sakla.
+seçilmişlerin toplamını ve ortalamasını raporla.
