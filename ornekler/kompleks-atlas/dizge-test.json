@@ -1,0 +1,731 @@
+{
+  "method": "dizge",
+  "timestamp": "2026-10-24T00:38:47.698Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "viewport": {
+    "width": 887,
+    "height": 708,
+    "devicePixelRatio": 1.5
+  },
+  "renderer": {
+    "vendor": "WebKit",
+    "renderer": "WebKit WebGL",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  },
+  "passed": 78,
+  "total": 78,
+  "results": [
+    {
+      "name": "Dahili matematik testleri",
+      "pass": true,
+      "detail": "37/37"
+    },
+    {
+      "name": "square bağımsız referans (1,1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "square bağımsız referans (-2,1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cubic bağımsız referans (0,1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cubic bağımsız referans (1,0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "exp bağımsız referans (0,0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "exp bağımsız referans (0.6931471805599453,1.5707963267948966)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sin bağımsız referans (1.5707963267948966,0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sin bağımsız referans (0,0.6931471805599453)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mobius bağımsız referans (0,1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mobius bağımsız referans (2,0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "reciprocal bağımsız referans (1,1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "reciprocal bağımsız referans (-2,0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Yükseklik log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Yükseklik abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Yükseklik re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Yükseklik im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1/z kutbu",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Möbius kutbu",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "NaN girdi reddi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Infinity girdi reddi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Sıfır fazı tanımsız",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"resolution\":161}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"resolution\":32.5}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"radius\":0}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"scale\":null}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"fn\":\"__proto__\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"fn\":\"missing\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"fn\":[\"square\"]}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"mode\":[\"abs\"]}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"mode\":\"missing\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"auto\":\"true\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"yaw\":null}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"distance\":0}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar {\"unknown\":1}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar null",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Geçersiz ayar []",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "JSON tam gidiş dönüş",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bozuk JSON atomik reddi {bad}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bozuk JSON atomik reddi {\"app\":\"complex-atlas\",\"version\":999,\"state\":{\"fn\":\"squ",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bozuk JSON atomik reddi {\"app\":\"complex-atlas\",\"version\":1,\"state\":{\"fn\":\"squar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bozuk JSON atomik reddi {\"app\":\"complex-atlas\",\"version\":1,\"state\":{\"fn\":\"squar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bozuk JSON atomik reddi {\"app\":\"complex-atlas\",\"version\":1,\"state\":{\"fn\":\"__pro",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "160 çözünürlük köşe/üçgen sayısı",
+      "pass": true,
+      "detail": "{\"vertices\":25921,\"triangles\":51200,\"masked\":0,\"clipped\":0,\"buildMs\":14.900000002235174,\"fps\":147.75413711583923,\"state\":{\"fn\":\"square\",\"mode\":\"log\",\"radius\":2,\"resolution\":160,\"scale\":0.7,\"yaw\":-0.65,\"pitch\":0.72,\"distance\":8,\"auto\":false},\"webgl\":true}"
+    },
+    {
+      "name": "Tekil örgü maskeleme/kırpma",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler square/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler square/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler square/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler square/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler cubic/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler cubic/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler cubic/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler cubic/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler exp/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler exp/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler exp/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler exp/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler sin/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler sin/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler sin/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler sin/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler mobius/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler mobius/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler mobius/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler mobius/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler reciprocal/log",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler reciprocal/abs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler reciprocal/re",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "En yüksek parametreler reciprocal/im",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Gerçek PNG kodlama",
+      "pass": true,
+      "detail": "139502 karakter"
+    },
+    {
+      "name": "WebGL çizim hatası yok",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Gerçek sayaçlar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Klavye yörünge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Klavye yakınlaşma",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Klavye otomatik dönme",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Dönmeyi duraklat",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Kamera sıfırlama",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Boş sayı alanı native reddedilir",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "performance": {
+    "buildSamplesMs": [
+      21.299999997019768,
+      16.100000001490116,
+      16,
+      18.299999997019768,
+      18.899999998509884,
+      21.100000001490116,
+      14.900000002235174
+    ],
+    "warmupDiscarded": 1,
+    "medianMs": 17.199999999254942,
+    "animation": {
+      "fps": 74.96876301541025,
+      "frames": 90,
+      "durationMs": 1200.5,
+      "p95Ms": 13.5,
+      "sufficientFrames": true,
+      "visibility": "visible",
+      "warmupFrames": 8
+    }
+  },
+  "maxStates": [
+    {
+      "fn": "square",
+      "mode": "log",
+      "triangles": 51200,
+      "buildMs": 15.199999999254942
+    },
+    {
+      "fn": "square",
+      "mode": "abs",
+      "triangles": 51200,
+      "buildMs": 14.100000001490116
+    },
+    {
+      "fn": "square",
+      "mode": "re",
+      "triangles": 51200,
+      "buildMs": 13.899999998509884
+    },
+    {
+      "fn": "square",
+      "mode": "im",
+      "triangles": 51200,
+      "buildMs": 13.400000002235174
+    },
+    {
+      "fn": "cubic",
+      "mode": "log",
+      "triangles": 51200,
+      "buildMs": 19.600000001490116
+    },
+    {
+      "fn": "cubic",
+      "mode": "abs",
+      "triangles": 50150,
+      "buildMs": 13.800000000745058
+    },
+    {
+      "fn": "cubic",
+      "mode": "re",
+      "triangles": 51200,
+      "buildMs": 13.800000000745058
+    },
+    {
+      "fn": "cubic",
+      "mode": "im",
+      "triangles": 51200,
+      "buildMs": 18.899999998509884
+    },
+    {
+      "fn": "exp",
+      "mode": "log",
+      "triangles": 51200,
+      "buildMs": 17.700000002980232
+    },
+    {
+      "fn": "exp",
+      "mode": "abs",
+      "triangles": 51200,
+      "buildMs": 17.199999999254942
+    },
+    {
+      "fn": "exp",
+      "mode": "re",
+      "triangles": 51200,
+      "buildMs": 18.5
+    },
+    {
+      "fn": "exp",
+      "mode": "im",
+      "triangles": 51200,
+      "buildMs": 15.399999998509884
+    },
+    {
+      "fn": "sin",
+      "mode": "log",
+      "triangles": 51200,
+      "buildMs": 17.600000001490116
+    },
+    {
+      "fn": "sin",
+      "mode": "abs",
+      "triangles": 51200,
+      "buildMs": 20.5
+    },
+    {
+      "fn": "sin",
+      "mode": "re",
+      "triangles": 51200,
+      "buildMs": 31.300000000745058
+    },
+    {
+      "fn": "sin",
+      "mode": "im",
+      "triangles": 51200,
+      "buildMs": 22.800000000745058
+    },
+    {
+      "fn": "mobius",
+      "mode": "log",
+      "triangles": 51194,
+      "buildMs": 18.599999997764826
+    },
+    {
+      "fn": "mobius",
+      "mode": "abs",
+      "triangles": 51142,
+      "buildMs": 18.800000000745058
+    },
+    {
+      "fn": "mobius",
+      "mode": "re",
+      "triangles": 51148,
+      "buildMs": 22.300000000745058
+    },
+    {
+      "fn": "mobius",
+      "mode": "im",
+      "triangles": 51148,
+      "buildMs": 13.699999999254942
+    },
+    {
+      "fn": "reciprocal",
+      "mode": "log",
+      "triangles": 51194,
+      "buildMs": 17.199999999254942
+    },
+    {
+      "fn": "reciprocal",
+      "mode": "abs",
+      "triangles": 51170,
+      "buildMs": 20.800000000745058
+    },
+    {
+      "fn": "reciprocal",
+      "mode": "re",
+      "triangles": 51174,
+      "buildMs": 15.599999997764826
+    },
+    {
+      "fn": "reciprocal",
+      "mode": "im",
+      "triangles": 51174,
+      "buildMs": 14.100000001490116
+    }
+  ],
+  "ownTests": {
+    "passed": 37,
+    "total": 37,
+    "results": [
+      {
+        "name": "NumPy square (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy square (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy square (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy square (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy square (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy cubic (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy cubic (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy cubic (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy cubic (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy cubic (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy exp (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy exp (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy exp (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy exp (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy exp (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy sin (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy sin (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy sin (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy sin (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy sin (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy mobius (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy mobius (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy mobius (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy mobius (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy mobius (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy reciprocal (-1.3,0.7)",
+        "pass": true
+      },
+      {
+        "name": "NumPy reciprocal (0.2,-0.4)",
+        "pass": true
+      },
+      {
+        "name": "NumPy reciprocal (1,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy reciprocal (0,1)",
+        "pass": true
+      },
+      {
+        "name": "NumPy reciprocal (2,-1)",
+        "pass": true
+      },
+      {
+        "name": "Yükseklik log",
+        "pass": true
+      },
+      {
+        "name": "Yükseklik abs",
+        "pass": true
+      },
+      {
+        "name": "Yükseklik re",
+        "pass": true
+      },
+      {
+        "name": "Yükseklik im",
+        "pass": true
+      },
+      {
+        "name": "İki kutup maskesi",
+        "pass": true
+      },
+      {
+        "name": "Sıfır fazı tanımsız",
+        "pass": true
+      },
+      {
+        "name": "NaN reddi",
+        "pass": true
+      }
+    ]
+  }
+}

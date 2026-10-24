@@ -1,0 +1,17 @@
+{
+  "upstreamCommit": "6622ff41165db958d677d68e095a848502666a11",
+  "sourceSHA256": "66b41b69a6c1ba1c936d9c806b1175d9ef2ddc20f914b0d6cf9b3ffb35931df9",
+  "definitions": 16,
+  "pythonVerified": [
+    "Newton one step",
+    "Gravity copy semantics",
+    "Quantum unit norm one step"
+  ],
+  "compileAndExecuteMs": 70.12869999743998,
+  "warnings": [
+    "satır 6: 'kökadımı' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 13: 'soncisimler' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 20: 'sondalga' tanımlandı ama hiç kullanılmadı (ölü tanım)."
+  ],
+  "generatedJS": "// Resmi Dizge AST çıktısı; elle yazılmış boru hattı değildir.\nconst FLOW=Object.freeze({\n\"newton\": input => K.advance(K.correction(K.evaluate(input))),\n\"gravity\": input => K.kick(K.force(K.drift(K.kick(K.force(input))))),\n\"quantum\": input => K.potential(K.inverse(K.kinetic(K.forward(K.potential(input)))))\n});\n"
+}

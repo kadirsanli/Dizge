@@ -1,0 +1,24 @@
+{
+  "upstreamCommit": "6622ff41165db958d677d68e095a848502666a11",
+  "sourceSHA256": "06d102460f2fdf48b01baa3a4a5f3d628860c8e467e5a6381b3955a98871edec",
+  "definitions": 12,
+  "numpyVersion": "2.3.5",
+  "gridShape": [
+    97,
+    97
+  ],
+  "fixtureCount": 30,
+  "compileAndExecutionMs": 31.68020000157412,
+  "warnings": [
+    "satır 5: 'küpler' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 6: 'üsteller' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 7: 'sinüsler' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 8: 'möbiyuslar' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 9: 'tersler' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 11: 'fazlar' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 12: 'gerçeller' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 13: 'sanallar' tanımlandı ama hiç kullanılmadı (ölü tanım).",
+    "satır 14: 'yükseklikler' tanımlandı ama hiç kullanılmadı (ölü tanım)."
+  ],
+  "generatedJS": "// atlas.dzg gerçek AST çıktısı; elle yazılmış formül tablosu değildir.\nconst DZG_FUNCTIONS = Object.freeze({\n\"square\": z => DZ.square(z),\n\"cubic\": z => DZ.cubic(z),\n\"exp\": z => DZ.exp(z),\n\"sin\": z => DZ.sin(z),\n\"mobius\": z => DZ.mobius(z),\n\"reciprocal\": z => DZ.reciprocal(z)\n});\nconst DZG_HEIGHTS = Object.freeze({\n\"log\": w => DZ.log1p(DZ.abs(w)),\n\"abs\": w => DZ.abs(w),\n\"re\": w => DZ.re(w),\n\"im\": w => DZ.im(w)\n});\nconst DZG_PHASE = w => DZ.phase(w);\n"
+}

@@ -1,0 +1,23 @@
+{
+  "protocol_created": "2026-10-24T00:31:34.955Z",
+  "normal_start": "2026-10-24T00:31:34.955Z",
+  "timing_note": "İlk Python kayıt komutu dosya üretmedi; başlangıç ortak istem dosyasının oluşturulma zamanından kurtarıldı.",
+  "events": [
+    {
+      "at": "2026-10-24T00:38:34.062Z",
+      "event": "Ortak test genişletildi: enum türü, klavye, FPS ısınma. İki HTML de değiştirilmedi."
+    }
+  ],
+  "normal_end": "2026-10-24T00:35:09.410Z",
+  "normal_sha256": "567c54c9edf32c84ae167f7d24a9613983fab706d91a840e04b2e8e9fc250068",
+  "dizge_read_start": "2026-10-24T00:35:09.420Z",
+  "dizge_read_end": "2026-10-24T00:35:56.890Z",
+  "dizge_start": "2026-10-24T00:35:56.890Z",
+  "repo_commit": "6622ff41165db958d677d68e095a848502666a11",
+  "dizge_first_html": "2026-10-24T00:37:53.396Z",
+  "dizge_sha256": "52270cb7c3e4547352a03e3686d6dec92611ee4ae6207cd04c00f57a2b2b00a5",
+  "normal_first_html": "2026-10-24T00:32:58.162Z",
+  "dizge_end": "2026-10-24T00:38:08.117Z",
+  "dizge_end_note": "İlk eşit 70-kontrol denemesinin kaydedildiği zaman; iki uygulamadaki ek ortak kontroller aşağıda ayrı kaydedilir.",
+  "common_validation_end": "2026-10-24T00:41:58.390Z"
+}

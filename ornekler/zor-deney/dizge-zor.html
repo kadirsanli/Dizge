@@ -1,0 +1,1721 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zor Deney · DİZGE / AST</title><style>
+:root{color-scheme:dark;--bg:#0e131b;--panel:#171f2b;--line:#324156;--ink:#eef3fa;--muted:#a0b0c6;--accent:#81dfc9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 system-ui,sans-serif}header{padding:24px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px}h1{margin:0;font-size:28px;letter-spacing:-1px}header p{margin:4px 0;color:var(--muted)}.badge{border:1px solid var(--line);border-radius:30px;color:var(--accent);padding:7px 13px;white-space:nowrap;font-size:12px}.tabs{display:flex;gap:10px;padding:18px 30px;border-bottom:1px solid var(--line);flex-wrap:wrap}.tabs button{background:none;border:1px solid var(--line)}.tabs button[aria-selected=true]{background:var(--accent);color:#111b24;border-color:var(--accent)}button,input,select{font:inherit;border:1px solid #41536b;color:inherit;background:#223047;border-radius:7px;padding:9px}button{cursor:pointer}button:hover{filter:brightness(1.2)}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.shell{display:grid;grid-template-columns:290px minmax(0,1fr)}aside{background:var(--panel);padding:23px;border-right:1px solid var(--line)}h2{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:0 0 16px}label{display:block;margin:14px 0 6px;color:#cad7e8}input,select{width:100%;min-width:0}input[type=range]{padding:0;accent-color:var(--accent)}.pair{display:flex;gap:8px}.pair>*{flex:1;min-width:0}.full{width:100%;margin-top:10px}.primary{background:var(--accent);color:#101b25}.help{font-size:12px;color:var(--muted)}hr{border:0;border-top:1px solid var(--line);margin:22px 0}main{min-width:0;padding:24px}.stage{position:relative;height:min(62vh,600px);min-height:350px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#101923}canvas{width:100%;height:100%;display:block;touch-action:none}.overlay{position:absolute;top:20px;left:22px;pointer-events:none}.overlay b{font:27px Georgia,serif}.overlay small{display:block;color:var(--muted);max-width:55ch}.canvasHint{position:absolute;bottom:16px;left:18px;color:#bacbde;font-size:11px;pointer-events:none}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.metric{border:1px solid var(--line);border-radius:8px;padding:12px}.metric b{display:block;font:19px ui-monospace,monospace;overflow-wrap:anywhere}.metric span{color:var(--muted);font-size:11px}#status{min-height:25px;color:var(--accent)}#status.error{color:#ffad9f}#description{color:var(--muted)}pre{white-space:pre-wrap;word-break:break-word;font:12px/1.65 ui-monospace,monospace}#pointResult{background:#0d1621;padding:11px;border-radius:8px;min-height:115px}details{border-top:1px solid var(--line);padding:16px 0;color:var(--muted)}summary{cursor:pointer;color:#d6e3f2}.spectrum{height:6px;border-radius:6px;background:linear-gradient(90deg,#42e6e6,#4242e6,#e642e6,#e64242,#e6e642,#42e642,#42e6e6)}.ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.limits{display:flex;flex-wrap:wrap;gap:8px}.limits button{font-size:12px}footer{font-size:11px;color:var(--muted);margin-top:18px}#testOutput{max-height:450px;overflow:auto}#testPanel[open]{border-color:var(--accent)}@media(max-width:800px){header{padding:18px;gap:10px}h1{font-size:23px}header p{font-size:12px}.badge{font-size:10px}.tabs{padding:12px 16px}.tabs button{font-size:12px}.shell{display:flex;flex-direction:column}main{order:0;padding:15px}aside{order:1;border-right:0;border-top:1px solid var(--line)}.stage{height:48vh;min-height:320px}.metrics{grid-template-columns:1fr 1fr}.overlay{left:15px}.overlay b{font-size:23px}}
+</style></head><body><header><div><h1>Zor Deney<span style="color:var(--accent)"> / 03</span></h1><p>Kompleks analiz · Kütleçekim · Kuantum dalgaları</p></div><span class="badge">DİZGE / AST · TEK DOSYA</span></header><nav class="tabs" role="tablist" aria-label="Laboratuvar"><button role="tab" data-lab="newton" aria-selected="true">01 · Newton topoğrafyası</button><button role="tab" data-lab="gravity" aria-selected="false">02 · N-cisim sistemi</button><button role="tab" data-lab="quantum" aria-selected="false">03 · Schrödinger dalgası</button></nav><div class="shell"><aside><h2>Deney parametreleri</h2><form id="parameters"><section id="newtonControls"><label for="formula">Kompleks ifade f(z)</label><input id="formula" value="z^3-1" maxlength="512" spellcheck="false"><p class="help">z, i, pi, e · + − * / ^ · sin, cos, exp, log, sqrt. Üs: −12…12 tam sayı. Çarpma işareti zorunlu.</p><label for="grid">Yüzey ızgarası</label><select id="grid"><option>32</option><option selected>48</option><option>64</option><option>96</option></select><div class="pair"><div><label for="x">Başlangıç x</label><input id="x" type="number" value="0.4" step="any" required></div><div><label for="y">Başlangıç y</label><input id="y" type="number" value="0.8" step="any" required></div></div></section><section id="gravityControls" hidden><label for="bodies">Cisim sayısı</label><input id="bodies" type="number" min="2" max="128" value="24" step="1"><label for="dt">Zaman adımı Δt</label><input id="dt" type="number" min="0.001" max="0.05" step="0.001" value="0.006"><label for="seed">Başlangıç tohumu</label><input id="seed" type="number" min="0" max="4294967295" step="1" value="7"><p class="help">G=1 · yumuşatma ε=0,03. İki cisim seçimi dairesel ikili yörüngeyi başlatır. Yakın geçişte adımı küçültün.</p></section><section id="quantumControls" hidden><label for="qgrid">FFT ızgarası</label><select id="qgrid"><option>32</option><option selected>64</option><option>128</option></select><label for="potential">Potansiyel</label><select id="potential"><option value="slit">Çift yarık</option><option value="free">Serbest</option><option value="harmonic">Harmonik</option></select><label for="qdt">Dalga zaman adımı Δt</label><input id="qdt" type="number" min="0.001" max="0.05" step="0.001" value="0.015"><p class="help">ħ=m=1 · kutu 12×12 · periyodik sınır. Başlangıç Gauss paketi soldan sağa ilerler. Norm her adımda yeniden ölçeklenmez.</p></section><button class="full primary" type="submit">Uygula / yeniden üret</button></form><pre id="pointResult" aria-live="polite"></pre><hr><h2>Dosya ve doğrulama</h2><div class="pair"><button id="jsonSave">JSON indir</button><button id="jsonOpen">JSON aç</button></div><input id="file" type="file" accept=".json,application/json" hidden><button id="audit" class="full">114 kontrol + 3 stres testi</button><button id="ceiling" class="full">60 FPS tavan testi</button><button id="auditSave" class="full" disabled>Test sonucunu indir</button><p class="help">Stres testi kısa süreli CPU yükü oluşturur. Aynı cihazda, görünür sekmede karşılaştırın. Ölçüm sırasında animasyon duraklatılır.</p><details><summary>Yöntem kaynağı</summary><pre id="methodSource"></pre></details></aside><main><div class="stage"><canvas id="view" tabindex="0" aria-label="Gerçek koordinatlardan perspektifle çizilmiş üç boyutlu deney. Oklar döndürür, artı eksi yakınlaştırır."></canvas><div class="overlay"><b id="equation"></b><small id="subheading"></small></div><div class="canvasHint">Sürükle → döndür · +/− → yakınlaş · R → kamera · Boşluk → oynat</div></div><div class="toolbar"><button id="play" class="primary" aria-pressed="false">Oynat</button><button id="step">Tek adım</button><button id="reset">Deneyi sıfırla</button><button id="camera">Kamerayı sıfırla</button><button id="near" aria-label="Yakınlaştır">＋</button><button id="far" aria-label="Uzaklaştır">−</button><button id="png">PNG indir</button></div><div id="status" role="status" aria-live="polite">Başlatılıyor…</div><div class="metrics"><div class="metric"><b id="m1">—</b><span id="l1"></span></div><div class="metric"><b id="m2">—</b><span id="l2"></span></div><div class="metric"><b id="m3">—</b><span id="l3"></span></div><div class="metric"><b id="m4">—</b><span id="l4"></span></div></div><p id="description"></p><div class="spectrum" role="img" aria-label="Faz renk çemberi: eksi pi ve artı pi camgöbeği, sıfır kırmızı"></div><div class="ticks"><span>−π</span><span>arg · kök veya dalga fazı</span><span>π</span></div><details open><summary>Gerçekten imkânsız koşullar</summary><p>Bu üç isteğin doğru bir sayısal çözümü yok. Düğmeler matematiksel gerekçeyi gösterir; başarılı bir simülasyon gibi sunmaz.</p><div class="limits"><button data-limit="pole">1/0 sonlu olsun</button><button data-limit="zero">Sıfır dalga, norm 1</button><button data-limit="memory">1 milyar XYZ / 1 MiB</button></div><pre id="limitResult" aria-live="polite"></pre></details><details><summary>Model, sınırlar ve klavye</summary><p>Newton yüzeyinde yükseklik yakınsama adımı, renk bulunan kökün fazıdır. Kritik, tekil, dal kesiti ve iterasyon limitli noktalar ayrı sayılır. Ana dal log/sqrt kullanılır; dal kesitindeki Newton adımı reddedilir.</p><p>N-cisim görünümü üç boyutlu koordinatları ve son 80 izin projeksiyonunu gösterir. Δt sonlu olduğundan enerji hatası sıfır olmak zorunda değildir. Dalga yüksekliği 6|ψ|², renk fazdır; yükseklik 4'te kırpılır. Potansiyel yüzeye eklenmez. FFT periyodik olduğundan dalga kutunun karşı kenarından geri gelebilir.</p><p>Odak yüzeydeyken oklar kamerayı döndürür, +/− yakınlaştırır, R kamerayı sıfırlar, boşluk oynatır/duraklatır. Newton'da oynatma yalnızca kamerayı döndürür. Diğer deneylerde her görüntü karesi sayısal adım ilerletir; fiziksel zaman duvar saati değildir.</p><p>İki yöntemin arayüzü ve matematik yardımcıları ortaktır. A açık JS akışı, B gerçek .dzg AST'sinden üretilmiş akıştır. Bu deney bağımsız iki algoritmanın üstünlüğünü ölçmez.</p></details><details id="testPanel"><summary>Ham test kanıtı</summary><pre id="testOutput">Henüz çalıştırılmadı.</pre></details><footer>Çevrimdışı Canvas 2D · Gerçek 3B perspektif · Ortak çekirdek / farklı işlem akışı · DİZGE / AST</footer></main></div>
+<script>
+const METHOD='dizge';
+'use strict';
+// Ortak sayısal yardımcılar. Bir yöntem diğerinin daha kötü algoritmasını kullanmaz.
+const K=(()=>{
+const finite=a=>a.every(Number.isFinite),pair=(a,b)=>[a,b];
+const C={add:(a,b)=>[a[0]+b[0],a[1]+b[1]],sub:(a,b)=>[a[0]-b[0],a[1]-b[1]],mul:(a,b)=>[a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]],div:(a,b)=>{const d=b[0]*b[0]+b[1]*b[1];if(d<1e-28||!Number.isFinite(d))throw Error('Tekillik / sıfıra bölme');return[(a[0]*b[0]+a[1]*b[1])/d,(a[1]*b[0]-a[0]*b[1])/d]},exp:a=>[Math.exp(a[0])*Math.cos(a[1]),Math.exp(a[0])*Math.sin(a[1])],sin:a=>[Math.sin(a[0])*Math.cosh(a[1]),Math.cos(a[0])*Math.sinh(a[1])],cos:a=>[Math.cos(a[0])*Math.cosh(a[1]),-Math.sin(a[0])*Math.sinh(a[1])],log:a=>{const r=Math.hypot(...a);if(r<1e-14)throw Error('Logaritma kutbu');return[Math.log(r),Math.atan2(a[1],a[0])]},sqrt:a=>{const r=Math.hypot(...a);return[Math.sqrt(Math.max(0,(r+a[0])/2)),(a[1]<0?-1:1)*Math.sqrt(Math.max(0,(r-a[0])/2))]}};
+function power(a,n){if(n===0)return[1,0];let v=[1,0],b=a,k=Math.abs(n);while(k){if(k&1)v=C.mul(v,b);b=C.mul(b,b);k>>=1}return n<0?C.div([1,0],v):v}
+function compile(text){if(typeof text!=='string'||text.length<1||text.length>512)throw Error('İfade 1–512 karakter olmalı.');const tokens=[];let pos=0;while(pos<text.length){const tail=text.slice(pos);if(/^\s/.test(tail)){pos++;continue}const match=tail.match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?|^[A-Za-z]+|^[()+\-*/^]/);if(!match)throw Error('Geçersiz simge: '+tail[0]);tokens.push(match[0]);pos+=match[0].length;if(tokens.length>256)throw Error('Token sınırı aşıldı.')}let at=0,depth=0;const peek=()=>tokens[at],take=()=>tokens[at++];
+function nested(fn){if(++depth>32)throw Error('İfade derinliği 32 sınırını aşıyor.');const n=fn();depth--;return n}
+function primary(){return nested(()=>{const t=take();if(t===undefined)throw Error('Eksik ifade.');if(t==='('){const n=sum();if(take()!==')')throw Error('Kapanış parantezi eksik.');return n}if(/^\d|^\./.test(t)){const v=Number(t);if(!Number.isFinite(v))throw Error('Sayı sonlu olmalı.');return{op:'num',v}}if(t==='z')return{op:'z'};if(t==='i')return{op:'i'};if(t==='pi'||t==='e')return{op:'num',v:t==='pi'?Math.PI:Math.E};if(['sin','cos','exp','log','sqrt'].includes(t)){if(take()!=='(')throw Error('İşlev parantezi gerekli.');const n=sum();if(take()!==')')throw Error('İşlev parantezi eksik.');return{op:t,a:n}}throw Error('İzin verilmeyen ad/simge: '+t)})}
+function exponent(){const a=primary();if(peek()==='^'){take();let sign=1;if(peek()==='-'){take();sign=-1}else if(peek()==='+')take();const token=take(),n=sign*Number(token);if(!token||!/^[0-9]+$/.test(token)||!Number.isInteger(n)||Math.abs(n)>12)throw Error('Üs −12…12 tam sayı olmalı.');return{op:'pow',a,n}}return a}
+function unary(){if(peek()==='+'||peek()==='-'){const op=take();return nested(()=>({op:op==='-'?'neg':'pos',a:unary()}))}return exponent()}
+function product(){let a=unary();while(peek()==='*'||peek()==='/'){const op=take();a={op,a,b:unary()}}return a}
+function sum(){let a=product();while(peek()==='+'||peek()==='-'){const op=take();a={op,a,b:product()}}return a}
+const ast=sum();if(at!==tokens.length)throw Error('Beklenmeyen token: '+peek());function height(n){return 1+Math.max(n.a?height(n.a):0,n.b?height(n.b):0)}if(height(ast)>32)throw Error('AST derinliği 32 sınırını aşıyor.');return ast}
+function dual(ast,z){function rec(n){if(n.op==='num')return{v:[n.v,0],d:[0,0],branch:false};if(n.op==='z')return{v:z.slice(),d:[1,0],branch:false};if(n.op==='i')return{v:[0,1],d:[0,0],branch:false};const a=rec(n.a);let v,d,branch=a.branch;if(n.op==='neg'||n.op==='pos'){const s=n.op==='neg'?-1:1;return{v:a.v.map(x=>s*x),d:a.d.map(x=>s*x),branch}}if(n.op==='pow'){v=power(a.v,n.n);d=n.n===0?[0,0]:C.mul([n.n,0],C.mul(power(a.v,n.n-1),a.d))}else if(n.b){const b=rec(n.b);branch=branch||b.branch;if(n.op==='+'||n.op==='-'){v=C[n.op==='+'?'add':'sub'](a.v,b.v);d=C[n.op==='+'?'add':'sub'](a.d,b.d)}else if(n.op==='*'){v=C.mul(a.v,b.v);d=C.add(C.mul(a.d,b.v),C.mul(a.v,b.d))}else{v=C.div(a.v,b.v);d=C.div(C.sub(C.mul(a.d,b.v),C.mul(a.v,b.d)),C.mul(b.v,b.v))}}else{v=C[n.op](a.v);if(n.op==='exp')d=C.mul(v,a.d);if(n.op==='sin')d=C.mul(C.cos(a.v),a.d);if(n.op==='cos')d=C.mul(C.mul([-1,0],C.sin(a.v)),a.d);if(n.op==='log')d=C.div(a.d,a.v);if(n.op==='sqrt')d=C.div(a.d,C.mul([2,0],v));if((n.op==='log'||n.op==='sqrt')&&a.v[0]<0&&Math.abs(a.v[1])<1e-14)branch=true}if(!finite(v)||!finite(d))throw Error('Sonlu olmayan değer / taşma');return{v,d,branch}}if(!finite(z)||z.length!==2)throw Error('Sonlu kompleks girdi gerekli.');return rec(ast)}
+function evaluate(s){if(s.status!=='iterating')return s;try{const q=dual(s.ast,s.z),residual=Math.hypot(...q.v);return{...s,...q,residual,status:residual<1e-10?'root':q.branch?'branch':'iterating'}}catch(e){return{...s,status:'singular',error:e.message,residual:Infinity}}}
+function correction(s){if(s.status!=='iterating')return s;if(Math.hypot(...s.d)<1e-12)return{...s,status:'critical',error:'Türev sıfır; Newton adımı tanımsız.'};try{return{...s,step:C.div(s.v,s.d)}}catch(e){return{...s,status:'singular',error:e.message}}}
+function advance(s){if(s.status!=='iterating')return s;const z=C.sub(s.z,s.step),iteration=s.iteration+1;if(!finite(z)||Math.hypot(...z)>1e10)return{...s,z,iteration,status:'escape'};let out={...s,z,iteration};if(iteration>=s.limit){out=evaluate(out);if(out.status==='iterating')out={...out,status:'limit'}}return out}
+function solve(ast,z,flow,limit=32){if(!Number.isInteger(limit)||limit<1||limit>96)throw Error('İterasyon sınırı 1…96 tam sayı olmalı.');let s={ast,z:z.slice(),iteration:0,limit,status:'iterating',residual:Infinity};for(let i=0;i<=limit&&s.status==='iterating';i++)s=flow(s);return s}
+function random(seed){let t=seed>>>0;return()=>{t+=0x6D2B79F5;let v=Math.imul(t^t>>>15,t|1);v^=v+Math.imul(v^v>>>7,v|61);return((v^v>>>14)>>>0)/4294967296}}
+function bodies(n=24,seed=7,dt=.006){if(!Number.isInteger(n)||n<2||n>128||!Number.isFinite(dt)||Math.abs(dt)>.05||dt===0)throw Error('Cisim/adım sınırı geçersiz.');const p=new Float64Array(3*n),v=new Float64Array(3*n),m=new Float64Array(n),rng=random(seed);if(n===2){p[0]=-.5;p[3]=.5;m.fill(1);const speed=Math.sqrt(.5/Math.pow(1+.03**2,1.5));v[1]=-speed;v[4]=speed}else{for(let k=0;k<n;k++){const a=2*Math.PI*k/n,r=.8+rng()*1.4;m[k]=1/n;p[3*k]=r*Math.cos(a);p[3*k+1]=(rng()-.5)*.6;p[3*k+2]=r*Math.sin(a);v[3*k]=-.35*Math.sin(a);v[3*k+2]=.35*Math.cos(a)}for(let axis=0;axis<3;axis++){let mp=0,mv=0;for(let k=0;k<n;k++){mp+=p[k*3+axis]*m[k];mv+=v[k*3+axis]*m[k]}for(let k=0;k<n;k++){p[k*3+axis]-=mp;v[k*3+axis]-=mv}}}return{n,p,v,m,dt,soft:.03,t:0}}
+function force(s){const a=new Float64Array(s.n*3),eps=s.soft*s.soft;for(let i=0;i<s.n;i++)for(let j=i+1;j<s.n;j++){const x=s.p[j*3]-s.p[i*3],y=s.p[j*3+1]-s.p[i*3+1],z=s.p[j*3+2]-s.p[i*3+2],inv=1/Math.pow(x*x+y*y+z*z+eps,1.5);for(let k=0;k<3;k++){const delta=k===0?x:k===1?y:z;a[i*3+k]+=s.m[j]*delta*inv;a[j*3+k]-=s.m[i]*delta*inv}}return{...s,a}}
+function kick(s){const v=Float64Array.from(s.v,(x,k)=>x+.5*s.dt*s.a[k]);return{...s,v}}
+function drift(s){return{...s,p:Float64Array.from(s.p,(x,k)=>x+s.dt*s.v[k]),t:s.t+s.dt}}
+function gravityStats(s){let energy=0;const momentum=[0,0,0];for(let i=0;i<s.n;i++){energy+=.5*s.m[i]*(s.v[3*i]**2+s.v[3*i+1]**2+s.v[3*i+2]**2);for(let k=0;k<3;k++)momentum[k]+=s.m[i]*s.v[3*i+k];for(let j=i+1;j<s.n;j++)energy-=s.m[i]*s.m[j]/Math.sqrt((s.p[3*i]-s.p[3*j])**2+(s.p[3*i+1]-s.p[3*j+1])**2+(s.p[3*i+2]-s.p[3*j+2])**2+s.soft*s.soft)}return{energy,momentum}}
+function fft1(re,im,inverse=false){const n=re.length;if(n!==im.length||n<2||(n&(n-1)))throw Error('FFT boyutu ikinin kuvveti olmalı.');for(let i=1,j=0;i<n;i++){let bit=n>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){[re[i],re[j]]=[re[j],re[i]];[im[i],im[j]]=[im[j],im[i]]}}for(let len=2;len<=n;len<<=1){const angle=(inverse?2:-2)*Math.PI/len,wr=Math.cos(angle),wi=Math.sin(angle);for(let base=0;base<n;base+=len){let ur=1,ui=0;for(let j=0;j<len/2;j++){const a=base+j,b=a+len/2,tr=re[b]*ur-im[b]*ui,ti=re[b]*ui+im[b]*ur;re[b]=re[a]-tr;im[b]=im[a]-ti;re[a]+=tr;im[a]+=ti;const nr=ur*wr-ui*wi;ui=ur*wi+ui*wr;ur=nr}}}if(inverse)for(let i=0;i<n;i++){re[i]/=n;im[i]/=n}}
+function fft2(s,inverse=false){const n=s.n;if(s.re.length!==n*n||s.im.length!==n*n||n<2||(n&(n-1)))throw Error('2B FFT boyutu geçersiz.');const re=s.re.slice(),im=s.im.slice(),r=new Float64Array(n),i=new Float64Array(n);for(let y=0;y<n;y++){fft1(re.subarray(y*n,(y+1)*n),im.subarray(y*n,(y+1)*n),inverse)}for(let x=0;x<n;x++){for(let y=0;y<n;y++){r[y]=re[y*n+x];i[y]=im[y*n+x]}fft1(r,i,inverse);for(let y=0;y<n;y++){re[y*n+x]=r[y];im[y*n+x]=i[y]}}return{...s,re,im}}
+function wave(n=64,kind='slit',dt=.015){if(![16,32,64,128].includes(n)||!['free','harmonic','slit'].includes(kind)||!Number.isFinite(dt)||dt===0||Math.abs(dt)>.05)throw Error('Dalga ayarı geçersiz.');const L=12,dx=L/n,re=new Float64Array(n*n),im=new Float64Array(n*n),V=new Float64Array(n*n);let norm=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++){const X=dx*x-L/2,Y=dx*y-L/2,k=y*n+x,a=Math.exp(-((X+2)**2+Y*Y)/(2*.7**2));re[k]=a*Math.cos(2*X);im[k]=a*Math.sin(2*X);norm+=a*a*dx*dx;V[k]=kind==='free'?0:kind==='harmonic'?.05*(X*X+Y*Y):Math.abs(X)<.32&&Math.abs(Y-1)>.4&&Math.abs(Y+1)>.4?35:0}for(let k=0;k<re.length;k++){re[k]/=Math.sqrt(norm);im[k]/=Math.sqrt(norm)}return{n,L,dx,re,im,V,dt,t:0,kind}}
+function phase(s,angles){const re=new Float64Array(s.re.length),im=new Float64Array(s.im.length);for(let k=0;k<re.length;k++){const a=angles(k),c=Math.cos(a),v=Math.sin(a);re[k]=s.re[k]*c-s.im[k]*v;im[k]=s.re[k]*v+s.im[k]*c}return{...s,re,im}}
+function potential(s){const out=phase(s,k=>-s.V[k]*s.dt/2);out.t=s.t+s.dt/2;return out}
+function kinetic(s){const factor=2*Math.PI/s.L;return phase(s,k=>{const x=k%s.n,y=Math.floor(k/s.n),kx=(x<s.n/2?x:x-s.n)*factor,ky=(y<s.n/2?y:y-s.n)*factor;return-.5*s.dt*(kx*kx+ky*ky)})}
+function waveStats(s){let norm=0,max=0;for(let k=0;k<s.re.length;k++){const p=s.re[k]**2+s.im[k]**2;norm+=p*s.dx*s.dx;max=Math.max(max,p)}return{norm,max}}
+function impossible(which){if(which==='pole')return{solved:false,rejected:true,reason:'1/z, z=0 noktasında tanımlı değildir; sonlu doğru değer yok.'};if(which==='zero')return{solved:false,rejected:true,reason:'Bütün örnekler sıfırsa norm 0 olur; değiştirmeden norm 1 olamaz.'};if(which==='memory')return{solved:false,rejected:true,minimumBytes:12000000000,budgetBytes:1048576,reason:'Ham XYZ Float32: 1.000.000.000 ×3×4 = 12.000.000.000 bayt; 1 MiB sınırına sığmaz.'};throw Error('Bilinmeyen sınır')}
+const defaults=Object.freeze({lab:'newton',formula:'z^3-1',grid:48,bodies:24,dt:.006,qgrid:64,potential:'slit',qdt:.015,seed:7,yaw:-.6,pitch:.65,zoom:7});
+function settings(patch,previous=defaults,full=false){if(!patch||typeof patch!=='object'||Array.isArray(patch))throw Error('Ayar nesnesi gerekli.');if(full&&Object.keys(defaults).some(k=>!Object.hasOwn(patch,k)))throw Error('Eksik ayar.');const enums={lab:['newton','gravity','quantum'],potential:['free','harmonic','slit'],grid:[32,48,64,96],qgrid:[32,64,128]};const ranges={bodies:[2,128],dt:[.001,.05],qdt:[.001,.05],seed:[0,4294967295],yaw:[-10000,10000],pitch:[-.1,1.4],zoom:[4,16]};for(const[k,v]of Object.entries(patch)){if(!Object.hasOwn(defaults,k))throw Error('Bilinmeyen ayar: '+k);if(k==='formula'){compile(v)}else if(enums[k]){if(!enums[k].includes(v))throw Error('Geçersiz seçim: '+k)}else{const[l,h]=ranges[k];if(typeof v!=='number'||!Number.isFinite(v)||v<l||v>h||(['bodies','seed'].includes(k)&&!Number.isInteger(v)))throw Error('Geçersiz sayı/aralık: '+k)}}return Object.freeze({...previous,...patch})}
+return{C,compile,dual,evaluate,correction,advance,solve,random,bodies,force,kick,drift,gravityStats,fft1,fft2,wave,potential,kinetic,forward:s=>fft2(s,false),inverse:s=>fft2(s,true),waveStats,impossible,settings,defaults};
+})();
+
+// Resmi Dizge AST çıktısı; elle yazılmış boru hattı değildir.
+const FLOW=Object.freeze({
+"newton": input => K.advance(K.correction(K.evaluate(input))),
+"gravity": input => K.kick(K.force(K.drift(K.kick(K.force(input))))),
+"quantum": input => K.potential(K.inverse(K.kinetic(K.forward(K.potential(input)))))
+});
+
+const REFERENCE={
+  "derivatives": [
+    {
+      "formula": "z^3-1",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -1.414,
+        -0.15399999999999991
+      ],
+      "d": [
+        -1.1999999999999997,
+        1.2599999999999998
+      ]
+    },
+    {
+      "formula": "z^3-1",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -1.259,
+        0.286
+      ],
+      "d": [
+        1.3499999999999996,
+        -0.84
+      ]
+    },
+    {
+      "formula": "z^3-1",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        0.1519999999999997,
+        -1.6639999999999997
+      ],
+      "d": [
+        3.8399999999999994,
+        -2.88
+      ]
+    },
+    {
+      "formula": "z^3-1",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        -2.09,
+        0.054000000000000103
+      ],
+      "d": [
+        -1.6800000000000002,
+        -2.7
+      ]
+    },
+    {
+      "formula": "z^3-1",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        6.94,
+        1.199
+      ],
+      "d": [
+        11.97,
+        1.2000000000000002
+      ]
+    },
+    {
+      "formula": "(z-1)/(z+1)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -0.1926605504587156,
+        0.6422018348623852
+      ],
+      "d": [
+        0.5050079959599361,
+        -0.7659287938725696
+      ]
+    },
+    {
+      "formula": "(z-1)/(z+1)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -3.6153846153846154,
+        3.0769230769230766
+      ],
+      "d": [
+        5.9171597633136095,
+        -14.201183431952659
+      ]
+    },
+    {
+      "formula": "(z-1)/(z+1)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        0.11999999999999998,
+        -0.16
+      ],
+      "d": [
+        0.37439999999999996,
+        0.14079999999999998
+      ]
+    },
+    {
+      "formula": "(z-1)/(z+1)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        0.01960784313725492,
+        -0.5882352941176471
+      ],
+      "d": [
+        0.3075740099961553,
+        0.5767012687427913
+      ]
+    },
+    {
+      "formula": "(z-1)/(z+1)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        0.3340732519422864,
+        0.022197558268590458
+      ],
+      "d": [
+        0.2214828510928171,
+        -0.014781947792624057
+      ]
+    },
+    {
+      "formula": "exp(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        1.0324289629116616,
+        0.8696029191140402
+      ],
+      "d": [
+        1.0324289629116616,
+        0.8696029191140402
+      ]
+    },
+    {
+      "formula": "exp(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        0.48668665929310007,
+        0.09865626998690151
+      ],
+      "d": [
+        0.48668665929310007,
+        0.09865626998690151
+      ]
+    },
+    {
+      "formula": "exp(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        3.058030193061524,
+        -1.292914428322964
+      ],
+      "d": [
+        3.058030193061524,
+        -1.292914428322964
+      ]
+    },
+    {
+      "formula": "exp(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        1.0248615767670761,
+        -1.291487737814629
+      ],
+      "d": [
+        1.0248615767670761,
+        -1.291487737814629
+      ]
+    },
+    {
+      "formula": "exp(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        7.352141595908997,
+        0.7376747161513303
+      ],
+      "d": [
+        7.352141595908997,
+        0.7376747161513303
+      ]
+    },
+    {
+      "formula": "sin(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        0.37092780393896435,
+        0.7247026904232853
+      ],
+      "d": [
+        1.199108751098743,
+        -0.22417681233754289
+      ]
+    },
+    {
+      "formula": "sin(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -0.657145046132976,
+        0.15399026856264567
+      ],
+      "d": [
+        0.7801900885438858,
+        0.12970421391470546
+      ]
+    },
+    {
+      "formula": "sin(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        1.0076017053127346,
+        -0.14883929042397928
+      ],
+      "d": [
+        0.39173495708615397,
+        0.3828372223001685
+      ]
+    },
+    {
+      "formula": "sin(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        0.6870582122101291,
+        -0.9008531779702975
+      ],
+      "d": [
+        1.2576516215523497,
+        0.49213833410886487
+      ]
+    },
+    {
+      "formula": "sin(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        0.9138477039622271,
+        -0.04168407614796651
+      ],
+      "d": [
+        -0.4182293052531153,
+        -0.09108136804653548
+      ]
+    },
+    {
+      "formula": "cos(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        1.199108751098743,
+        -0.22417681233754289
+      ],
+      "d": [
+        -0.37092780393896435,
+        -0.7247026904232853
+      ]
+    },
+    {
+      "formula": "cos(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        0.7801900885438858,
+        0.12970421391470546
+      ],
+      "d": [
+        0.657145046132976,
+        -0.15399026856264567
+      ]
+    },
+    {
+      "formula": "cos(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        0.39173495708615397,
+        0.3828372223001685
+      ],
+      "d": [
+        -1.0076017053127346,
+        0.14883929042397928
+      ]
+    },
+    {
+      "formula": "cos(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        1.2576516215523497,
+        0.49213833410886487
+      ],
+      "d": [
+        -0.6870582122101291,
+        0.9008531779702975
+      ]
+    },
+    {
+      "formula": "cos(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        -0.4182293052531153,
+        -0.09108136804653548
+      ],
+      "d": [
+        -0.9138477039622271,
+        0.04168407614796651
+      ]
+    },
+    {
+      "formula": "log(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -0.2723635877208361,
+        1.1659045405098132
+      ],
+      "d": [
+        0.5172413793103449,
+        -1.2068965517241381
+      ]
+    },
+    {
+      "formula": "log(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -0.31743913621798475,
+        2.8632929945846817
+      ],
+      "d": [
+        -1.3207547169811322,
+        -0.3773584905660378
+      ]
+    },
+    {
+      "formula": "log(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        0.2350018146228678,
+        -0.32175055439664224
+      ],
+      "d": [
+        0.75,
+        0.25000000000000006
+      ]
+    },
+    {
+      "formula": "log(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        0.029134454061987912,
+        -1.0636978224025597
+      ],
+      "d": [
+        0.4716981132075472,
+        0.8490566037735848
+      ]
+    },
+    {
+      "formula": "log(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        0.694395620659239,
+        0.049958395721942765
+      ],
+      "d": [
+        0.49875311720698257,
+        -0.02493765586034913
+      ]
+    },
+    {
+      "formula": "sqrt(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        0.7285524382590421,
+        0.4804046786753803
+      ],
+      "d": [
+        0.4783181090952404,
+        -0.31540112342992704
+      ]
+    },
+    {
+      "formula": "sqrt(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        0.11834481173260582,
+        0.8449884581839127
+      ],
+      "d": [
+        0.08127955039996082,
+        -0.5803404557313774
+      ]
+    },
+    {
+      "formula": "sqrt(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        1.1101601380132848,
+        -0.18015418960900098
+      ],
+      "d": [
+        0.43882932545610703,
+        0.07121219614828529
+      ]
+    },
+    {
+      "formula": "sqrt(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        0.874517871200669,
+        -0.5145692441735612
+      ],
+      "d": [
+        0.42470342233799036,
+        0.2498969160348215
+      ]
+    },
+    {
+      "formula": "sqrt(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        1.4146551592967946,
+        0.03534430258244299
+      ],
+      "d": [
+        0.35322253726332087,
+        -0.008825051217555295
+      ]
+    },
+    {
+      "formula": "z^-2",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -1.1890606420927468,
+        -1.2485136741973841
+      ],
+      "d": [
+        4.2437164295379075,
+        -1.5785805076058879
+      ]
+    },
+    {
+      "formula": "z^-2",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        1.601993592025632,
+        0.9967960128159489
+      ],
+      "d": [
+        3.4793823088858593,
+        3.842097839155814
+      ]
+    },
+    {
+      "formula": "z^-2",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        0.5,
+        0.37500000000000006
+      ],
+      "d": [
+        -0.5625000000000001,
+        -0.8125000000000002
+      ]
+    },
+    {
+      "formula": "z^-2",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        -0.4983980064079744,
+        0.8009967960128159
+      ],
+      "d": [
+        1.8303700370104181,
+        0.09067888256748877
+      ]
+    },
+    {
+      "formula": "z^-2",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        0.24813278524387286,
+        -0.024875467192368203
+      ],
+      "d": [
+        -0.24627332856284734,
+        0.03718913362051057
+      ]
+    },
+    {
+      "formula": "exp(z)*sin(z)",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -0.2472469671460824,
+        1.070763948178887
+      ],
+      "d": [
+        1.1856924475754984,
+        1.8820657845990536
+      ]
+    },
+    {
+      "formula": "exp(z)*sin(z)",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -0.33501583268414004,
+        0.010113530278551594
+      ],
+      "d": [
+        0.03189614117646368,
+        0.15020948486142738
+      ]
+    },
+    {
+      "formula": "exp(z)*sin(z)",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        2.888839971336108,
+        -1.7578978268320395
+      ],
+      "d": [
+        4.5817530661942,
+        -1.0936498201054832
+      ]
+    },
+    {
+      "formula": "exp(z)*sin(z)",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        -0.4593012702235377,
+        -1.8105770646444936
+      ],
+      "d": [
+        1.4652081774743915,
+        -2.930445043239704
+      ]
+    },
+    {
+      "formula": "exp(z)*sin(z)",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        6.7494870056671035,
+        0.36765511549137814
+      ],
+      "d": [
+        3.7417943562079556,
+        -0.6105051831746118
+      ]
+    },
+    {
+      "formula": "-z^2+2*z-3",
+      "z": [
+        0.3,
+        0.7
+      ],
+      "v": [
+        -2.0,
+        0.98
+      ],
+      "d": [
+        1.4,
+        -1.4
+      ]
+    },
+    {
+      "formula": "-z^2+2*z-3",
+      "z": [
+        -0.7,
+        0.2
+      ],
+      "v": [
+        -4.85,
+        0.6799999999999999
+      ],
+      "d": [
+        3.4,
+        -0.4
+      ]
+    },
+    {
+      "formula": "-z^2+2*z-3",
+      "z": [
+        1.2,
+        -0.4
+      ],
+      "v": [
+        -1.88,
+        0.15999999999999992
+      ],
+      "d": [
+        -0.3999999999999999,
+        0.8
+      ]
+    },
+    {
+      "formula": "-z^2+2*z-3",
+      "z": [
+        0.5,
+        -0.9
+      ],
+      "v": [
+        -1.44,
+        -0.9
+      ],
+      "d": [
+        1.0,
+        1.8
+      ]
+    },
+    {
+      "formula": "-z^2+2*z-3",
+      "z": [
+        2,
+        0.1
+      ],
+      "v": [
+        -2.99,
+        -0.2
+      ],
+      "d": [
+        -2.0,
+        -0.2
+      ]
+    }
+  ],
+  "gravity": {
+    "p0": [
+      -0.7,
+      0.2,
+      0.1,
+      0.8,
+      -0.1,
+      0.3,
+      0.1,
+      0.9,
+      -0.6
+    ],
+    "v0": [
+      0.1,
+      0.04,
+      -0.07,
+      -0.03,
+      0.02,
+      0.06,
+      0.02,
+      -0.05,
+      0.03
+    ],
+    "m": [
+      0.7,
+      1.1,
+      0.4
+    ],
+    "p": [
+      -0.6420819832091932,
+      0.21413499309029546,
+      0.07564145526759102,
+      0.774193632050439,
+      -0.0861001419179929,
+      0.311357760669134,
+      0.10336098247738072,
+      0.859539152366463,
+      -0.5668563885584029
+    ],
+    "v": [
+      0.2896699017453429,
+      0.05461429985628523,
+      -0.09236597925088029,
+      -0.14377503670007694,
+      0.07353692792586951,
+      0.014477662803199233,
+      0.000959022870861399,
+      -0.22280157654464056,
+      0.19432689098024242
+    ],
+    "steps": 100,
+    "dt": 0.003,
+    "soft": 0.03
+  },
+  "quantum": {
+    "n": 16,
+    "kind": "harmonic",
+    "dt": 0.01,
+    "steps": 25,
+    "re": [
+      -1.1423075681427046e-05,
+      1.386774036342589e-05,
+      -1.5638629402970757e-05,
+      3.2736101806421598e-06,
+      -8.444283033083226e-05,
+      -0.00041060217730632846,
+      0.00012362280897495746,
+      0.00037060222864968733,
+      -8.424268315295769e-05,
+      1.4372672646545853e-05,
+      -1.083293685988176e-05,
+      9.342998157070095e-06,
+      -8.390913812358973e-06,
+      8.062247009332127e-06,
+      -8.338298532891675e-06,
+      9.339109445715938e-06,
+      1.1252946449668088e-05,
+      -1.3488863544919728e-05,
+      1.490438077998794e-05,
+      -1.8674257470715781e-06,
+      8.361461500793805e-05,
+      0.0003985537453086071,
+      -0.0001485780440974772,
+      -0.000360619315561972,
+      8.673149818920515e-05,
+      -1.5339309063769887e-05,
+      1.1101168368254342e-05,
+      -9.441712340229282e-06,
+      8.422369412625391e-06,
+      -8.05438714680329e-06,
+      8.296619240195823e-06,
+      -9.253241165469635e-06,
+      -1.1178634012592823e-05,
+      1.3252896408208798e-05,
+      -1.4378651290390934e-05,
+      6.981144180712267e-07,
+      -8.342845692638176e-05,
+      -0.000390864766507017,
+      0.00017043627727226176,
+      0.00035443358911368494,
+      -8.93494247299143e-05,
+      1.6244354603076214e-05,
+      -1.139399548557655e-05,
+      9.582099756760702e-06,
+      -8.500075873637258e-06,
+      8.096841746648329e-06,
+      -8.312153070386759e-06,
+      9.237498444626881e-06,
+      1.0679957064439055e-05,
+      -1.2618736324645423e-05,
+      1.3612277747496792e-05,
+      -3.286688038180179e-07,
+      7.981375204131812e-05,
+      0.00037194967967556024,
+      -0.00016951143151037435,
+      -0.0003375099944091646,
+      8.629652461085866e-05,
+      -1.5813953447922033e-05,
+      1.0992770503761287e-05,
+      -9.213925124444382e-06,
+      8.159873794271625e-06,
+      -7.763609600851489e-06,
+      7.961911983508262e-06,
+      -8.83867974512167e-06,
+      -1.2103656584646933e-05,
+      1.193115440119721e-05,
+      -8.533270397982353e-06,
+      -1.8292825952570532e-05,
+      -9.635827334762736e-05,
+      -0.0003399491363164328,
+      0.000560571895516824,
+      0.0003211286444289102,
+      -0.00014927502625090727,
+      3.4157178981577015e-05,
+      -1.8364986928940464e-05,
+      1.371293753341965e-05,
+      -1.1398557262219219e-05,
+      1.0341553597956979e-05,
+      -1.0157790506312766e-05,
+      1.0748774909358416e-05,
+      -0.00017406355771573554,
+      0.00024791687896501665,
+      -0.00034477511626038746,
+      0.000338178708980272,
+      -0.0011955262303862376,
+      -0.007516812776737476,
+      -0.0038073696498766695,
+      0.006595140498288513,
+      -0.0004886263130117885,
+      -3.175126813769062e-05,
+      -7.383709689019943e-05,
+      9.184916387434097e-05,
+      -9.463760210034556e-05,
+      9.901899332414125e-05,
+      -0.00010953494457401781,
+      0.0001310045155835978,
+      0.00022266271451939866,
+      0.0004553916614922725,
+      -0.0018062628325140459,
+      0.0056522534691237,
+      0.0034543037495209,
+      -0.01698054566365042,
+      -0.11524799645209328,
+      0.011571067303062737,
+      0.017405694473475262,
+      -0.005252004916251773,
+      0.0020200631399326908,
+      -0.0011837495159261234,
+      0.000822258131662296,
+      -0.0006296836984634664,
+      0.0005099654593739354,
+      -0.0004061625628627898,
+      0.005621645905477281,
+      -0.004762936233792564,
+      0.0016984155905051868,
+      0.0146288567436838,
+      0.04669450398738833,
+      0.13108748869271863,
+      -0.3814232947397181,
+      -0.12898633409564408,
+      0.08624436541074718,
+      -0.02119874200556284,
+      0.01047049394705383,
+      -0.007443712377820413,
+      0.00600085598681479,
+      -0.005310187505254791,
+      0.00509062195623893,
+      -0.005232812818059265,
+      0.010725986495963942,
+      -0.010554908370822002,
+      0.007509016053090943,
+      0.016354124932904383,
+      0.08543589784977534,
+      0.3006282873898727,
+      -0.49959764450451494,
+      -0.2841053021051272,
+      0.1326797150450399,
+      -0.030394080425786868,
+      0.016320027629371354,
+      -0.012177229412482669,
+      0.010117672577849967,
+      -0.00917630823171171,
+      0.009010322351467686,
+      -0.009530945033470416,
+      0.005621645905477252,
+      -0.00476293623379263,
+      0.001698415590505316,
+      0.014628856743684042,
+      0.0466945039873885,
+      0.13108748869271813,
+      -0.3814232947397177,
+      -0.12898633409564403,
+      0.08624436541074709,
+      -0.02119874200556294,
+      0.010470493947053907,
+      -0.0074437123778202455,
+      0.006000855986814739,
+      -0.005310187505254631,
+      0.005090621956238661,
+      -0.005232812818059328,
+      0.00022266271451936286,
+      0.0004553916614923154,
+      -0.001806262832513992,
+      0.005652253469123655,
+      0.0034543037495208774,
+      -0.01698054566365026,
+      -0.11524799645209345,
+      0.01157106730306254,
+      0.017405694473475328,
+      -0.005252004916251743,
+      0.002020063139932722,
+      -0.0011837495159260796,
+      0.0008222581316623535,
+      -0.0006296836984634635,
+      0.0005099654593739177,
+      -0.0004061625628629208,
+      -0.00017406355771578126,
+      0.00024791687896505855,
+      -0.00034477511626033856,
+      0.00033817870898035366,
+      -0.00119552623038631,
+      -0.007516812776737507,
+      -0.0038073696498761114,
+      0.006595140498288386,
+      -0.0004886263130116944,
+      -3.1751268137566493e-05,
+      -7.383709689017267e-05,
+      9.18491638743002e-05,
+      -9.463760210031143e-05,
+      9.901899332422467e-05,
+      -0.00010953494457406767,
+      0.00013100451558357122,
+      -1.2103656584681133e-05,
+      1.1931154401219937e-05,
+      -8.53327039793684e-06,
+      -1.8292825952625752e-05,
+      -9.635827334758907e-05,
+      -0.0003399491363163216,
+      0.0005605718955167143,
+      0.0003211286444287714,
+      -0.0001492750262508065,
+      3.415717898153371e-05,
+      -1.8364986928920443e-05,
+      1.3712937533502614e-05,
+      -1.1398557262216708e-05,
+      1.0341553597963774e-05,
+      -1.015779050639436e-05,
+      1.074877490931338e-05,
+      1.0679957064403281e-05,
+      -1.261873632472797e-05,
+      1.3612277747538533e-05,
+      -3.286688038284001e-07,
+      7.981375204134287e-05,
+      0.0003719496796755839,
+      -0.0001695114315098156,
+      -0.00033750999440927844,
+      8.629652461081406e-05,
+      -1.5813953447957307e-05,
+      1.0992770503716832e-05,
+      -9.213925124469184e-06,
+      8.159873794308793e-06,
+      -7.763609600747436e-06,
+      7.96191198345653e-06,
+      -8.838679745118488e-06,
+      -1.1178634012587394e-05,
+      1.325289640828399e-05,
+      -1.4378651290348962e-05,
+      6.98114417966751e-07,
+      -8.34284569263245e-05,
+      -0.00039086476650668987,
+      0.00017043627727249855,
+      0.0003544335891134612,
+      -8.934942472981423e-05,
+      1.6244354603014093e-05,
+      -1.1393995485598918e-05,
+      9.582099756762564e-06,
+      -8.500075873644986e-06,
+      8.096841746621036e-06,
+      -8.312153070485326e-06,
+      9.23749844459213e-06,
+      1.1252946449629772e-05,
+      -1.348886354488368e-05,
+      1.4904380779939992e-05,
+      -1.8674257470600314e-06,
+      8.361461500807008e-05,
+      0.0003985537453084094,
+      -0.00014857804409706377,
+      -0.00036061931556192773,
+      8.673149818917686e-05,
+      -1.5339309063710652e-05,
+      1.1101168368208928e-05,
+      -9.441712340238894e-06,
+      8.422369412673492e-06,
+      -8.054387146739718e-06,
+      8.296619240122028e-06,
+      -9.253241165503172e-06
+    ],
+    "im": [
+      1.8626699112476637e-07,
+      3.892334323813531e-06,
+      -1.1725697183643694e-05,
+      3.238590611285488e-05,
+      1.1639319088354245e-05,
+      -0.00013509242419068468,
+      -0.0006423854639125329,
+      0.00010062044602547595,
+      9.083386101153009e-05,
+      -2.845014144076491e-05,
+      1.0442369561588935e-05,
+      -5.836722146494879e-06,
+      3.8750149915485445e-06,
+      -2.813132298892714e-06,
+      2.107682406430354e-06,
+      -1.4241980853398487e-06,
+      2.94635364458573e-07,
+      -4.412006702927422e-06,
+      1.2197461858549791e-05,
+      -3.201845444387396e-05,
+      -7.9244986281473e-06,
+      0.0001501699885501664,
+      0.0006272067688825085,
+      -0.00011456113265298872,
+      -8.589389690496501e-05,
+      2.740557992097129e-05,
+      -9.826414626244204e-06,
+      5.354850693883592e-06,
+      -3.463538887180001e-06,
+      2.431949007804118e-06,
+      -1.7259356299130603e-06,
+      1.0112179769987911e-06,
+      -7.00213250695395e-07,
+      4.875213568744067e-06,
+      -1.2667859781263482e-05,
+      3.190493196937812e-05,
+      4.853660556416951e-06,
+      -0.00016374425849888813,
+      -0.0006182820819476222,
+      0.00012696396751706723,
+      8.226924366729849e-05,
+      -2.669543688466499e-05,
+      9.369082316131043e-06,
+      -4.982866462063009e-06,
+      3.139142450651241e-06,
+      -2.1267047981218878e-06,
+      1.415918428891232e-06,
+      -6.706232318174897e-07,
+      7.881375120699261e-07,
+      -4.80169311869133e-06,
+      1.2263846871587094e-05,
+      -3.0510290890701772e-05,
+      -3.7545228328426877e-06,
+      0.0001606987704040381,
+      0.0005893021462585169,
+      -0.0001251479525142321,
+      -7.770522997938001e-05,
+      2.534983021634804e-05,
+      -8.836378851870629e-06,
+      4.6621528189991725e-06,
+      -2.9109397140700515e-06,
+      1.9472749098521815e-06,
+      -1.2654376771180505e-06,
+      5.430689430030803e-07,
+      -7.467695608772865e-06,
+      1.3384654560634018e-05,
+      -2.2787015503546645e-05,
+      3.6157237508746136e-05,
+      -4.44419184408402e-05,
+      -0.00041711057701695835,
+      -0.0005907007613666736,
+      0.0003541284097883431,
+      3.8738965514895696e-05,
+      -2.019225372011565e-05,
+      3.6831577065104105e-06,
+      1.470053715151217e-07,
+      -1.56543780116847e-06,
+      2.458489304655334e-06,
+      -3.3834383535426476e-06,
+      4.771548884497788e-06,
+      0.00010438495172401528,
+      -6.337094642401797e-05,
+      -4.138983492327905e-05,
+      0.0004690927450019667,
+      0.000929509291518671,
+      0.0015710205274015291,
+      -0.010980356867736218,
+      -0.0017458070410544776,
+      0.0021459648130890915,
+      -0.0005653764336642249,
+      0.0002569078815514842,
+      -0.00017281865422691967,
+      0.00013418068917820858,
+      -0.00011492501212290254,
+      0.00010652655006069949,
+      -0.00010490709251395428,
+      0.002009742475990129,
+      -0.002508294696187849,
+      0.0029505228835782988,
+      -0.0011150603659793273,
+      0.01468607299555887,
+      0.07459652644886201,
+      -0.011107482793065865,
+      -0.06697532045710235,
+      0.013334665299253232,
+      -0.002059765758292591,
+      0.0017353083031360862,
+      -0.0015493106941217793,
+      0.001414147515349747,
+      -0.0013738812836617425,
+      0.001434247714136391,
+      -0.0016219575466848088,
+      0.005628524139505974,
+      -0.008826293138808488,
+      0.013503935693749313,
+      -0.017312571745459734,
+      0.03664109692211538,
+      0.27093782781653303,
+      0.2490050104082361,
+      -0.23422956123964436,
+      -0.0017866771829052937,
+      0.006573628889866904,
+      0.00036946703757228204,
+      -0.0018525503992519016,
+      0.0023253159582175653,
+      -0.0026746939040392936,
+      0.003154306794788762,
+      -0.003986121355666554,
+      0.006668225604236413,
+      -0.01192221618602,
+      0.020261641166517026,
+      -0.03205386530002655,
+      0.03975764183299815,
+      0.3714397693164937,
+      0.5228727050027395,
+      -0.31545201622125507,
+      -0.0339505496871035,
+      0.017828315326667878,
+      -0.0032152781393183713,
+      -0.00017200555666749035,
+      0.0014246370013191703,
+      -0.002214509201928026,
+      0.003035347864673441,
+      -0.004269835997875868,
+      0.005628524139505915,
+      -0.008826293138808545,
+      0.013503935693749249,
+      -0.017312571745459603,
+      0.03664109692211537,
+      0.27093782781653225,
+      0.24900501040823575,
+      -0.23422956123964422,
+      -0.0017866771829054718,
+      0.006573628889866866,
+      0.0003694670375722842,
+      -0.0018525503992518808,
+      0.002325315958217636,
+      -0.002674693904039096,
+      0.003154306794788646,
+      -0.003986121355666379,
+      0.002009742475990114,
+      -0.0025082946961879327,
+      0.0029505228835782953,
+      -0.0011150603659792588,
+      0.014686072995558984,
+      0.07459652644886189,
+      -0.011107482793065821,
+      -0.06697532045710236,
+      0.01333466529925314,
+      -0.002059765758292674,
+      0.0017353083031360766,
+      -0.0015493106941218044,
+      0.0014141475153497825,
+      -0.001373881283661637,
+      0.0014342477141364698,
+      -0.0016219575466847982,
+      0.00010438495172403692,
+      -6.33709464240658e-05,
+      -4.1389834923331745e-05,
+      0.00046909274500201104,
+      0.0009295092915187161,
+      0.001571020527401361,
+      -0.010980356867736095,
+      -0.001745807041054414,
+      0.0021459648130889284,
+      -0.0005653764336641941,
+      0.0002569078815514831,
+      -0.00017281865422696534,
+      0.00013418068917810786,
+      -0.000114925012122898,
+      0.0001065265500607756,
+      -0.00010490709251394776,
+      -7.467695608767275e-06,
+      1.3384654560652893e-05,
+      -2.27870155034906e-05,
+      3.615723750879676e-05,
+      -4.4441918440812624e-05,
+      -0.0004171105770169032,
+      -0.0005907007613662292,
+      0.00035412840978834344,
+      3.873896551496486e-05,
+      -2.0192253720091258e-05,
+      3.683157706381984e-06,
+      1.4700537149054373e-07,
+      -1.5654378011407255e-06,
+      2.458489304592844e-06,
+      -3.3834383534917426e-06,
+      4.77154888450514e-06,
+      7.881375121236394e-07,
+      -4.801693118603509e-06,
+      1.2263846871520472e-05,
+      -3.0510290890686468e-05,
+      -3.7545228328187607e-06,
+      0.00016069877040389768,
+      0.0005893021462586655,
+      -0.00012514795251393246,
+      -7.770522997942193e-05,
+      2.534983021641219e-05,
+      -8.836378851891481e-06,
+      4.662152818960679e-06,
+      -2.9109397141313886e-06,
+      1.947274909766616e-06,
+      -1.2654376771274598e-06,
+      5.430689430353717e-07,
+      -7.002132507054469e-07,
+      4.8752135687778655e-06,
+      -1.266785978124092e-05,
+      3.190493196933283e-05,
+      4.853660556448626e-06,
+      -0.0001637442584990151,
+      -0.00061828208194747,
+      0.00012696396751724187,
+      8.226924366719216e-05,
+      -2.6695436884602e-05,
+      9.369082316125205e-06,
+      -4.982866462042854e-06,
+      3.1391424506915225e-06,
+      -2.126704798187901e-06,
+      1.4159184288208857e-06,
+      -6.706232318561083e-07,
+      2.946353644765314e-07,
+      -4.412006702892354e-06,
+      1.2197461858484441e-05,
+      -3.2018454443931336e-05,
+      -7.92449862812769e-06,
+      0.00015016998854975168,
+      0.0006272067688821169,
+      -0.00011456113265261433,
+      -8.589389690504223e-05,
+      2.7405579921007306e-05,
+      -9.82641462616965e-06,
+      5.35485069382176e-06,
+      -3.463538887184344e-06,
+      2.431949007744906e-06,
+      -1.7259356298096051e-06,
+      1.011217977020072e-06
+    ],
+    "norm": 1.000000000000003
+  },
+  "fft": {
+    "n": 8,
+    "re": [
+      0.0,
+      0.361615431964962,
+      0.674287911628145,
+      0.8956986856800476,
+      0.99588084453764,
+      0.9612752029752999,
+      0.7965654722360868,
+      0.5240443416872761,
+      0.18059626789423291,
+      -0.18729466354290317,
+      -0.5298361409084934,
+      -0.8006667821758177,
+      -0.9631309305733164,
+      -0.9952398257691627,
+      -0.8926476794282346,
+      -0.669239857276262,
+      -0.35525355998804264,
+      0.006814640074770176,
+      0.36796051057238466,
+      0.6793046521448148,
+      0.8987080958116269,
+      0.9964756147406005,
+      0.9593748338928642,
+      0.7924271699085284,
+      0.5182282059209767,
+      0.17388948538043356,
+      -0.19398436125389723,
+      -0.5356033346142913,
+      -0.8047309092634671,
+      -0.9649419305071872,
+      -0.9945525882039892,
+      -0.8895552187444858,
+      -0.6641607235200951,
+      -0.3488751900860617,
+      0.013628963678619457,
+      0.37428850114575674,
+      0.6842898458495511,
+      0.901675770066391,
+      0.9970241087570002,
+      0.9574299115788811,
+      0.7882520673753163,
+      0.5123880037101151,
+      0.16717462746353695,
+      -0.20066505035860252,
+      -0.541345654977011,
+      -0.8087576647615486,
+      -0.9667081186743308,
+      -0.9938191637573349,
+      -0.88642144724224,
+      -0.6590507462338983,
+      -0.34248061846961253,
+      0.0204426543553247,
+      0.3805991098140923,
+      0.6892432612306632,
+      0.9046015706259687,
+      0.9975263011148543,
+      0.9554405263552675,
+      0.7840403585276232,
+      0.5065240062728569,
+      0.16045200598059384,
+      -0.20733642060675878,
+      -0.547062835324105,
+      -0.8127468616681088,
+      -0.9684294130532191
+    ],
+    "im": [
+      1.0,
+      0.9820042351172703,
+      0.9286646355765102,
+      0.8419009751622687,
+      0.7248360107409052,
+      0.5816830894638836,
+      0.41759450395835795,
+      0.23847605343372313,
+      0.05077448493357918,
+      -0.13875453495237755,
+      -0.32328956686350335,
+      -0.49618891270599885,
+      -0.6512296605275458,
+      -0.7828316566380653,
+      -0.886258343877352,
+      -0.9577872375530904,
+      -0.9948439033594595,
+      -0.9960946152060809,
+      -0.9614943580602988,
+      -0.8922884481070684,
+      -0.7909677119144168,
+      -0.66117883777488,
+      -0.5075931258152773,
+      -0.33573836075915076,
+      -0.1517998584983547,
+      0.03760215288797655,
+      0.2256508052693957,
+      0.4055779399763607,
+      0.5709077041844536,
+      0.715689626764061,
+      0.8347127848391598,
+      0.92369335287311,
+      0.9794287841029711,
+      0.9999130750966423,
+      0.9844089648851007,
+      0.9334744701125118,
+      0.8489428011635725,
+      0.7338563821173814,
+      0.5923573492506409,
+      0.4295384692165567,
+      0.2512598425822557,
+      0.06393798984479003,
+      -0.1256850889573181,
+      -0.3107845691391436,
+      -0.4846984372501522,
+      -0.6411672671296018,
+      -0.7745595062295166,
+      -0.8800741638058526,
+      -0.9539136059197589,
+      -0.9934202380925271,
+      -0.9971721561963784,
+      -0.9650343229592008,
+      -0.8981634281625465,
+      -0.7989662576069335,
+      -0.6710130692090631,
+      -0.5189090939577425,
+      -0.3481287866056728,
+      -0.16481879166827335,
+      0.02442328371536183,
+      0.21278632775618703,
+      0.3934908663478909,
+      0.5600330667109983,
+      0.7064188202839354,
+      0.8273794798597438
+    ],
+    "outRe": [
+      2.8536312699706237,
+      -0.10698772439987447,
+      0.36689514039802607,
+      0.41626897626569104,
+      0.41397063784651245,
+      0.3821766491419618,
+      0.28396422133592614,
+      -0.3164684761955421,
+      3.5266167479113317,
+      0.23615199871870418,
+      0.40281318928841103,
+      0.3566596250919002,
+      0.28822416082363334,
+      0.18815477283979426,
+      -0.01594162232179308,
+      -0.9845216985666887,
+      -10.186558367138428,
+      8.684121345890246,
+      5.0742929852098015,
+      3.7920891668151846,
+      2.928690431986793,
+      2.0864132873037895,
+      0.9036312410677505,
+      -2.2468620404947384,
+      1.1557824972917772,
+      4.812491359647854,
+      2.2790690477334152,
+      1.4335506872741655,
+      0.849403359963432,
+      0.25504084470486404,
+      -0.641887584161113,
+      -3.5620604421456656,
+      24.296250971093773,
+      -13.117798714930785,
+      -6.768782133770158,
+      -5.969124063822983,
+      -5.865433206174956,
+      -6.126399004783352,
+      -7.151359578599491,
+      -14.084176655381418,
+      2.3743022807825325,
+      -2.7712599336680293,
+      -0.45093720344260935,
+      0.19935904678542235,
+      0.6161175863828647,
+      1.0181306075205983,
+      1.5949419887085328,
+      3.3928752704317064,
+      15.535352438792028,
+      -0.8422932118892805,
+      -1.1181246940882228,
+      -1.577145436079636,
+      -1.9957727910407699,
+      -2.488909959570098,
+      -3.3144890970156764,
+      -5.994206760385744,
+      2.1195652869720134,
+      -0.5894479950912568,
+      0.281475721939899,
+      0.4653617741519357,
+      0.5576043489667822,
+      0.6234442718530608,
+      0.6748777484918328,
+      0.567185407763733
+    ],
+    "outIm": [
+      -2.033429587275049,
+      -1.3823826003268156,
+      -0.4538303395819612,
+      -0.151337484088083,
+      0.05955165604999779,
+      0.27697190274104777,
+      0.6112886780778934,
+      1.7353834322874482,
+      -1.3822136962004548,
+      -1.2102294931496593,
+      -0.24529338768572262,
+      0.015112963455742312,
+      0.18188468430427718,
+      0.3435298596615961,
+      0.5771893159516557,
+      1.3011924684695373,
+      28.234442613457137,
+      -7.986306658461552,
+      -1.5466280142350697,
+      0.45733528242261356,
+      1.7173205219357384,
+      2.8702325896079883,
+      4.348168471043902,
+      7.369488717340316,
+      8.82587430379873,
+      -3.3581407774454926,
+      -0.05730631063053898,
+      0.714013032121829,
+      1.1338234584102294,
+      1.4684303324318813,
+      1.8137750805604216,
+      2.0288309489032312,
+      0.5940061198700706,
+      15.372312098730772,
+      5.376939209870825,
+      2.273168346635436,
+      0.18415857551841297,
+      -1.9061301167505178,
+      -5.016132739320057,
+      -15.04979675525938,
+      -6.67401163270925,
+      -1.1454382412774269,
+      -1.191412124019531,
+      -0.964922692750159,
+      -0.7197954141431153,
+      -0.39488746183330603,
+      0.23115267228318137,
+      3.1085954379279457,
+      22.073300051541022,
+      4.625741329050286,
+      2.647328613979044,
+      1.6993934111657147,
+      0.9805144463271345,
+      0.22014287848731806,
+      -0.9256767411398643,
+      -3.9338168184066973,
+      -3.9166921448588563,
+      -1.5951582482308855,
+      -0.7263635386322538,
+      -0.3809495022435114,
+      -0.12121155161364905,
+      0.16037740463734995,
+      0.6140310927746694,
+      2.2244920704364683
+    ]
+  },
+  "numpy": "2.3.5",
+  "source": "Bağımsız cmath analitik türevler ve NumPy FFT/vektörel kuvvet"
+};
+async function runCeiling(flow,progress=()=>{},yieldUI=()=>Promise.resolve()){
+ const tasks={
+  newton:()=>{const ast=K.compile('exp(z)*sin(z)+z^5-1');let checksum=0;for(let y=0;y<96;y++)for(let x=0;x<96;x++)checksum+=K.solve(ast,[4*x/95-2,4*y/95-2],flow.newton,64).iteration;return checksum},
+  gravity:()=>{let s=K.bodies(128,7,.002);for(let j=0;j<100;j++)s=flow.gravity(s);return s.p[0]},
+  quantum:()=>{let s=K.wave(128,'slit',.015);for(let j=0;j<20;j++)s=flow.quantum(s);return K.waveStats(s).norm}
+ };
+ const result={method:typeof METHOD==='undefined'?'node':METHOD,at:new Date().toISOString(),thresholdMs:1000/60,tasks:{},pilotSelected:true};
+ for(const[name,fn]of Object.entries(tasks)){const samples=[];for(let i=0;i<6;i++){progress(name+' 60 FPS tavan '+(i+1)+'/6');await yieldUI();const t=performance.now(),checksum=fn();samples.push({ms:performance.now()-t,checksum})}const sorted=samples.slice(1).map(s=>s.ms).sort((a,b)=>a-b);result.tasks[name]={samples,medianMs:sorted[2],minMs:sorted[0],maxMs:sorted[4],pass:sorted[2]<=1000/60}}
+ result.passed=Object.values(result.tasks).filter(v=>v.pass).length;result.total=3;return result;
+}
+async function runChecks(flow,reference,options={}){
+const results=[],progress=options.progress||(()=>{}),yieldUI=options.yieldUI||(()=>Promise.resolve());
+const check=(group,name,pass,detail='')=>results.push({group,name,pass:!!pass,detail});
+const maxError=(a,b)=>a.length===b.length?Math.max(...a.map((x,i)=>Math.abs(x-b[i]))):Infinity;
+for(const r of reference.derivatives){try{const got=K.dual(K.compile(r.formula),r.z);const error=Math.max(maxError(got.v,r.v),maxError(got.d,r.d));check('numeric','AD '+r.formula+' @'+r.z,error<1e-10,error)}catch(e){check('numeric','AD '+r.formula,false,e.message)}}
+for(const[formula,z,want]of[['z^3-1',[1,0],'root'],['z^3-1',[0,0],'critical'],['1/z',[0,0],'singular'],['1',[1,1],'critical'],['log(z)',[-1,0],'branch'],['exp(z)',[1000,0],'singular']]){const r=K.solve(K.compile(formula),z,flow.newton);check('numeric','Newton durum '+formula+' '+z,r.status===want,r.status)}
+const roots=[[.4,.8],[-1,.2],[-.7,-.9],[1.6,.1],[.3,-.6],[2,2]];for(const z of roots){const r=K.solve(K.compile('z^3-1'),z,flow.newton,64);let residual=Infinity;if(r.status==='root'){const[a,b]=r.z;residual=Math.hypot(a*a*a-3*a*b*b-1,3*a*a*b-b*b*b)}check('numeric','Newton gerçek artık '+z,r.status==='root'&&residual<1e-9,{status:r.status,residual,iteration:r.iteration})}
+check('numeric','Newton 1 adım limiti',K.solve(K.compile('z^2-2'),[1,0],flow.newton,1).status==='limit');
+let g={n:3,p:new Float64Array(reference.gravity.p0),v:new Float64Array(reference.gravity.v0),m:new Float64Array(reference.gravity.m),dt:reference.gravity.dt,soft:reference.gravity.soft,t:0};const gInput=g;
+for(let j=0;j<reference.gravity.steps;j++)g=flow.gravity(g);check('numeric','N-cisim NumPy pozisyon',maxError(g.p,reference.gravity.p)<1e-11,maxError(g.p,reference.gravity.p));check('numeric','N-cisim NumPy hız',maxError(g.v,reference.gravity.v)<1e-11,maxError(g.v,reference.gravity.v));check('numeric','Saf akış girdiyi değiştirmedi',maxError(gInput.p,reference.gravity.p0)===0);
+let binary=K.bodies(2),E=K.gravityStats(binary).energy;for(let j=0;j<1000;j++)binary=flow.gravity(binary);const energyDrift=Math.abs((K.gravityStats(binary).energy-E)/E);check('numeric','İkili yörünge enerji hatası <1e-5',energyDrift<1e-5,energyDrift);
+let reverse=K.bodies(8,17,.002),saved=reverse;for(let j=0;j<200;j++)reverse=flow.gravity(reverse);reverse={...reverse,dt:-reverse.dt};for(let j=0;j<200;j++)reverse=flow.gravity(reverse);const reverseError=Math.max(maxError(saved.p,reverse.p),maxError(saved.v,reverse.v));check('numeric','N-cisim tersinirlik <1e-10',reverseError<1e-10,reverseError);check('numeric','Tohum deterministik',maxError(K.bodies(24,7).p,K.bodies(24,7).p)===0);check('numeric','Momentum başlangıcı',Math.hypot(...K.gravityStats(K.bodies(24,7)).momentum)<1e-12);check('numeric','Momentum korunum',maxError(K.gravityStats(g).momentum,K.gravityStats(gInput).momentum)<1e-12);
+const fr=reference.fft,ft=K.fft2({n:fr.n,re:new Float64Array(fr.re),im:new Float64Array(fr.im)});check('numeric','2B FFT NumPy',Math.max(maxError(ft.re,fr.outRe),maxError(ft.im,fr.outIm))<1e-10);const back=K.fft2(ft,true);check('numeric','2B FFT gidiş dönüş',Math.max(maxError(back.re,fr.re),maxError(back.im,fr.im))<1e-12);
+let q=K.wave(reference.quantum.n,reference.quantum.kind,reference.quantum.dt);for(let j=0;j<reference.quantum.steps;j++)q=flow.quantum(q);const waveError=Math.max(maxError(q.re,reference.quantum.re),maxError(q.im,reference.quantum.im));check('numeric','Schrödinger NumPy 25 adım',waveError<1e-11,waveError);
+q=K.wave(32,'slit',.015);const qSaved=q;for(let j=0;j<100;j++)q=flow.quantum(q);const normError=Math.abs(K.waveStats(q).norm-1);check('numeric','Dalga normu 100 adım <1e-11',normError<1e-11,normError);q={...q,dt:-q.dt};for(let j=0;j<100;j++)q=flow.quantum(q);const qReverse=Math.max(maxError(q.re,qSaved.re),maxError(q.im,qSaved.im));check('numeric','Dalga tersinirlik <1e-11',qReverse<1e-11,qReverse);
+q=K.wave(32,'free',.02);for(let y=0;y<q.n;y++)for(let x=0;x<q.n;x++){const angle=2*Math.PI*(2*x-y)/q.n,k=y*q.n+x;q.re[k]=Math.cos(angle)/q.L;q.im[k]=Math.sin(angle)/q.L}const qPlane=q,phase=-.5*q.dt*(2*Math.PI/q.L)**2*5;q=flow.quantum(q);let planeError=0;for(let k=0;k<q.re.length;k++){const expected=K.C.mul([qPlane.re[k],qPlane.im[k]],[Math.cos(phase),Math.sin(phase)]);planeError=Math.max(planeError,Math.abs(q.re[k]-expected[0]),Math.abs(q.im[k]-expected[1]))}check('numeric','Serbest düzlem dalga analitik faz',planeError<1e-12,planeError);
+const badExpressions=['','window.alert(1)','z.constructor','z;1','sin(z,z)','z^13','z^0.5','z^^2','sin z','1e309','('.repeat(40)+'z'+')'.repeat(40),'z+'.repeat(150)+'1','-'.repeat(40)+'z','2z','z+'];for(const text of badExpressions){let rejected=false;try{K.compile(text)}catch(e){rejected=true}check('robust','Parser reddi '+text.slice(0,35),rejected)}
+for(const[text,want]of[['-z^2',[-1,0]],['2e-3+z',[1.002,0]],['z^0',[1,0]],['(z+1)^2',[4,0]]]){const r=K.dual(K.compile(text),[1,0]);check('numeric','Parser öncelik '+text,maxError(r.v,want)<1e-12)}
+for(const patch of[{lab:['newton']},{formula:['z']},{grid:128},{bodies:129},{bodies:2.5},{dt:NaN},{qdt:0},{seed:-1},{potential:'x'},{unknown:1},null,[]]){let rejected=false;try{K.settings(patch)}catch(e){rejected=true}check('robust','Ayar reddi '+JSON.stringify(patch),rejected)}
+check('robust','Ayar gidiş dönüşü',JSON.stringify(K.settings(JSON.parse(JSON.stringify(K.defaults)),K.defaults,true))===JSON.stringify(K.defaults));let incomplete=false;try{K.settings({lab:'newton'},K.defaults,true)}catch(e){incomplete=true}check('robust','Eksik ayar reddi',incomplete);
+for(const which of['pole','zero','memory']){const r=K.impossible(which);check('robust','İmkânsız sınır dürüst reddi '+which,r.rejected===true&&r.solved===false,r)}
+let invalidFFT=false;try{K.fft1(new Float64Array(7),new Float64Array(7))}catch(e){invalidFFT=true}check('robust','FFT ikinin kuvveti dışı reddi',invalidFFT);
+const performanceRuns={};if(options.benchmark!==false){
+const workloads={newton:()=>{const ast=K.compile('z^3-1');let sum=0;for(let y=0;y<64;y++)for(let x=0;x<64;x++)sum+=K.solve(ast,[4*x/63-2,4*y/63-2],flow.newton,32).iteration;return sum},gravity:()=>{let s=K.bodies(128,7,.002);for(let i=0;i<200;i++)s=flow.gravity(s);return s.p[0]},quantum:()=>{let s=K.wave(64,'slit',.015);for(let i=0;i<100;i++)s=flow.quantum(s);return K.waveStats(s).norm}};
+for(const[name,work]of Object.entries(workloads)){const samples=[];for(let i=0;i<6;i++){progress(name+' stres '+(i+1)+'/6');await yieldUI();const t=performance.now(),checksum=work();samples.push({ms:performance.now()-t,checksum})}const sorted=samples.slice(1).map(x=>x.ms).sort((a,b)=>a-b),median=sorted[2];performanceRuns[name]={samples,warmupDiscarded:1,medianMs:median,minMs:sorted[0],maxMs:sorted[4],thresholdMs:500,pass:median<500};check('performance',name+' CPU medyan <500 ms',median<500,median)}}
+const byGroup={};for(const group of['numeric','robust','performance']){const subset=results.filter(r=>r.group===group);byGroup[group]={passed:subset.filter(r=>r.pass).length,total:subset.length}}
+return{at:new Date().toISOString(),method:typeof METHOD==='undefined'?'node':METHOD,results,byGroup,passed:results.filter(r=>r.pass).length,total:results.length,performance:performanceRuns,impossible:{solved:["pole","zero","memory"].filter(k=>K.impossible(k).solved).length,total:3,correctlyRejected:results.filter(r=>r.name.startsWith("İmkânsız sınır dürüst reddi")&&r.pass).length},runtime:'Ortak parser ve sayısal aşamalar; farklı akış gösterimi',environment:typeof navigator==='undefined'?{engine:'Node'}:{userAgent:navigator.userAgent,dpr:devicePixelRatio,viewport:[innerWidth,innerHeight]}};
+}
+
+</script><script>
+'use strict';
+(()=>{const $=id=>document.getElementById(id),canvas=$('view'),ctx=canvas.getContext('2d'),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));let config=K.defaults,ast,simulation,mesh=null,playing=false,testing=false,job=0,frames=[],previous=0,lastLabels=0,buildMs=0,stepCount=0,initialEnergy=0,trails=[],result=null,generation=false;
+function notify(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error)}
+function setMetric(k,value,label){$('m'+k).textContent=value;$('l'+k).textContent=label}
+function syncControls(){for(const key of['formula','grid','bodies','dt','seed','qgrid','potential','qdt'])$(key).value=config[key];for(const lab of['newton','gravity','quantum'])$(lab+'Controls').hidden=config.lab!==lab;for(const b of document.querySelectorAll('[data-lab]'))b.setAttribute('aria-selected',String(config.lab===b.dataset.lab));$('step').disabled=config.lab==='newton'||generation||testing;$('play').textContent=playing?'Duraklat':config.lab==='newton'?'Kamerayı oynat':'Oynat';$('play').setAttribute('aria-pressed',String(playing));$('equation').textContent=config.lab==='newton'?'f(z) = '+config.formula:config.lab==='gravity'?'N-cisim / Hamiltonyen akış':'i∂ψ/∂t = (−½∇² + V)ψ';$('subheading').textContent=config.lab==='newton'?'Yükseklik: iterasyon sayısı · Renk: bulunan kökün fazı':config.lab==='gravity'?'Velocity-Verlet · yumuşatılmış Newton çekimi':'2B FFT · simetrik split-operator · periyodik kutu';$('description').textContent=config.lab==='newton'?'Her nokta bir Newton başlangıcı. Üç boyutlu yükseltiler, köke ulaşmak için gereken adım sayısını gösterir. Kırmızımsı koyu bölgeler yakınsamayan veya tanımsız başlangıçlardır.':config.lab==='gravity'?'Üç boyutlu parçacık yörüngeleri. Kütlelerin karşılıklı kuvvetleri eşzamanlı hesaplanır; momentum ve enerji hatası ölçülür.':'Dalgayı oynatarak kırınımı ve yayılmayı inceleyin. 3B örgü gerçek olasılık yoğunluğundan üretilir; sıfıra yakın genlikte faz güvenilir bir görsel nicelik değildir.'}
+function makeMesh(n,sampler){const points=[],faces=[];for(let j=0;j<=n;j++)for(let i=0;i<=n;i++){const v=sampler(i,j);points.push({x:4*i/n-2,y:v.h-.9,z:4*j/n-2,color:v.color})}for(let j=0;j<n;j++)for(let i=0;i<n;i++){const a=j*(n+1)+i;for(const ids of[[a,a+n+1,a+1],[a+1,a+n+1,a+n+2]]){const p=points[ids[0]],q=points[ids[1]],r=points[ids[2]],dx=(q.y-p.y)+(r.y-p.y),light=clamp(56-dx*30,28,67);faces.push({ids,color:`hsl(${p.color.h} ${p.color.s}% ${light}%)`})}}return{points,faces}}
+async function generate(){const token=++job;playing=false;generation=true;syncControls();mesh=null;const start=performance.now();try{ast=K.compile(config.formula);const n=config.grid,values=new Array((n+1)**2),statuses={root:0,critical:0,singular:0,branch:0,limit:0,escape:0};for(let j=0;j<=n;j++){if(token!==job)return;for(let i=0;i<=n;i++){const r=K.solve(ast,[4*i/n-2,4*j/n-2],FLOW.newton,32);statuses[r.status]=(statuses[r.status]||0)+1;values[j*(n+1)+i]=r}if(j%4===0){notify(`Newton örgüsü: %${Math.round(100*j/n)} · yeni üretim öncekini iptal eder`);await new Promise(requestAnimationFrame)}}if(token!==job)return;mesh=makeMesh(n,(i,j)=>{const r=values[j*(n+1)+i],phase=Math.atan2(r.z[1],r.z[0]);return{h:r.status==='root'?Math.min(3.2,r.iteration*.105):3.3,color:{h:r.status==='root'?(phase*180/Math.PI+360)%360:5,s:r.status==='root'?75:20}}});mesh.statuses=statuses;mesh.vertices=values.length;buildMs=performance.now()-start;notify(`Örgü hazır · ${statuses.root}/${values.length} kök · ${Object.entries(statuses).filter(([k,v])=>k!=='root'&&v).map(([k,v])=>k+': '+v).join(' · ')||'tüm noktalar yakınsadı'}`);probe()}catch(e){notify(e.message,true)}finally{if(token===job){generation=false;syncControls()}}}
+function waveMesh(){const n=Math.min(48,simulation.n);mesh=makeMesh(n,(i,j)=>{const x=Math.floor(i*simulation.n/n)%simulation.n,y=Math.floor(j*simulation.n/n)%simulation.n,k=y*simulation.n+x,d=simulation.re[k]**2+simulation.im[k]**2;return{h:Math.min(4,6*d),color:{h:(Math.atan2(simulation.im[k],simulation.re[k])*180/Math.PI+360)%360,s:d<1e-7?15:80}}})}
+async function restart(){job++;playing=false;stepCount=0;trails=[];syncControls();if(config.lab==='newton'){await generate();return}generation=false;const t=performance.now();if(config.lab==='gravity'){simulation=K.bodies(config.bodies,config.seed,config.dt);initialEnergy=K.gravityStats(simulation).energy;mesh=null}else{simulation=K.wave(config.qgrid,config.potential,config.qdt);waveMesh()}buildMs=performance.now()-t;notify('Deney hazır; Oynat veya Tek adım ile ilerletin.');$('pointResult').textContent=config.lab==='gravity'?'Yumuşatılmış çekim\nG=1, ε=0.03\nAynı tohum → aynı başlangıç.':'Kutu: 12×12\nħ=m=1\nBaşlangıç normu=1\nHer adımda renormalizasyon yok.';syncControls();labels()}
+async function set(patch){const next=K.settings(patch,config),changed=['lab','formula','grid','bodies','dt','seed','qgrid','potential','qdt'].some(k=>next[k]!==config[k]);config=next;syncControls();if(changed)await restart();return{...config}}
+function probe(){if(config.lab!=='newton')return;const x=$('x').value.trim(),y=$('y').value.trim();if(x===''||y===''){ $('pointResult').textContent='x ve y gerekli.';return}try{const r=K.solve(ast,[Number(x),Number(y)],FLOW.newton,64);$('pointResult').textContent=`Durum: ${r.status}\nz = ${r.z[0].toPrecision(7)} ${r.z[1]<0?'−':'+'} ${Math.abs(r.z[1]).toPrecision(7)}i\nİterasyon: ${r.iteration}\nArtık: ${Number.isFinite(r.residual)?r.residual.toExponential(3):'tanımsız'}${r.error?'\n'+r.error:''}`}catch(e){$('pointResult').textContent=e.message}}
+function step(){if(testing||generation)return;if(config.lab==='gravity'){simulation=FLOW.gravity(simulation);trails.push(simulation.p.slice());if(trails.length>80)trails.shift()}else if(config.lab==='quantum'){simulation=FLOW.quantum(simulation);waveMesh()}stepCount++}
+function project(p,w,h){const a=Math.cos(config.yaw),b=Math.sin(config.yaw),c=Math.cos(config.pitch),s=Math.sin(config.pitch),x=a*p.x+b*p.z,z=-b*p.x+a*p.z,y=c*p.y-s*z,Z=s*p.y+c*z,depth=config.zoom-Z;if(depth<.2)return null;const scale=Math.min(w,h)*.88/depth;return{x:w/2+x*scale,y:h*.56-y*scale,depth,scale}}
+function draw(t){requestAnimationFrame(draw);if(document.hidden){previous=0;return}if(previous){frames.push(t-previous);if(frames.length>60)frames.shift()}previous=t;if(playing&&!testing&&!generation){if(config.lab==='newton')config=Object.freeze({...config,yaw:config.yaw+.003});else step()}const dpr=Math.min(devicePixelRatio||1,1.5),w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#101923';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#2b3c4d';ctx.lineWidth=1;for(let k=-2;k<=2;k+=.5)for(const[one,two]of[[{x:-2,y:-.94,z:k},{x:2,y:-.94,z:k}],[{x:k,y:-.94,z:-2},{x:k,y:-.94,z:2}]]){const a=project(one,w,h),b=project(two,w,h);if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
+if(mesh){const projected=mesh.points.map(p=>project(p,w,h));const sorted=mesh.faces.map(f=>({f,depth:f.ids.reduce((sum,i)=>sum+(projected[i]?.depth||0),0)})).sort((a,b)=>b.depth-a.depth);for(const{f}of sorted){const[a,b,c]=f.ids.map(i=>projected[i]);if(!a||!b||!c)continue;ctx.fillStyle=f.color;ctx.strokeStyle=f.color;ctx.lineWidth=.45;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.closePath();ctx.fill();ctx.stroke()}}
+if(config.lab==='gravity'&&simulation){const point=(p,k)=>project({x:p[k*3]*.9,y:p[k*3+1]*.9,z:p[k*3+2]*.9},w,h);for(let k=0;k<simulation.n;k++){ctx.strokeStyle=`hsla(${k*137.5%360} 75% 66% / .28)`;ctx.lineWidth=1;ctx.beginPath();let valid=false;for(const p of trails){const q=point(p,k);if(q){if(!valid)ctx.moveTo(q.x,q.y);else ctx.lineTo(q.x,q.y);valid=true}}ctx.stroke()}const points=Array.from({length:simulation.n},(_,k)=>({k,p:point(simulation.p,k)})).filter(x=>x.p).sort((a,b)=>b.p.depth-a.p.depth);for(const{k,p}of points){ctx.fillStyle=`hsl(${k*137.5%360} 85% 70%)`;ctx.beginPath();ctx.arc(p.x,p.y,clamp(7*7/p.depth,2,13),0,Math.PI*2);ctx.fill()}}
+if(t-lastLabels>400){labels();lastLabels=t}}
+function labels(){const fps=frames.length?1000*frames.length/frames.reduce((a,b)=>a+b,0):0;if(config.lab==='newton'){setMetric(1,mesh?.vertices||'—','Newton başlangıcı');setMetric(2,mesh?.statuses?.root||0,'Köke yakınsayan');setMetric(3,buildMs.toFixed(1),'Üretim + UI bekleme · ms')}else if(config.lab==='gravity'&&simulation){const stats=K.gravityStats(simulation);setMetric(1,stepCount,'Sayısal adım');setMetric(2,Math.abs((stats.energy-initialEnergy)/initialEnergy).toExponential(2),'Bağıl enerji hatası');setMetric(3,Math.hypot(...stats.momentum).toExponential(2),'Toplam momentum normu');$('pointResult').textContent=`t = ${simulation.t.toFixed(4)}\nE = ${stats.energy.toPrecision(9)}\nΔt = ${config.dt}\nCisim: ${config.bodies}`}else if(simulation){const stats=K.waveStats(simulation);setMetric(1,simulation.t.toFixed(3),'Fiziksel zaman');setMetric(2,stats.norm.toFixed(10),'∫ |ψ|² dxdy');setMetric(3,Math.abs(stats.norm-1).toExponential(2),'Norm hatası');$('pointResult').textContent=`Adım: ${stepCount}\nIzgara: ${simulation.n} × ${simulation.n}\nmax |ψ|² = ${stats.max.toPrecision(5)}\nPeriyodik sınır`;}setMetric(4,fps.toFixed(0),'FPS · çizim dahil')}
+function exportSettings(){return{app:'zor-deney',version:1,settings:{...config}}}
+async function importSettings(text){const d=JSON.parse(text);if(!d||d.app!=='zor-deney'||d.version!==1)throw Error('Desteklenmeyen JSON biçimi/sürümü.');const checked=K.settings(d.settings,config,true);return set(checked)}
+function save(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+async function audit(){if(testing)throw Error('Test zaten çalışıyor.');testing=true;playing=false;syncControls();$('audit').disabled=true;try{result=await runChecks(FLOW,REFERENCE,{progress:s=>notify('Test: '+s),yieldUI:()=>new Promise(requestAnimationFrame)});$('testOutput').textContent=JSON.stringify(result,null,2);$('auditSave').disabled=false;notify(`${result.passed}/${result.total} kontrol geçti · İmkânsız çözüm: 0/3, doğru ret: 3/3`);return result}catch(e){notify('Test hatası: '+e.message,true);throw e}finally{testing=false;$('audit').disabled=false;syncControls()}}
+async function ceiling(){if(testing)throw Error("Test zaten çalışıyor.");testing=true;playing=false;syncControls();try{const value=await runCeiling(FLOW,s=>notify(s),()=>new Promise(requestAnimationFrame));result=value;$("auditSave").disabled=false;$("testOutput").textContent=JSON.stringify(value,null,2);notify("60 FPS tavan: "+value.passed+"/3 geçti. Bu, ana kalite puanından ayrı bir gecikme hedefidir.");return value}finally{testing=false;syncControls()}}
+window.lab={ceiling,set,exportSettings,importSettings,audit,stats:()=>({method:METHOD,config:{...config},stepCount,buildMs,mesh:mesh?{vertices:mesh.points.length,triangles:mesh.faces.length,statuses:mesh.statuses}:null,simulation:config.lab==='gravity'&&simulation?K.gravityStats(simulation):config.lab==='quantum'&&simulation?K.waveStats(simulation):null}),impossible:K.impossible};
+for(const button of document.querySelectorAll('[data-lab]'))button.onclick=()=>set({lab:button.dataset.lab}).catch(e=>notify(e.message,true));$('parameters').onsubmit=async e=>{e.preventDefault();const patch=config.lab==='newton'?{formula:$('formula').value,grid:Number($('grid').value)}:config.lab==='gravity'?{bodies:Number($('bodies').value),dt:Number($('dt').value),seed:Number($('seed').value)}:{qgrid:Number($('qgrid').value),potential:$('potential').value,qdt:Number($('qdt').value)};try{const before=config;await set(patch);if(config===before)probe();else if(config.lab==='newton')probe()}catch(e){notify(e.message,true)}};
+$('play').onclick=()=>{playing=!playing;syncControls()};$('step').onclick=()=>{step();labels()};$('reset').onclick=()=>restart();const camera=()=>set({yaw:K.defaults.yaw,pitch:K.defaults.pitch,zoom:K.defaults.zoom});$('camera').onclick=camera;$('near').onclick=()=>set({zoom:clamp(config.zoom-.5,4,16)});$('far').onclick=()=>set({zoom:clamp(config.zoom+.5,4,16)});
+let drag=null;canvas.onpointerdown=e=>{drag={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.focus()};canvas.onpointermove=e=>{if(!drag||drag.id!==e.pointerId)return;set({yaw:config.yaw+(e.clientX-drag.x)*.007,pitch:clamp(config.pitch+(e.clientY-drag.y)*.007,-.1,1.4)});drag.x=e.clientX;drag.y=e.clientY};canvas.onpointerup=canvas.onpointercancel=canvas.onlostpointercapture=()=>drag=null;canvas.addEventListener('wheel',e=>{e.preventDefault();set({zoom:clamp(config.zoom+e.deltaY*.006,4,16)})},{passive:false});canvas.onkeydown=e=>{const k=e.key;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','r','R',' '].includes(k))return;e.preventDefault();if(k==='r'||k==='R')camera();else if(k===' ')$('play').click();else if(k==='ArrowLeft'||k==='ArrowRight')set({yaw:config.yaw+(k==='ArrowLeft'?-.1:.1)});else if(k==='ArrowUp'||k==='ArrowDown')set({pitch:clamp(config.pitch+(k==='ArrowUp'?-.1:.1),-.1,1.4)});else set({zoom:clamp(config.zoom+(k==='-'?.5:-.5),4,16)})};
+$('jsonSave').onclick=()=>save(new Blob([JSON.stringify(exportSettings(),null,2)],{type:'application/json'}),METHOD+'-ayarlar.json');$('jsonOpen').onclick=()=>$('file').click();$('file').onchange=async()=>{try{const f=$('file').files[0];if(!f)return;if(f.size>50000)throw Error('Dosya 50 KB sınırını aşıyor.');await importSettings(await f.text());notify('Ayarlar yüklendi.')}catch(e){notify('JSON: '+e.message,true)}finally{$('file').value=''}};$('png').onclick=()=>canvas.toBlob(blob=>{if(blob)save(blob,METHOD+'-'+config.lab+'.png');else notify('PNG üretilemedi.',true)},'image/png');$('audit').onclick=()=>audit().catch(()=>{});$('auditSave').onclick=()=>{if(result)save(new Blob([JSON.stringify(result,null,2)],{type:'application/json'}),METHOD+'-test.json')};for(const b of document.querySelectorAll('[data-limit]'))b.onclick=()=>{$('limitResult').textContent=JSON.stringify(K.impossible(b.dataset.limit),null,2)};
+$('methodSource').textContent="# Saf ad-öbeği akışları; resmi Dizge lexer/parser/compiler tarafından işlenir.\n# Tarayıcıda her başlangıç, çağrıdaki gerçek duruma özelleştirilir.\nbaşlangıç, newtonverisidir.\nhesaplı, başlangıcın türevhesabıdır.\ndüzeltilmiş, hesaplının newtonoranıdır.\nkökadımı, düzeltilmişin newtonadımıdır.\n\ncisimler, gökverisidir.\nivmeli, cisimlerin çekimidir.\nyarım, ivmelinin yarımtekmesidir.\ntaşınmış, yarımın sürüklemesidir.\nyeniden, taşınmışın çekimidir.\nsoncisimler, yenidenin yarımtekmesidir.\n\ndalga, dalgaverisidir.\nilkfaz, dalganın potansiyelfazıdır.\ntayf, ilkfazın ileridönüşümüdür.\nevrilmiş, tayfın kinetikfazıdır.\nuzay, evrilmişin tersdönüşümüdür.\nsondalga, uzayın potansiyelfazıdır.\n";$("ceiling").onclick=()=>ceiling().catch(e=>notify(e.message,true));restart();requestAnimationFrame(draw);
+})();
+</script></body></html>

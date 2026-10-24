@@ -1,0 +1,113 @@
+{
+  "method": "dizge",
+  "at": "2026-10-24T01:06:56.899Z",
+  "passed": 21,
+  "total": 21,
+  "results": [
+    {
+      "name": "Gerçek 3B örgü",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Klavye yörünge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Klavye yakınlaşma",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Kamera sıfırlama",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "N-cisim gerçek adım",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Oynat düğmesi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Duraklat düğmesi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Dalga gerçek adım/norm",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Gerçek uygulama JSON gidiş dönüşü",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Atomik JSON reddi {bad}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Atomik JSON reddi {\"app\":\"zor-deney\",\"version\":2,\"settings",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Atomik JSON reddi {\"app\":\"zor-deney\",\"version\":1,\"settings",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Atomik JSON reddi {\"app\":\"zor-deney\",\"version\":1,\"settings",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Eski Newton üretimi iptal edildi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Boş başlangıç native reddi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "PNG gerçek kodlama",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Üç görev sekmesi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Tek parametre paneli",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Sınır düğmesi pole",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Sınır düğmesi zero",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Sınır düğmesi memory",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}
