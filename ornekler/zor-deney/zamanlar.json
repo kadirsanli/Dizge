@@ -1,0 +1,17 @@
+{
+  "experimentStart": "2026-10-24T00:55:51Z",
+  "protocolSaved": "2026-10-24T00:57:15.107Z",
+  "normalFlowSaved": "2026-10-24T00:57:13.692Z",
+  "normalFlowSHA256": "e1eb83bddcab838b3b2233e41429f57aad3dff2ac31b6163cfb19f352af6acdc",
+  "note": "Ortak hazırlık ve akış süreleri ayrı raporlanır. Normal akış erken kaydedildi; henüz runtime hazır değil.",
+  "referenceAndNormalChecksComplete": "2026-10-24T01:00:13.790Z",
+  "dizgeFlowStart": "2026-10-24T01:00:13.792Z",
+  "firstHTMLPackaged": "2026-10-24T01:02:05.740Z",
+  "dizgeFlowSaved": "2026-10-24T14:34:32.756Z",
+  "ceilingProtocolAdded": "2026-10-24T01:04:25.276Z",
+  "sharedFixes": [
+    "Tavan sonucu indirme düğmesinin son sonucu kullanması düzeltildi. Matematik ve yöntem akışları değiştirilmedi."
+  ],
+  "mathAndPrimaryBrowserTestsComplete": "2026-10-24T01:05:04.505Z",
+  "currentNormalFlowSHA256": "e1eb83bddcab838b3b2233e41429f57aad3dff2ac31b6163cfb19f352af6acdc"
+}

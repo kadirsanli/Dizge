@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-24",
+  "timezone": "Europe/Istanbul",
+  "methodology": "Aynı model ve oturum, sıralı tek üretim. Kalite puanı yazarın kabul listesi değerlendirmesidir.",
+  "normal": {
+    "firstHTMLSeconds": 83.207,
+    "initialValidatedSeconds": 214.455,
+    "qualityScore": 95,
+    "commonPassed": 76,
+    "commonTotal": 78,
+    "meshMedianMs": 24.349999997764826,
+    "fps": 74.97500833055648,
+    "bytes": 21202,
+    "sha256": "567c54c9edf32c84ae167f7d24a9613983fab706d91a840e04b2e8e9fc250068"
+  },
+  "dizge": {
+    "readSeconds": 47.47,
+    "firstHTMLSecondsExcludingRead": 116.506,
+    "firstHTMLSecondsIncludingRead": 163.976,
+    "initialValidatedSecondsIncludingRead": 178.697,
+    "qualityScore": 100,
+    "commonPassed": 78,
+    "commonTotal": 78,
+    "meshMedianMs": 17.199999999254942,
+    "fps": 74.96876301541025,
+    "bytes": 27152,
+    "sha256": "52270cb7c3e4547352a03e3686d6dec92611ee4ae6207cd04c00f57a2b2b00a5",
+    "upstreamCommit": "6622ff41165db958d677d68e095a848502666a11"
+  },
+  "limits": [
+    "Ortak test altyapısı normal aşamada hazırlandı.",
+    "Dizge sürümü resmi AST + göreve özel JS arka ucu kullanır; iki HTML de JavaScript/WebGL çalıştırır.",
+    "file:// testi araç URL politikası yüzünden tamamlanamadı.",
+    "Tek koşu, sıra etkisi; kör insan değerlendirmesi yok."
+  ]
+}

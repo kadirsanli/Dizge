@@ -1,0 +1,14 @@
+# Kompleks Atlas: Dizge'nin gerçek ad-öbeği / ek semantiği.
+# Yeni kompleks işlevler atlas_eklentisi.py ile resmi @işlev arayüzüne kaydedilir.
+düzlem, 2 yarıçaplı 96 çözünürlüklü kompleks düzlemdir.
+kareler, düzlemin kareyüzeyidir.
+küpler, düzlemin küpyüzeyidir.
+üsteller, düzlemin üstelyüzeyidir.
+sinüsler, düzlemin sinüsyüzeyidir.
+möbiyuslar, düzlemin möbiyusyüzeyidir.
+tersler, düzlemin tersyüzeyidir.
+genlikler, karelerin genliğidir.
+fazlar, karelerin açısıdır.
+gerçeller, karelerin gerçelidir.
+sanallar, karelerin sanalıdır.
+yükseklikler, genliklerin logyüksekliğidir.

@@ -1,0 +1,38 @@
+[
+  {
+    "path": "docs/gifs/kompleks-atlas.gif",
+    "frames": 9,
+    "sourceFrames": 9,
+    "width": 360,
+    "height": 300,
+    "bytes": 136102,
+    "source": "Gerçek tarayıcı ekran kayıtları; hızlandırılmış oynatma; performans kaydı değildir."
+  },
+  {
+    "path": "docs/gifs/newton.gif",
+    "frames": 6,
+    "sourceFrames": 6,
+    "width": 360,
+    "height": 300,
+    "bytes": 117557,
+    "source": "Gerçek tarayıcı ekran kayıtları; hızlandırılmış oynatma; performans kaydı değildir."
+  },
+  {
+    "path": "docs/gifs/nbody.gif",
+    "frames": 4,
+    "sourceFrames": 4,
+    "width": 360,
+    "height": 300,
+    "bytes": 70641,
+    "source": "Gerçek tarayıcı ekran kayıtları; hızlandırılmış oynatma; performans kaydı değildir."
+  },
+  {
+    "path": "docs/gifs/schrodinger.gif",
+    "frames": 3,
+    "sourceFrames": 3,
+    "width": 360,
+    "height": 300,
+    "bytes": 44789,
+    "source": "Gerçek tarayıcı ekran kayıtları; hızlandırılmış oynatma; performans kaydı değildir."
+  }
+]

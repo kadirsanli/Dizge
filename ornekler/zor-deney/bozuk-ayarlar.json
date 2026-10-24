@@ -1,0 +1,20 @@
+{
+  "app": "zor-deney",
+  "version": 1,
+  "settings": {
+    "lab": [
+      "newton"
+    ],
+    "formula": "z^3-1",
+    "grid": 48,
+    "bodies": 24,
+    "dt": 0.006,
+    "qgrid": 64,
+    "potential": "slit",
+    "qdt": 0.015,
+    "seed": 7,
+    "yaw": -0.6,
+    "pitch": 0.65,
+    "zoom": 7
+  }
+}

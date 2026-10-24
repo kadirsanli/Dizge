@@ -1,0 +1,101 @@
+{
+  "düzlem": {
+    "op": "grid",
+    "args": {
+      "çözünürlük": {
+        "number": 96
+      },
+      "yarıçap": {
+        "number": 2
+      }
+    }
+  },
+  "kareler": {
+    "op": "square",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "küpler": {
+    "op": "cubic",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "üsteller": {
+    "op": "exp",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "sinüsler": {
+    "op": "sin",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "möbiyuslar": {
+    "op": "mobius",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "tersler": {
+    "op": "reciprocal",
+    "args": {
+      "veri": {
+        "ref": "düzlem"
+      }
+    }
+  },
+  "genlikler": {
+    "op": "abs",
+    "args": {
+      "veri": {
+        "ref": "kareler"
+      }
+    }
+  },
+  "fazlar": {
+    "op": "phase",
+    "args": {
+      "veri": {
+        "ref": "kareler"
+      }
+    }
+  },
+  "gerçeller": {
+    "op": "re",
+    "args": {
+      "veri": {
+        "ref": "kareler"
+      }
+    }
+  },
+  "sanallar": {
+    "op": "im",
+    "args": {
+      "veri": {
+        "ref": "kareler"
+      }
+    }
+  },
+  "yükseklikler": {
+    "op": "log1p",
+    "args": {
+      "veri": {
+        "ref": "genlikler"
+      }
+    }
+  }
+}

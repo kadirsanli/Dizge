@@ -1,0 +1,754 @@
+{
+  "at": "2026-10-24T14:42:48.443Z",
+  "method": "node",
+  "results": [
+    {
+      "group": "numeric",
+      "name": "AD z^3-1 @0.3,0.7",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^3-1 @-0.7,0.2",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^3-1 @1.2,-0.4",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^3-1 @0.5,-0.9",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^3-1 @2,0.1",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD (z-1)/(z+1) @0.3,0.7",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD (z-1)/(z+1) @-0.7,0.2",
+      "pass": true,
+      "detail": 1.7763568394002505e-15
+    },
+    {
+      "group": "numeric",
+      "name": "AD (z-1)/(z+1) @1.2,-0.4",
+      "pass": true,
+      "detail": 1.3877787807814457e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD (z-1)/(z+1) @0.5,-0.9",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD (z-1)/(z+1) @2,0.1",
+      "pass": true,
+      "detail": 5.551115123125783e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z) @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z) @2,0.1",
+      "pass": true,
+      "detail": 8.881784197001252e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD sin(z) @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD sin(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 2.7755575615628914e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD sin(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD sin(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD sin(z) @2,0.1",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD cos(z) @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD cos(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 2.7755575615628914e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD cos(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD cos(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD cos(z) @2,0.1",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD log(z) @0.3,0.7",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD log(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD log(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD log(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 1.5265566588595902e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD log(z) @2,0.1",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD sqrt(z) @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD sqrt(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD sqrt(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 8.326672684688674e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD sqrt(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD sqrt(z) @2,0.1",
+      "pass": true,
+      "detail": 6.175615574477433e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^-2 @0.3,0.7",
+      "pass": true,
+      "detail": 2.220446049250313e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^-2 @-0.7,0.2",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^-2 @1.2,-0.4",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^-2 @0.5,-0.9",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD z^-2 @2,0.1",
+      "pass": true,
+      "detail": 3.469446951953614e-18
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z)*sin(z) @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z)*sin(z) @-0.7,0.2",
+      "pass": true,
+      "detail": 5.551115123125783e-17
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z)*sin(z) @1.2,-0.4",
+      "pass": true,
+      "detail": 1.7763568394002505e-15
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z)*sin(z) @0.5,-0.9",
+      "pass": true,
+      "detail": 4.440892098500626e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD exp(z)*sin(z) @2,0.1",
+      "pass": true,
+      "detail": 8.881784197001252e-16
+    },
+    {
+      "group": "numeric",
+      "name": "AD -z^2+2*z-3 @0.3,0.7",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD -z^2+2*z-3 @-0.7,0.2",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD -z^2+2*z-3 @1.2,-0.4",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD -z^2+2*z-3 @0.5,-0.9",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "AD -z^2+2*z-3 @2,0.1",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum z^3-1 1,0",
+      "pass": true,
+      "detail": "root"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum z^3-1 0,0",
+      "pass": true,
+      "detail": "critical"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum 1/z 0,0",
+      "pass": true,
+      "detail": "singular"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum 1 1,1",
+      "pass": true,
+      "detail": "critical"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum log(z) -1,0",
+      "pass": true,
+      "detail": "branch"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton durum exp(z) 1000,0",
+      "pass": true,
+      "detail": "singular"
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık 0.4,0.8",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 3.6272698914821623e-13,
+        "iteration": 15
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık -1,0.2",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 4.130998914852065e-11,
+        "iteration": 9
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık -0.7,-0.9",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 6.0917101916168446e-12,
+        "iteration": 4
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık 1.6,0.1",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 2.94552635627574e-12,
+        "iteration": 5
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık 0.3,-0.6",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 2.482534153247273e-16,
+        "iteration": 11
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton gerçek artık 2,2",
+      "pass": true,
+      "detail": {
+        "status": "root",
+        "residual": 2.6096568689266802e-14,
+        "iteration": 9
+      }
+    },
+    {
+      "group": "numeric",
+      "name": "Newton 1 adım limiti",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "N-cisim NumPy pozisyon",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "group": "numeric",
+      "name": "N-cisim NumPy hız",
+      "pass": true,
+      "detail": 5.551115123125783e-17
+    },
+    {
+      "group": "numeric",
+      "name": "Saf akış girdiyi değiştirmedi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "İkili yörünge enerji hatası <1e-5",
+      "pass": true,
+      "detail": 1.0259222473014132e-9
+    },
+    {
+      "group": "numeric",
+      "name": "N-cisim tersinirlik <1e-10",
+      "pass": true,
+      "detail": 1.1102230246251565e-16
+    },
+    {
+      "group": "numeric",
+      "name": "Tohum deterministik",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Momentum başlangıcı",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Momentum korunum",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "2B FFT NumPy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "2B FFT gidiş dönüş",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Schrödinger NumPy 25 adım",
+      "pass": true,
+      "detail": 2.105954299835844e-15
+    },
+    {
+      "group": "numeric",
+      "name": "Dalga normu 100 adım <1e-11",
+      "pass": true,
+      "detail": 8.659739592076221e-14
+    },
+    {
+      "group": "numeric",
+      "name": "Dalga tersinirlik <1e-11",
+      "pass": true,
+      "detail": 6.616929226765933e-14
+    },
+    {
+      "group": "numeric",
+      "name": "Serbest düzlem dalga analitik faz",
+      "pass": true,
+      "detail": 1.3877787807814457e-16
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi ",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi window.alert(1)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z.constructor",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z;1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi sin(z,z)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z^13",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z^0.5",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z^^2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi sin z",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi 1e309",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi (((((((((((((((((((((((((((((((((((",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z+z+z+z+z+z+z+z+z+z+z+z+z+z+z+z+z+z",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi -----------------------------------",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi 2z",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Parser reddi z+",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Parser öncelik -z^2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Parser öncelik 2e-3+z",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Parser öncelik z^0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "numeric",
+      "name": "Parser öncelik (z+1)^2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"lab\":[\"newton\"]}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"formula\":[\"z\"]}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"grid\":128}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"bodies\":129}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"bodies\":2.5}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"dt\":null}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"qdt\":0}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"seed\":-1}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"potential\":\"x\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi {\"unknown\":1}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi null",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar reddi []",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Ayar gidiş dönüşü",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "Eksik ayar reddi",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "robust",
+      "name": "İmkânsız sınır dürüst reddi pole",
+      "pass": true,
+      "detail": {
+        "solved": false,
+        "rejected": true,
+        "reason": "1/z, z=0 noktasında tanımlı değildir; sonlu doğru değer yok."
+      }
+    },
+    {
+      "group": "robust",
+      "name": "İmkânsız sınır dürüst reddi zero",
+      "pass": true,
+      "detail": {
+        "solved": false,
+        "rejected": true,
+        "reason": "Bütün örnekler sıfırsa norm 0 olur; değiştirmeden norm 1 olamaz."
+      }
+    },
+    {
+      "group": "robust",
+      "name": "İmkânsız sınır dürüst reddi memory",
+      "pass": true,
+      "detail": {
+        "solved": false,
+        "rejected": true,
+        "minimumBytes": 12000000000,
+        "budgetBytes": 1048576,
+        "reason": "Ham XYZ Float32: 1.000.000.000 ×3×4 = 12.000.000.000 bayt; 1 MiB sınırına sığmaz."
+      }
+    },
+    {
+      "group": "robust",
+      "name": "FFT ikinin kuvveti dışı reddi",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "byGroup": {
+    "numeric": {
+      "passed": 81,
+      "total": 81
+    },
+    "robust": {
+      "passed": 33,
+      "total": 33
+    },
+    "performance": {
+      "passed": 0,
+      "total": 0
+    }
+  },
+  "passed": 114,
+  "total": 114,
+  "performance": {},
+  "impossible": {
+    "solved": 0,
+    "total": 3,
+    "correctlyRejected": 3
+  },
+  "runtime": "Ortak parser ve sayısal aşamalar; farklı akış gösterimi",
+  "environment": {
+    "engine": "Node"
+  }
+}

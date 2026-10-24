@@ -1,0 +1,20 @@
+# Saf ad-öbeği akışları; resmi Dizge lexer/parser/compiler tarafından işlenir.
+# Tarayıcıda her başlangıç, çağrıdaki gerçek duruma özelleştirilir.
+başlangıç, newtonverisidir.
+hesaplı, başlangıcın türevhesabıdır.
+düzeltilmiş, hesaplının newtonoranıdır.
+kökadımı, düzeltilmişin newtonadımıdır.
+
+cisimler, gökverisidir.
+ivmeli, cisimlerin çekimidir.
+yarım, ivmelinin yarımtekmesidir.
+taşınmış, yarımın sürüklemesidir.
+yeniden, taşınmışın çekimidir.
+soncisimler, yenidenin yarımtekmesidir.
+
+dalga, dalgaverisidir.
+ilkfaz, dalganın potansiyelfazıdır.
+tayf, ilkfazın ileridönüşümüdür.
+evrilmiş, tayfın kinetikfazıdır.
+uzay, evrilmişin tersdönüşümüdür.
+sondalga, uzayın potansiyelfazıdır.
