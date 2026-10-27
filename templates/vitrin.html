@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>/*__BASLIK__*/ · Dizge Vitrin</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:#0d131b;color:#eef4f2;font:15px/1.55 system-ui,sans-serif;display:flex;flex-direction:column}
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:18px clamp(16px,3vw,34px);border-bottom:1px solid #2b3945;background:#121a24}
+  .rozet{display:inline-block;background:#1d3a34;color:#9be3cc;border-radius:999px;padding:4px 10px;font-size:11px;letter-spacing:.14em;font-weight:700}
+  h1{font-size:clamp(20px,2.6vw,30px);line-height:1.15;letter-spacing:-.03em;margin:8px 0 4px}
+  header p{margin:0;color:#a9bac6;max-width:75ch}
+  .kaynak{min-width:min(100%,340px);max-width:520px;border:1px solid #2b3945;border-radius:12px;background:#0f161f;padding:10px 14px}
+  .kaynak summary{cursor:pointer;color:#9be3cc;font-weight:650}
+  .kaynak pre{margin:10px 0 0;max-height:150px;overflow:auto;white-space:pre-wrap;color:#cfe2dc;font:12px/1.5 ui-monospace,monospace}
+  main{flex:1;min-height:0;padding:clamp(10px,2vw,20px);background:#0d131b}
+  iframe{display:block;width:100%;height:100%;border:1px solid #2b3945;border-radius:14px;background:#f4f6fb}
+  footer{padding:8px 18px 14px;color:#7f95a2;font-size:12px;text-align:center}
+  @media(max-width:720px){header{flex-direction:column;gap:12px}.kaynak{width:100%;max-width:none}main{padding:8px}iframe{border-radius:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <span class="rozet">DİZGE VİTRİN</span>
+    <h1>/*__BASLIK__*/</h1>
+    <p>/*__ACIKLAMA__*/</p>
+  </div>
+  <details class="kaynak">
+    <summary>Türkçe kaynak özeti</summary>
+    <pre>/*__KAYNAK__*/</pre>
+  </details>
+</header>
+<main>
+  <iframe title="Dizge uygulaması" src="data:text/html;base64,/*__VERI__*/" sandbox="allow-scripts allow-forms allow-modals allow-downloads" referrerpolicy="no-referrer">Tarayıcınız çerçeveleri göstermiyor.</iframe>
+</main>
+<footer>Görünen kaynak HTML; çalışan uygulama Base64 çerçevede. Dizge.js 0.3.0.</footer>
+</body>
+</html>

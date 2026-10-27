@@ -1,11 +1,11 @@
-/* Dizge.js 0.2.0 | MIT | https://github.com/kadirsanli/Dizge
+/* Dizge.js 0.3.0 | MIT | https://github.com/kadirsanli/Dizge
    Türkçe kaynak sürümü. İngilizce API adları geriye uyumluluk için alias olarak korunur. */
 (function (kök, üretici) {
   if (typeof module === 'object' && module.exports) module.exports = üretici();
   else kök.Dizge = üretici();
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const sürüm = '0.2.0';
+  const sürüm = '0.3.0';
   const kendi = (nesne, anahtar) => Object.prototype.hasOwnProperty.call(nesne, anahtar);
   const kayıt = girdiler => Object.fromEntries(girdiler);
   const sonlu = x => typeof x === 'number' && Number.isFinite(x);
