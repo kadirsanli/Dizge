@@ -11,8 +11,8 @@ test('real XLSX round trip retains numbers, dates, text and multiple sheets', as
   assert.equal((await D.xlsx.read(output, { sheet: 'Other' })).rows[0].x, 2);
   await assert.rejects(D.xlsx.read(output, { maxBytes: 2 })); await assert.rejects(D.xlsx.read(output, { sheet: 'missing' }));
   await assert.rejects(D.xlsx.write({ 'bad/name': [] }));
-  await assert.rejects(D.xlsx.write({ Data: [{ value: { f: '1+1' } }] }), /scalar/);
-  await assert.rejects(D.xlsx.write({ Data: [{ value: Infinity }] }), /finite/);
+  await assert.rejects(D.xlsx.write({ Data: [{ value: { f: '1+1' } }] }), /skaler/);
+  await assert.rejects(D.xlsx.write({ Data: [{ value: Infinity }] }), /sonlu/);
 });
 test('XLSX row limit rejects oversized sheets', async () => {
   const output = await D.xlsx.write({ Data: Array.from({ length: 12 }, (_, i) => ({ i })) });
@@ -29,6 +29,16 @@ test('Turkish PDF uses embedded Unicode font and preserves text on extraction', 
   const font = fs.readFileSync(path.join(path.dirname(require.resolve('pdfjs-dist/package.json')), 'standard_fonts/LiberationSans-Regular.ttf'));
   const output = await D.pdf.report({ title: 'Türkçe çalışma', lines: ['İstanbul, ığüşöç İĞÜŞÖÇ'], fontBytes: font });
   const result = await D.pdf.text(output); assert.match(result.text, /İstanbul/); assert.match(result.text, /ığüşöç/);
+});
+test('Türkçe XLSX ve PDF API aliasları çalışır', async () => {
+  const baytlar = await D.xlsx.yaz({ Veri: [{ x: 1 }] });
+  const kitap = await D.xlsx.oku(baytlar);
+  assert.equal(kitap.satırlar[0].x, 1); assert.deepEqual(kitap.sayfalar, ['Veri']);
+  const rapor = await D.pdf.rapor({ başlık: 'Rapor', satırlar: ['Line 1'] });
+  const metin = await D.pdf.metin(rapor);
+  assert.match(metin.metin, /Line 1/);
+  const birleşik = await D.pdf.birleştir([rapor, rapor]);
+  assert.equal((await D.pdf.metin(birleşik)).sayfalar.length, 2);
 });
 test('lazy adapter load is deduplicated and failures are retryable', async () => {
   let loads = 0;

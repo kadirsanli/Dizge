@@ -1,6 +1,12 @@
-/* Classic worker; serve beside dizge.js on the same origin. */
+/* Klasik worker; dizge.js ile aynı klasörde sunulmalıdır. */
 importScripts('./dizge.js');
 self.onmessage = event => {
-  try { self.postMessage({ result: Dizge.analyze(event.data.rows, event.data.operations) }); }
-  catch (error) { self.postMessage({ error: error.message || String(error) }); }
+  try {
+    const paket = event.data;
+    const satırlar = paket.satırlar ?? paket.rows;
+    const işlemler = paket.işlemler ?? paket.operations;
+    self.postMessage({ result: Dizge.analizEt(satırlar, işlemler) });
+  } catch (error) {
+    self.postMessage({ error: error.message || String(error) });
+  }
 };

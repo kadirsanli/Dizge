@@ -68,7 +68,7 @@ const addButton = ui.button('+ Kayıt ekle', () => {
 });
 const app = ui.app('#app', {
   title: 'Veriden karara.', subtitle: 'Bir JavaScript dosyası. Kendi HTML uygulamanız.',
-  actions: [ui.button('Açık / Koyu', () => { dark = !dark; app.theme(dark ? 'dark' : 'light'); }), ui.button('Dosya aç', () => input.click(), { 'data-variant': 'primary' })],
+  actions: [ui.button('Tema', () => { dark = !dark; app.theme(dark ? 'dark' : 'light'); }), ui.button('Dosya aç', () => input.click(), { 'data-variant': 'primary' })],
   content: [input, ui.el('section', { class: 'intro' }, ui.el('h2', {}, 'Veri Atölyesi'), ui.el('p', { class: 'dz-muted' }, 'CSV ve Excel verisini inceleyin, gruplandırın ve rapora dönüştürün. PDF dosyalarından metin çıkarın. Bu ekran Dizge bileşenleriyle oluşturuldu.')),
     metrics, charts, ui.card('İşlem listesi', ui.el('div', { class: 'dz-row' }, addButton, csvButton, xlsxButton, pdfButton, workerButton), status, table.el),
     ui.card('Uygulamanıza ekleyin', ui.el('pre', {}, '<script src="dizge.js"><' + '/script>\nconst tablo = Dizge.ui.table({ rows: veriler });\nconst app = Dizge.ui.app("#app", { content: [tablo.el] });\napp.use(tablo);'), ui.el('p', { class: 'dz-muted file-note' }, 'UI ve CSV çevrimdışı çalışır. Bu örnekte PDF/Excel bağımlılıkları ilk kullanımda CDN’den yüklenir. PDF raporu ilk 100 kaydı içerir.'))]

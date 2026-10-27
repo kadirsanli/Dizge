@@ -1,22 +1,29 @@
 # Dizge — Türkçe Mantık Motoru ve Programlama Dili
 
-## Yeni: Dizge.js — kendi HTML uygulamanızda kullanın
+## Yeni: Dizge.js 0.2.0 — Türkçe kaynak, Türkçe API
 
 **Tek dosyalık UI ve veri araç kutusu:** responsive bileşenler, sayfalı/aranabilir tablolar, SVG grafikler, formlar, gruplama/birleştirme/istatistik, CSV, Web Worker; isteğe bağlı PDF ve XLSX bağlayıcıları. Framework veya derleme zorunlu değildir.
 
+0.2.0 ile `dizge.js` kaynağı Türkçeleştirildi. Türkçe API birincil, İngilizce adlar geriye uyumluluk için alias. Tek dosya HTML'e küçültülmemiş kaynağı gömünce sağ tıkla kaynağı açan kişi Türkçe kod görür.
+
 ```html
 <div id="app"></div>
-<script src="dizge.js"></script>
 <script>
-  const table = Dizge.ui.table({ rows: [{ ürün: 'Kalem', tutar: 30 }] });
-  const app = Dizge.ui.app('#app', { title: 'İlk uygulamam', content: [table.el] });
-  app.use(table);
+/* dizge.js içeriğini buraya gömün */
+</script>
+<script>
+  const tablo = Dizge.arayüz.tablo({ satırlar: [{ ürün: 'Kalem', tutar: 30 }] });
+  const uygulama = Dizge.arayüz.uygulama('#app', {
+    başlık: 'İlk uygulamam',
+    içerik: [tablo.el]
+  });
+  uygulama.kullan(tablo);
 </script>
 ```
 
-[dizge.js](dizge.js) · [Küçültülmüş dağıtım](dizge.min.js) · [Tam kullanım/API rehberi](docs/javascript.md) · [Çalışan HTML örneği](examples/javascript/index.html) · [AI ile uygulama üretme rehberi](docs/javascript-ai.md) · [TypeScript](dizge.d.ts)
+[dizge.js](dizge.js) · [Küçültülmüş dağıtım](dizge.min.js) · [Türkçe API rehberi](docs/javascript-tr.md) · [Tam kullanım/API rehberi](docs/javascript.md) · [Tek dosya örneği](examples/tek-dosya.html) · [Çalışan HTML örneği](examples/javascript/index.html) · [AI ile uygulama üretme rehberi](docs/javascript-ai.md) · [TypeScript](dizge.d.ts)
 
-Örneği çalıştırmak için depoda `python -m http.server 8080`, ardından `http://localhost:8080/examples/javascript/`. PDF/Excel örneği bağımlılıkları ilk kullanımda indirir; üretimde yerel vendor dosyaları kullanılabilir. Çekirdek çevrimdışı çalışır. JS katmanı MIT lisanslıdır ve mevcut `.dzg` dilinden ayrıdır; `.dzg` derleyicisinin yerini almaz. npm kayıt sistemine yayımlanmamıştır.
+Tek dosya örneğini yeniden üretmek için `npm run build:tek`. Örneği çalıştırmak için depoda `python -m http.server 8080`, ardından `http://localhost:8080/examples/tek-dosya.html` veya `http://localhost:8080/examples/javascript/`. PDF/Excel örneği bağımlılıkları ilk kullanımda indirir; üretimde yerel vendor dosyaları kullanılabilir. Çekirdek çevrimdışı çalışır. JS katmanı MIT lisanslıdır ve mevcut `.dzg` dilinden ayrıdır; `.dzg` derleyicisinin yerini almaz. npm kayıt sistemine yayımlanmamıştır.
 
 ![Dizge.js Veri Atölyesi](docs/javascript-desktop.png)
 
@@ -45,6 +52,7 @@ anormalleri tutara göre büyükten küçüğe sıralayıp ilk onunu yazdır.
 | Açık bellek davranışı | Etken çatı yeni değer üretir; edilgen çatı aynı nesneyi değiştirir. Testler nesne kimliğini de doğrular. |
 | Gerçek derleme | Biçimbirim → SOV parser → AST → Python/NumPy; sabit katlama ve uygun koşullarda dalsız maske. |
 | Genişletilebilir sözlük | `@işlev` ile eklenen kavramlar lexer sözlüğüne ve parser imzalarına katılır. |
+| Türkçe kaynak | Dizge.js 0.2.0 içi Türkçe değişken, yorum, hata ve arayüz metinleri; İngilizce API alias olarak korunur. |
 | İncelenebilir kanıt | `.dzg` kaynakları, üretilen akışlar, NumPy referansları ve ham test sonuçları örneklerle birlikte bulunur. |
 
 [Dil tanımı ve sınırlar](DIZGE_DILI.md) · [Çekirdek](dizge_cekirdek.py) · [Testler](test_dizge.py)

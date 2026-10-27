@@ -1,296 +1,469 @@
-/* Dizge.js 0.1.0 | MIT | https://github.com/kadirsanli/Dizge */
-(function (root, factory) {
-  if (typeof module === 'object' && module.exports) module.exports = factory();
-  else root.Dizge = factory();
+/* Dizge.js 0.2.0 | MIT | https://github.com/kadirsanli/Dizge
+   Türkçe kaynak sürümü. İngilizce API adları geriye uyumluluk için alias olarak korunur. */
+(function (kök, üretici) {
+  if (typeof module === 'object' && module.exports) module.exports = üretici();
+  else kök.Dizge = üretici();
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const version = '0.1.0';
-  const own = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
-  const record = entries => Object.fromEntries(entries);
-  const finite = x => typeof x === 'number' && Number.isFinite(x);
-  const integer = (n, min = 1) => { if (!Number.isSafeInteger(n) || n < min) throw new RangeError('Expected integer >= ' + min); return n; };
-  const field = key => typeof key === 'function' ? key : row => own(row, key) ? row[key] : undefined;
-  const abort = signal => { if (signal?.aborted) throw signal.reason || new DOMException('Aborted', 'AbortError'); };
+  const sürüm = '0.2.0';
+  const kendi = (nesne, anahtar) => Object.prototype.hasOwnProperty.call(nesne, anahtar);
+  const kayıt = girdiler => Object.fromEntries(girdiler);
+  const sonlu = x => typeof x === 'number' && Number.isFinite(x);
+  const tamsayı = (n, enAz = 1) => { if (!Number.isSafeInteger(n) || n < enAz) throw new RangeError('En az ' + enAz + ' olan bir tam sayı bekleniyor'); return n; };
+  const alan = anahtar => typeof anahtar === 'function' ? anahtar : satır => kendi(satır, anahtar) ? satır[anahtar] : undefined;
+  const iptal = sinyal => { if (sinyal?.aborted) throw sinyal.reason || new DOMException('İptal edildi', 'AbortError'); };
+  // İngilizce seçenek adlarını Türkçe karşılıklarına çevirir; iki API de aynı çalışır.
+  const seçenekÇöz = (seçenekler = {}, eşleme = {}) => {
+    const sonuç = { ...seçenekler };
+    for (const [türkçe, ingilizce] of Object.entries(eşleme)) if (sonuç[türkçe] === undefined && sonuç[ingilizce] !== undefined) sonuç[türkçe] = sonuç[ingilizce];
+    return sonuç;
+  };
 
-  // Welford: stable, one-pass variance. Missing / non-finite values are excluded.
-  function summary(values) {
-    let count = 0, missing = 0, mean = 0, m2 = 0, sum = 0, compensation = 0, min = Infinity, max = -Infinity;
-    for (const x of values) {
-      if (!finite(x)) { missing++; continue; }
-      count++; const delta = x - mean; mean += delta / count; m2 += delta * (x - mean);
-      const y = x - compensation, t = sum + y; compensation = (t - sum) - y; sum = t;
-      min = Math.min(min, x); max = Math.max(max, x);
+  // Welford: kararlı, tek geçişli varyans. Eksik ve sonlu olmayan değerler dışlanır.
+  function özet(değerler) {
+    let sayı = 0, eksik = 0, ortalama = 0, m2 = 0, toplam = 0, düzeltme = 0, enKüçük = Infinity, enBüyük = -Infinity;
+    for (const x of değerler) {
+      if (!sonlu(x)) { eksik++; continue; }
+      sayı++; const fark = x - ortalama; ortalama += fark / sayı; m2 += fark * (x - ortalama);
+      const y = x - düzeltme, t = toplam + y; düzeltme = (t - toplam) - y; toplam = t;
+      enKüçük = Math.min(enKüçük, x); enBüyük = Math.max(enBüyük, x);
     }
-    return { count, missing, sum, mean: count ? mean : null, min: count ? min : null, max: count ? max : null,
-      variance: count ? Math.max(0, m2 / count) : null, std: count ? Math.sqrt(Math.max(0, m2 / count)) : null,
-      sampleVariance: count > 1 ? Math.max(0, m2 / (count - 1)) : null };
+    const ortalamaDeğer = sayı ? ortalama : null, enKüçükDeğer = sayı ? enKüçük : null, enBüyükDeğer = sayı ? enBüyük : null;
+    const varyans = sayı ? Math.max(0, m2 / sayı) : null;
+    const standartSapma = varyans === null ? null : Math.sqrt(varyans);
+    const örnekVaryans = sayı > 1 ? Math.max(0, m2 / (sayı - 1)) : null;
+    return {
+      sayı, eksik, toplam, ortalama: ortalamaDeğer, enKüçük: enKüçükDeğer, enBüyük: enBüyükDeğer, varyans, standartSapma, örnekVaryans,
+      count: sayı, missing: eksik, sum: toplam, mean: ortalamaDeğer, min: enKüçükDeğer, max: enBüyükDeğer,
+      variance: varyans, std: standartSapma, sampleVariance: örnekVaryans
+    };
   }
-  function quantile(values, p = .5) {
-    if (!finite(p) || p < 0 || p > 1) throw new RangeError('p must be in [0, 1]');
-    const a = Array.from(values).filter(finite).sort((a, b) => a - b);
-    if (!a.length) return null;
-    const i = (a.length - 1) * p, lo = Math.floor(i); return a[lo] + (a[Math.ceil(i)] - a[lo]) * (i - lo);
+  function yüzdelik(değerler, p = .5) {
+    if (!sonlu(p) || p < 0 || p > 1) throw new RangeError('p [0, 1] aralığında olmalıdır');
+    const dizi = Array.from(değerler).filter(sonlu).sort((a, b) => a - b);
+    if (!dizi.length) return null;
+    const i = (dizi.length - 1) * p, alt = Math.floor(i);
+    return dizi[alt] + (dizi[Math.ceil(i)] - dizi[alt]) * (i - alt);
   }
-  function regression(xs, ys) {
-    if (xs.length !== ys.length) throw new RangeError('Equal-length inputs required');
-    let count = 0, mx = 0, my = 0, xx = 0, yy = 0, xy = 0;
+  function regresyon(xs, ys) {
+    if (xs.length !== ys.length) throw new RangeError('Eşit uzunlukta girdiler gerekir');
+    let sayı = 0, mx = 0, my = 0, xx = 0, yy = 0, xy = 0;
     for (let i = 0; i < xs.length; i++) {
-      const x = xs[i], y = ys[i]; if (!finite(x) || !finite(y)) continue;
-      count++; const dx = x - mx, dy = y - my; mx += dx / count; my += dy / count;
+      const x = xs[i], y = ys[i]; if (!sonlu(x) || !sonlu(y)) continue;
+      sayı++; const dx = x - mx, dy = y - my; mx += dx / sayı; my += dy / sayı;
       xx += dx * (x - mx); yy += dy * (y - my); xy += dx * (y - my);
     }
-    const slope = count > 1 && xx > 0 ? xy / xx : null;
+    const eğim = sayı > 1 && xx > 0 ? xy / xx : null;
     const r = xx > 0 && yy > 0 ? Math.max(-1, Math.min(1, xy / Math.sqrt(xx * yy))) : null;
-    return { count, slope, intercept: slope === null ? null : my - slope * mx, r, r2: r === null ? null : r * r };
+    const kesişim = eğim === null ? null : my - eğim * mx;
+    return { sayı, eğim, kesişim, r, r2: r === null ? null : r * r, count: sayı, slope: eğim, intercept: kesişim };
   }
-  function histogram(values, bins = 10) {
-    integer(bins); if (bins > 10000) throw new RangeError('At most 10000 bins');
-    const a = Array.from(values).filter(finite), s = summary(a); if (!s.count) return [];
-    const width = s.max === s.min ? 1 : (s.max - s.min) / bins;
-    const result = Array.from({ length: s.max === s.min ? 1 : bins }, (_, i) => ({ min: s.min + i * width, max: s.min + (i + 1) * width, count: 0 }));
-    for (const x of a) result[Math.min(result.length - 1, Math.floor((x - s.min) / width))].count++;
-    return result;
+  function histogram(değerler, kutu = 10) {
+    tamsayı(kutu); if (kutu > 10000) throw new RangeError('En çok 10000 kutu kullanılabilir');
+    const dizi = Array.from(değerler).filter(sonlu), s = özet(dizi); if (!s.sayı) return [];
+    const genişlik = s.enKüçük === s.enBüyük ? 1 : (s.enBüyük - s.enKüçük) / kutu;
+    const sonuç = Array.from({ length: s.enKüçük === s.enBüyük ? 1 : kutu }, (_, i) => ({ enAz: s.enKüçük + i * genişlik, enÇok: s.enKüçük + (i + 1) * genişlik, sayı: 0, min: s.enKüçük + i * genişlik, max: s.enKüçük + (i + 1) * genişlik, count: 0 }));
+    for (const x of dizi) { const kutuNo = Math.min(sonuç.length - 1, Math.floor((x - s.enKüçük) / genişlik)); sonuç[kutuNo].sayı++; sonuç[kutuNo].count++; }
+    return sonuç;
   }
-  function compare(a, b) {
+  function karşılaştır(a, b) {
     if (Object.is(a, b)) return 0;
-    if (a == null || (typeof a === 'number' && !finite(a))) return 1;
-    if (b == null || (typeof b === 'number' && !finite(b))) return -1;
+    if (a == null || (typeof a === 'number' && !sonlu(a))) return 1;
+    if (b == null || (typeof b === 'number' && !sonlu(b))) return -1;
     return typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b));
   }
-  class Table {
-    constructor(rows) {
-      if (!Array.isArray(rows) || rows.some(r => !r || typeof r !== 'object' || Array.isArray(r))) throw new TypeError('Expected array of records');
-      this._rows = rows.slice();
+
+  class Tablo {
+    constructor(satırlar) {
+      if (!Array.isArray(satırlar) || satırlar.some(s => !s || typeof s !== 'object' || Array.isArray(s))) throw new TypeError('Kayıt dizisi bekleniyor');
+      this._satırlar = satırlar.slice();
     }
-    get length() { return this._rows.length; }
-    toArray() { return this._rows.slice(); }
-    columns() { return [...new Set(this._rows.flatMap(Object.keys))]; }
-    column(key) { return this._rows.map(field(key)); }
-    filter(fn) { return new Table(this._rows.filter(fn)); }
-    select(...keys) { return new Table(this._rows.map(row => record(keys.map(k => [k, field(k)(row)])))); }
-    derive(definitions) { return new Table(this._rows.map((row, i) => ({ ...row, ...record(Object.entries(definitions).map(([k, fn]) => [k, fn(row, i)])) }))); }
-    sort(key, direction = 'asc') {
-      if (!['asc', 'desc'].includes(direction)) throw new TypeError('direction: asc | desc');
-      const get = field(key), sign = direction === 'asc' ? 1 : -1;
-      return new Table(this._rows.slice().sort((a, b) => sign * compare(get(a), get(b))));
+    get uzunluk() { return this._satırlar.length; }
+    diziye() { return this._satırlar.slice(); }
+    sütunlar() { return [...new Set(this._satırlar.flatMap(Object.keys))]; }
+    sütun(anahtar) { return this._satırlar.map(alan(anahtar)); }
+    süz(fn) { return new Tablo(this._satırlar.filter(fn)); }
+    seç(...anahtarlar) { return new Tablo(this._satırlar.map(satır => kayıt(anahtarlar.map(k => [k, alan(k)(satır)])))); }
+    türet(tanımlar) { return new Tablo(this._satırlar.map((satır, i) => ({ ...satır, ...kayıt(Object.entries(tanımlar).map(([k, fn]) => [k, fn(satır, i)])) }))); }
+    sırala(anahtar, yön = 'asc') {
+      if (!['asc', 'desc'].includes(yön)) throw new TypeError('yön: asc | desc');
+      const al = alan(anahtar), işaret = yön === 'asc' ? 1 : -1;
+      return new Tablo(this._satırlar.slice().sort((a, b) => işaret * karşılaştır(al(a), al(b))));
     }
-    slice(start, end) { return new Table(this._rows.slice(start, end)); }
-    page(number = 1, size = 25) { integer(number); integer(size); return this.slice((number - 1) * size, number * size); }
-    unique(key) { const seen = new Set(), get = field(key); return this.filter(row => { const k = get(row); if (seen.has(k)) return false; seen.add(k); return true; }); }
-    groupBy(...keys) {
-      if (!keys.length) throw new TypeError('At least one group key required');
-      const root = new Map(), groups = [];
-      for (const row of this._rows) {
-        let map = root;
-        keys.forEach((key, i) => {
-          const value = field(key)(row);
-          if (!map.has(value)) {
-            if (i === keys.length - 1) { const group = { keys: record(keys.map(k => [k, field(k)(row)])), rows: [] }; map.set(value, group); groups.push(group); }
-            else map.set(value, new Map());
+    dilimle(baş, son) { return new Tablo(this._satırlar.slice(baş, son)); }
+    sayfala(sayı = 1, boy = 25) { tamsayı(sayı); tamsayı(boy); return this.dilimle((sayı - 1) * boy, sayı * boy); }
+    tekil(anahtar) {
+      const görülen = new Set(), al = alan(anahtar);
+      return this.süz(satır => { const k = al(satır); if (görülen.has(k)) return false; görülen.add(k); return true; });
+    }
+    grupla(...anahtarlar) {
+      if (!anahtarlar.length) throw new TypeError('En az bir grup anahtarı gerekir');
+      const kök = new Map(), gruplar = [];
+      for (const satır of this._satırlar) {
+        let harita = kök;
+        anahtarlar.forEach((anahtar, i) => {
+          const değer = alan(anahtar)(satır);
+          if (!harita.has(değer)) {
+            if (i === anahtarlar.length - 1) { const grup = { anahtarlar: kayıt(anahtarlar.map(k => [k, alan(k)(satır)])), satırlar: [] }; harita.set(değer, grup); gruplar.push(grup); }
+            else harita.set(değer, new Map());
           }
-          if (i === keys.length - 1) map.get(value).rows.push(row); else map = map.get(value);
+          if (i === anahtarlar.length - 1) harita.get(değer).satırlar.push(satır);
+          else harita = harita.get(değer);
         });
       }
-      return { aggregate: reducers => new Table(groups.map(g => ({ ...g.keys, ...reduceRows(g.rows, reducers) }))),
-        entries: () => groups.map(g => ({ keys: { ...g.keys }, table: new Table(g.rows) })) };
+      const sonuç = {
+        özetle: indirgeyiciler => new Tablo(gruplar.map(g => ({ ...g.anahtarlar, ...satırlarıİndirge(g.satırlar, indirgeyiciler) }))),
+        girdiler: () => gruplar.map(g => ({ anahtarlar: { ...g.anahtarlar }, tablo: new Tablo(g.satırlar), keys: { ...g.anahtarlar }, table: new Tablo(g.satırlar) }))
+      };
+      sonuç.aggregate = sonuç.özetle;
+      sonuç.entries = sonuç.girdiler;
+      return sonuç;
     }
-    aggregate(reducers) { return reduceRows(this._rows, reducers); }
-    describe(...keys) { return record((keys.length ? keys : this.columns()).map(k => [k, summary(this.column(k))])); }
-    join(other, { left, right = left, how = 'inner', suffix = '_right', maxRows = 1000000 } = {}) {
-      if (!['inner', 'left'].includes(how) || !left) throw new TypeError('join requires left key and inner/left mode');
-      integer(maxRows); const rows = other instanceof Table ? other._rows : new Table(other)._rows, index = new Map(), result = [];
-      for (const row of rows) { const k = field(right)(row); if (k == null) continue; if (!index.has(k)) index.set(k, []); index.get(k).push(row); }
-      for (const row of this._rows) {
-        const matches = index.get(field(left)(row));
-        for (const match of matches || (how === 'left' ? [null] : [])) {
-          if (result.length >= maxRows) throw new RangeError('Join output exceeds maxRows');
-          const out = { ...row };
-          if (match) for (const [k, v] of Object.entries(match)) {
-            if (k === right && left === right) continue;
-            const dest = own(out, k) ? k + suffix : k;
-            if (own(out, dest)) throw new Error('Join column collision: ' + dest);
-            Object.defineProperty(out, dest, { value: v, enumerable: true, writable: true, configurable: true });
+    özetle(indirgeyiciler) { return satırlarıİndirge(this._satırlar, indirgeyiciler); }
+    betimle(...anahtarlar) { return kayıt((anahtarlar.length ? anahtarlar : this.sütunlar()).map(k => [k, özet(this.sütun(k))])); }
+    birleştir(diğeri, seçenekler = {}) {
+      const sol = seçenekler.sol ?? seçenekler.left;
+      const sağ = seçenekler.sağ ?? seçenekler.right ?? sol;
+      const tür = seçenekler.tür ?? seçenekler.how ?? 'inner';
+      const sonEk = seçenekler.sonEk ?? seçenekler.suffix ?? '_right';
+      const enÇokSatır = seçenekler.enÇokSatır ?? seçenekler.maxRows ?? 1000000;
+      if (!['inner', 'left'].includes(tür) || !sol) throw new TypeError('Birleştirme sol anahtar ve inner/left türü ister');
+      tamsayı(enÇokSatır);
+      const satırlar = diğeri instanceof Tablo ? diğeri._satırlar : new Tablo(diğeri)._satırlar, dizin = new Map(), sonuç = [];
+      for (const satır of satırlar) {
+        const k = alan(sağ)(satır); if (k == null) continue;
+        if (!dizin.has(k)) dizin.set(k, []); dizin.get(k).push(satır);
+      }
+      for (const satır of this._satırlar) {
+        const eşleşmeler = dizin.get(alan(sol)(satır));
+        for (const eşleşme of eşleşmeler || (tür === 'left' ? [null] : [])) {
+          if (sonuç.length >= enÇokSatır) throw new RangeError('Birleştirme çıktısı enÇokSatır sınırını aşıyor');
+          const çıktı = { ...satır };
+          if (eşleşme) for (const [k, v] of Object.entries(eşleşme)) {
+            if (k === sağ && sol === sağ) continue;
+            const hedef = kendi(çıktı, k) ? k + sonEk : k;
+            if (kendi(çıktı, hedef)) throw new Error('Birleştirme sütunu çakışması: ' + hedef);
+            Object.defineProperty(çıktı, hedef, { value: v, enumerable: true, writable: true, configurable: true });
           }
-          result.push(out);
+          sonuç.push(çıktı);
         }
       }
-      return new Table(result);
+      return new Tablo(sonuç);
     }
   }
-  function reduceRows(rows, reducers) { return record(Object.entries(reducers).map(([name, fn]) => [name, fn(new Table(rows))])); }
-  const data = rows => new Table(rows);
-  const stats = { summary, quantile, median: values => quantile(values), histogram, regression,
-    correlation: (xs, ys) => regression(xs, ys).r };
+  // İngilizce yöntem adları: aynı davranış, eski kodlar bozulmasın.
+  Object.defineProperty(Tablo.prototype, 'length', { get() { return this.uzunluk; } });
+  Tablo.prototype.toArray = Tablo.prototype.diziye;
+  Tablo.prototype.columns = Tablo.prototype.sütunlar;
+  Tablo.prototype.column = Tablo.prototype.sütun;
+  Tablo.prototype.filter = Tablo.prototype.süz;
+  Tablo.prototype.select = Tablo.prototype.seç;
+  Tablo.prototype.derive = Tablo.prototype.türet;
+  Tablo.prototype.sort = Tablo.prototype.sırala;
+  Tablo.prototype.slice = Tablo.prototype.dilimle;
+  Tablo.prototype.page = Tablo.prototype.sayfala;
+  Tablo.prototype.unique = Tablo.prototype.tekil;
+  Tablo.prototype.groupBy = Tablo.prototype.grupla;
+  Tablo.prototype.aggregate = Tablo.prototype.özetle;
+  Tablo.prototype.describe = Tablo.prototype.betimle;
+  Tablo.prototype.join = Tablo.prototype.birleştir;
 
-  function parseCSV(text, { delimiter = ',', header = true, maxRows = 1000000 } = {}) {
-    if (typeof text !== 'string') throw new TypeError('CSV input must be text');
-    if (delimiter.length !== 1 || /["\r\n]/.test(delimiter)) throw new TypeError('Invalid delimiter');
-    integer(maxRows); text = text.replace(/^\uFEFF/, ''); if (!text) return [];
-    const rows = []; let row = [], cell = '', quoted = false, closed = false;
-    function pushRow() { row.push(cell); rows.push(row); if (rows.length > maxRows + (header ? 1 : 0)) throw new RangeError('CSV exceeds maxRows'); row = []; cell = ''; closed = false; }
-    for (let i = 0; i < text.length; i++) {
-      const c = text[i];
-      if (quoted) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else { quoted = false; closed = true; } } else cell += c; continue; }
-      if (c === delimiter) { row.push(cell); cell = ''; closed = false; }
-      else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; pushRow(); }
-      else if (c === '"' && !cell && !closed) quoted = true;
-      else { if (closed || c === '"') throw new SyntaxError('Malformed quoted CSV cell'); cell += c; }
-    }
-    if (quoted) throw new SyntaxError('Unclosed CSV quote');
-    if (cell || row.length || closed || !/[\r\n]$/.test(text)) pushRow();
-    if (!header) return rows;
-    const keys = rows.shift(); if (new Set(keys).size !== keys.length) throw new Error('Duplicate CSV headers');
-    return rows.map((r, i) => { if (r.length !== keys.length) throw new Error('CSV column count at row ' + (i + 2)); return record(keys.map((k, j) => [k, r[j]])); });
-  }
-  function stringifyCSV(rows, { columns, delimiter = ',', safe = true } = {}) {
-    if (delimiter.length !== 1 || /["\r\n]/.test(delimiter)) throw new TypeError('Invalid delimiter');
-    const table = data(rows); columns = columns || table.columns();
-    const escape = value => {
-      let s = value == null ? '' : String(value);
-      if (safe && typeof value === 'string' && /^[\s]*[=+@-]/.test(s)) s = "'" + s;
-      return /["\r\n]/.test(s) || s.includes(delimiter) ? '"' + s.replace(/"/g, '""') + '"' : s;
-    };
-    return [columns, ...rows.map(r => columns.map(field => own(r, field) ? r[field] : ''))].map(r => r.map(escape).join(delimiter)).join('\r\n');
-  }
-
-  // No network request until a host-provided adapter loader is called.
-  const adapters = new Map(), loading = new Map();
-  function configure(values) { for (const [name, value] of Object.entries(values)) { adapters.set(name, value); loading.delete(name); } }
-  async function adapter(name) {
-    if (!adapters.has(name)) throw new Error('Configure ' + name + ' first: Dizge.configure({ ' + name + ': libraryOrAsyncLoader })');
-    if (!loading.has(name)) {
-      const value = adapters.get(name);
-      const promise = Promise.resolve().then(() => typeof value === 'function' ? value() : value).then(x => x?.default || x);
-      loading.set(name, promise);
-      promise.catch(() => { if (loading.get(name) === promise) loading.delete(name); });
-    }
-    return loading.get(name);
-  }
-  async function bytes(input, maxBytes = 50 * 1024 * 1024) {
-    integer(maxBytes);
-    if (input?.size > maxBytes || input?.byteLength > maxBytes) throw new RangeError('File exceeds maxBytes');
-    if (input && typeof input.arrayBuffer === 'function') input = await input.arrayBuffer();
-    const out = input instanceof ArrayBuffer ? new Uint8Array(input) : ArrayBuffer.isView(input) ? new Uint8Array(input.buffer, input.byteOffset, input.byteLength) : null;
-    if (!out) throw new TypeError('Expected File, Blob, ArrayBuffer or typed array');
-    if (out.byteLength > maxBytes) throw new RangeError('File exceeds maxBytes'); return out;
-  }
-  function download(content, filename, type = 'application/octet-stream') {
-    const url = URL.createObjectURL(content instanceof Blob ? content : new Blob([content], { type }));
-    const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-  const xlsx = {
-    async read(input, { sheet, maxBytes, maxRows = 100000, signal } = {}) {
-      integer(maxRows); abort(signal); const lib = await adapter('xlsx'), buffer = await bytes(input, maxBytes); abort(signal);
-      const book = lib.read(buffer, { type: 'array', sheetRows: maxRows + 2, cellDates: true, cellFormula: false, bookVBA: false });
-      const name = sheet ?? book.SheetNames[0]; if (!book.Sheets[name]) throw new Error('Unknown sheet: ' + name);
-      const ws = book.Sheets[name];
-      if (ws['!fullref']) throw new RangeError('Sheet exceeds maxRows');
-      const rows = lib.utils.sheet_to_json(ws, { defval: null }); if (rows.length > maxRows) throw new RangeError('Sheet exceeds maxRows');
-      abort(signal); return { sheets: book.SheetNames.slice(), sheet: name, rows };
-    },
-    async write(sheets) {
-      const lib = await adapter('xlsx'), book = lib.utils.book_new();
-      if (!Object.keys(sheets).length) throw new Error('At least one sheet required');
-      for (const [name, rows] of Object.entries(sheets)) {
-        if (!name || name.length > 31 || /[\\/?*\[\]:]/.test(name)) throw new Error('Invalid sheet name: ' + name);
-        data(rows);
-        for (const row of rows) for (const value of Object.values(row)) {
-          if (value != null && !['string', 'number', 'boolean'].includes(typeof value) && !(value instanceof Date)) throw new TypeError('XLSX cells must be scalar values or dates');
-          if (typeof value === 'number' && !finite(value)) throw new TypeError('XLSX numbers must be finite');
-          if (value instanceof Date && !finite(value.getTime())) throw new TypeError('Invalid XLSX date');
-        }
-        lib.utils.book_append_sheet(book, lib.utils.json_to_sheet(rows), name);
-      }
-      return new Uint8Array(lib.write(book, { type: 'array', bookType: 'xlsx', compression: true }));
-    }
+  function satırlarıİndirge(satırlar, indirgeyiciler) { return kayıt(Object.entries(indirgeyiciler).map(([ad, fn]) => [ad, fn(new Tablo(satırlar))])); }
+  const veri = satırlar => new Tablo(satırlar);
+  const istatistik = {
+    özet, yüzdelik, ortanca: değerler => yüzdelik(değerler), histogram, regresyon,
+    korelasyon: (xs, ys) => regresyon(xs, ys).r
   };
-  const pdf = {
-    async text(input, { maxBytes, maxPages = 1000, signal, password } = {}) {
-      integer(maxPages); abort(signal); const lib = await adapter('pdfjs'); const buffer = await bytes(input, maxBytes); abort(signal);
-      const task = lib.getDocument({ data: buffer.slice(), password, isEvalSupported: false });
-      // Do not leave password-protected documents waiting on an interactive prompt.
-      const cancel = () => { void task.destroy(); }; signal?.addEventListener('abort', cancel, { once: true });
-      try {
-        const doc = await task.promise; if (doc.numPages > maxPages) throw new RangeError('PDF exceeds maxPages');
-        const pages = [];
-        for (let i = 1; i <= doc.numPages; i++) {
-          abort(signal); const page = await doc.getPage(i), content = await page.getTextContent();
-          pages.push(content.items.map(x => (x.str || '') + (x.hasEOL ? '\n' : ' ')).join('').trim()); page.cleanup();
-        }
-        return { pages, text: pages.join('\n\n') };
-      } finally { signal?.removeEventListener('abort', cancel); await task.destroy(); }
-    },
-    async report({ title = 'Report', lines = [], rows = [], columns, fontBytes, fontSize = 11, margin = 44 } = {}) {
-      if (!finite(fontSize) || fontSize < 6 || fontSize > 36 || !finite(margin) || margin < 10 || margin > 150) throw new RangeError('Invalid PDF layout');
-      const lib = await adapter('pdf'), doc = await lib.PDFDocument.create();
-      if (fontBytes) doc.registerFontkit(await adapter('fontkit'));
-      const font = await doc.embedFont(fontBytes ? await bytes(fontBytes) : lib.StandardFonts.Helvetica);
-      let page, y; const height = 841.89, width = 595.28, lineHeight = fontSize * 1.5;
-      function newPage() { page = doc.addPage([width, height]); y = height - margin; } newPage();
-      function draw(line) { if (y < margin + lineHeight) newPage(); page.drawText(line, { x: margin, y: y - fontSize, size: fontSize, font }); y -= lineHeight; }
-      function wrap(value) {
-        for (const paragraph of String(value).split(/\r?\n/)) {
-          let line = '';
-          for (const char of paragraph) { if (font.widthOfTextAtSize(line + char, fontSize) > width - margin * 2) { draw(line); line = char; } else line += char; }
-          draw(line);
-        }
-      }
-      wrap(title); draw(''); lines.forEach(wrap);
-      if (rows.length) { const keys = columns || data(rows).columns(); wrap(keys.join(' | ')); for (const row of rows) wrap(keys.map(k => field(k)(row) ?? '').join(' | ')); }
-      doc.setTitle(title); doc.setCreator('Dizge.js'); return doc.save();
-    },
-    async merge(inputs, { maxBytes } = {}) {
-      if (!inputs.length) throw new Error('At least one PDF required');
-      const lib = await adapter('pdf'), out = await lib.PDFDocument.create();
-      for (const input of inputs) { const doc = await lib.PDFDocument.load(await bytes(input, maxBytes)); for (const page of await out.copyPages(doc, doc.getPageIndices())) out.addPage(page); }
-      return out.save();
-    }
-  };
+  Object.assign(istatistik, {
+    summary: istatistik.özet, quantile: istatistik.yüzdelik, median: istatistik.ortanca,
+    regression: istatistik.regresyon, correlation: istatistik.korelasyon
+  });
 
-  function store(initial) {
-    let state = initial, queued = false, destroyed = false; const subscribers = new Set();
-    function flush() { queued = false; if (!destroyed) for (const fn of [...subscribers]) fn(state); }
-    return { get: () => state,
-      set(next) { if (destroyed) throw new Error('Store disposed'); const value = typeof next === 'function' ? next(state) : next; if (Object.is(value, state)) return; state = value; if (!queued) { queued = true; queueMicrotask(flush); } },
-      subscribe(fn, immediate = true) { if (destroyed) throw new Error('Store disposed'); subscribers.add(fn); if (immediate) fn(state); return () => subscribers.delete(fn); },
-      destroy() { destroyed = true; subscribers.clear(); } };
-  }
-  function debounce(fn, delay = 150) {
-    let timer; const wrapped = (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; wrapped.cancel = () => clearTimeout(timer); return wrapped;
-  }
-  async function chunks(items, fn, { size = 1000, signal, onProgress } = {}) {
-    integer(size); const result = [];
-    for (let start = 0; start < items.length; start += size) { abort(signal); const end = Math.min(items.length, start + size); for (let i = start; i < end; i++) result.push(fn(items[i], i)); onProgress?.(end / items.length); await new Promise(r => setTimeout(r, 0)); }
-    abort(signal); return result;
-  }
-  function analyzeAsync(rows, operations, { workerUrl, signal } = {}) {
-    if (!workerUrl) return Promise.reject(new Error('workerUrl is required'));
-    return new Promise((resolve, reject) => {
-      abort(signal); const worker = new Worker(workerUrl);
-      const finish = (error, value) => { worker.terminate(); signal?.removeEventListener('abort', cancel); error ? reject(error) : resolve(value); };
-      const cancel = () => finish(signal.reason || new DOMException('Aborted', 'AbortError'));
-      signal?.addEventListener('abort', cancel, { once: true });
-      worker.onmessage = e => e.data.error ? finish(new Error(e.data.error)) : finish(null, e.data.result);
-      worker.onerror = e => finish(new Error(e.message));
-      try { worker.postMessage({ rows, operations }); } catch (error) { finish(error); }
+  function csvÇöz(metin, seçenekler = {}) {
+    if (typeof metin !== 'string') throw new TypeError('CSV girdisi metin olmalıdır');
+    const ayırıcı = seçenekler.ayırıcı ?? seçenekler.delimiter ?? ',';
+    const başlık = seçenekler.başlık ?? seçenekler.header ?? true;
+    const enÇokSatır = seçenekler.enÇokSatır ?? seçenekler.maxRows ?? 1000000;
+    if (ayırıcı.length !== 1 || /["\r\n]/.test(ayırıcı)) throw new TypeError('Geçersiz ayırıcı');
+    tamsayı(enÇokSatır); metin = metin.replace(/^\uFEFF/, ''); if (!metin) return [];
+    const satırlar = []; let satır = [], hücre = '', tırnaklı = false, kapandı = false;
+    function satırEkle() {
+      satır.push(hücre); satırlar.push(satır);
+      if (satırlar.length > enÇokSatır + (başlık ? 1 : 0)) throw new RangeError('CSV enÇokSatır sınırını aşıyor');
+      satır = []; hücre = ''; kapandı = false;
+    }
+    for (let i = 0; i < metin.length; i++) {
+      const c = metin[i];
+      if (tırnaklı) {
+        if (c === '"') { if (metin[i + 1] === '"') { hücre += '"'; i++; } else { tırnaklı = false; kapandı = true; } }
+        else hücre += c;
+        continue;
+      }
+      if (c === ayırıcı) { satır.push(hücre); hücre = ''; kapandı = false; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && metin[i + 1] === '\n') i++; satırEkle(); }
+      else if (c === '"' && !hücre && !kapandı) tırnaklı = true;
+      else { if (kapandı || c === '"') throw new SyntaxError('Bozuk tırnaklı CSV hücresi'); hücre += c; }
+    }
+    if (tırnaklı) throw new SyntaxError('Kapanmayan CSV tırnağı');
+    if (hücre || satır.length || kapandı || !/[\r\n]$/.test(metin)) satırEkle();
+    if (!başlık) return satırlar;
+    const anahtarlar = satırlar.shift();
+    if (new Set(anahtarlar).size !== anahtarlar.length) throw new Error('Yinelenen CSV başlığı');
+    return satırlar.map((r, i) => {
+      if (r.length !== anahtarlar.length) throw new Error('CSV sütun sayısı ' + (i + 2) + '. satırda tutarsız');
+      return kayıt(anahtarlar.map((k, j) => [k, r[j]]));
     });
   }
-  function analyze(rows, operations) {
-    let table = data(rows);
-    for (const op of operations) {
-      if (op.type === 'sort') table = table.sort(op.key, op.direction);
-      else if (op.type === 'select') table = table.select(...op.keys);
-      else if (op.type === 'slice') table = table.slice(op.start, op.end);
-      else if (op.type === 'filter') {
-        const predicates = { eq: (a, b) => a === b, gt: (a, b) => a > b, gte: (a, b) => a >= b, lt: (a, b) => a < b, lte: (a, b) => a <= b, contains: (a, b) => String(a ?? '').includes(String(b)) };
-        if (!own(predicates, op.operator)) throw new Error('Unknown filter operator'); table = table.filter(r => predicates[op.operator](field(op.key)(r), op.value));
-      } else if (op.type === 'describe') return table.describe(...(op.keys || []));
-      else throw new Error('Unknown operation: ' + op.type);
-    }
-    return table.toArray();
+  function csvYaz(satırlar, seçenekler = {}) {
+    const ayırıcı = seçenekler.ayırıcı ?? seçenekler.delimiter ?? ',';
+    const güvenli = seçenekler.güvenli ?? seçenekler.safe ?? true;
+    if (ayırıcı.length !== 1 || /["\r\n]/.test(ayırıcı)) throw new TypeError('Geçersiz ayırıcı');
+    const tablo = veri(satırlar), sütunlar = seçenekler.sütunlar ?? seçenekler.columns ?? tablo.sütunlar();
+    const kaçır = değer => {
+      let s = değer == null ? '' : String(değer);
+      if (güvenli && typeof değer === 'string' && /^[\s]*[=+@-]/.test(s)) s = "'" + s;
+      return /["\r\n]/.test(s) || s.includes(ayırıcı) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    return [sütunlar, ...satırlar.map(satır => sütunlar.map(anahtar => kendi(satır, anahtar) ? satır[anahtar] : ''))].map(satır => satır.map(kaçır).join(ayırıcı)).join('\r\n');
   }
+  const csv = { çöz: csvÇöz, yaz: csvYaz, parse: csvÇöz, stringify: csvYaz };
 
-  const styles = `
+  // Bir bağlayıcı çağrılana kadar ağ isteği yapılmaz.
+  const bağlayıcılar = new Map(), yükleniyor = new Map();
+  function yapılandır(değerler) { for (const [ad, değer] of Object.entries(değerler)) { bağlayıcılar.set(ad, değer); yükleniyor.delete(ad); } }
+  async function bağlayıcıAl(ad) {
+    if (!bağlayıcılar.has(ad)) throw new Error('Önce ' + ad + ' bağlayıcısını yapılandırın: Dizge.yapılandır({ ' + ad + ': kütüphaneVeyaYükleyici })');
+    if (!yükleniyor.has(ad)) {
+      const değer = bağlayıcılar.get(ad);
+      const söz = Promise.resolve().then(() => typeof değer === 'function' ? değer() : değer).then(x => x?.default || x);
+      yükleniyor.set(ad, söz);
+      söz.catch(() => { if (yükleniyor.get(ad) === söz) yükleniyor.delete(ad); });
+    }
+    return yükleniyor.get(ad);
+  }
+  async function baytlara(girdi, enÇokBayt = 50 * 1024 * 1024) {
+    tamsayı(enÇokBayt);
+    if (girdi?.size > enÇokBayt || girdi?.byteLength > enÇokBayt) throw new RangeError('Dosya enÇokBayt sınırını aşıyor');
+    if (girdi && typeof girdi.arrayBuffer === 'function') girdi = await girdi.arrayBuffer();
+    const çıktı = girdi instanceof ArrayBuffer ? new Uint8Array(girdi) : ArrayBuffer.isView(girdi) ? new Uint8Array(girdi.buffer, girdi.byteOffset, girdi.byteLength) : null;
+    if (!çıktı) throw new TypeError('Dosya, Blob, ArrayBuffer veya tipli dizi bekleniyor');
+    if (çıktı.byteLength > enÇokBayt) throw new RangeError('Dosya enÇokBayt sınırını aşıyor');
+    return çıktı;
+  }
+  function indir(içerik, dosyaAdı, tür = 'application/octet-stream') {
+    const adres = URL.createObjectURL(içerik instanceof Blob ? içerik : new Blob([içerik], { type: tür }));
+    const bağ = document.createElement('a');
+    bağ.href = adres; bağ.download = dosyaAdı;
+    document.body.append(bağ); bağ.click(); bağ.remove();
+    setTimeout(() => URL.revokeObjectURL(adres), 1000);
+  }
+  const xlsx = {
+    async oku(girdi, seçenekler = {}) {
+      const sayfa = seçenekler.sayfa ?? seçenekler.sheet;
+      const enÇokBayt = seçenekler.enÇokBayt ?? seçenekler.maxBytes;
+      const enÇokSatır = seçenekler.enÇokSatır ?? seçenekler.maxRows ?? 100000;
+      const sinyal = seçenekler.sinyal ?? seçenekler.signal;
+      tamsayı(enÇokSatır); iptal(sinyal);
+      const kütüphane = await bağlayıcıAl('xlsx'), tampon = await baytlara(girdi, enÇokBayt); iptal(sinyal);
+      const kitap = kütüphane.read(tampon, { type: 'array', sheetRows: enÇokSatır + 2, cellDates: true, cellFormula: false, bookVBA: false });
+      const ad = sayfa ?? kitap.SheetNames[0];
+      if (!kitap.Sheets[ad]) throw new Error('Bilinmeyen sayfa: ' + ad);
+      const çalışma = kitap.Sheets[ad];
+      if (çalışma['!fullref']) throw new RangeError('Sayfa enÇokSatır (maxRows) sınırını aşıyor');
+      const satırlar = kütüphane.utils.sheet_to_json(çalışma, { defval: null });
+      if (satırlar.length > enÇokSatır) throw new RangeError('Sayfa enÇokSatır (maxRows) sınırını aşıyor');
+      iptal(sinyal);
+      return { sheets: kitap.SheetNames.slice(), sheet: ad, sayfalar: kitap.SheetNames.slice(), sayfa: ad, rows: satırlar, satırlar };
+    },
+    async yaz(sayfalar) {
+      const kütüphane = await bağlayıcıAl('xlsx'), kitap = kütüphane.utils.book_new();
+      if (!Object.keys(sayfalar).length) throw new Error('En az bir sayfa gerekir');
+      for (const [ad, satırlar] of Object.entries(sayfalar)) {
+        if (!ad || ad.length > 31 || /[\\/?*\[\]:]/.test(ad)) throw new Error('Geçersiz sayfa adı: ' + ad);
+        veri(satırlar);
+        for (const satır of satırlar) for (const değer of Object.values(satır)) {
+          if (değer != null && !['string', 'number', 'boolean'].includes(typeof değer) && !(değer instanceof Date)) throw new TypeError('XLSX hücreleri skaler değer veya tarih olmalıdır');
+          if (typeof değer === 'number' && !sonlu(değer)) throw new TypeError('XLSX sayıları sonlu olmalıdır');
+          if (değer instanceof Date && !sonlu(değer.getTime())) throw new TypeError('Geçersiz XLSX tarihi');
+        }
+        kütüphane.utils.book_append_sheet(kitap, kütüphane.utils.json_to_sheet(satırlar), ad);
+      }
+      return new Uint8Array(kütüphane.write(kitap, { type: 'array', bookType: 'xlsx', compression: true }));
+    }
+  };
+  xlsx.read = xlsx.oku;
+  xlsx.write = xlsx.yaz;
+  const pdf = {
+    async metin(girdi, seçenekler = {}) {
+      const enÇokBayt = seçenekler.enÇokBayt ?? seçenekler.maxBytes;
+      const enÇokSayfa = seçenekler.enÇokSayfa ?? seçenekler.maxPages ?? 1000;
+      const sinyal = seçenekler.sinyal ?? seçenekler.signal;
+      const parola = seçenekler.parola ?? seçenekler.password;
+      tamsayı(enÇokSayfa); iptal(sinyal);
+      const kütüphane = await bağlayıcıAl('pdfjs'), tampon = await baytlara(girdi, enÇokBayt); iptal(sinyal);
+      const görev = kütüphane.getDocument({ data: tampon.slice(), password: parola, isEvalSupported: false });
+      // Parola korumalı belgelerde etkileşimli istemde beklemeyi önle.
+      const iptalEt = () => { void görev.destroy(); };
+      sinyal?.addEventListener('abort', iptalEt, { once: true });
+      try {
+        const belge = await görev.promise;
+        if (belge.numPages > enÇokSayfa) throw new RangeError('PDF enÇokSayfa (maxPages) sınırını aşıyor');
+        const sayfalar = [];
+        for (let i = 1; i <= belge.numPages; i++) {
+          iptal(sinyal);
+          const sayfa = await belge.getPage(i), içerik = await sayfa.getTextContent();
+          sayfalar.push(içerik.items.map(x => (x.str || '') + (x.hasEOL ? '\n' : ' ')).join('').trim());
+          sayfa.cleanup();
+        }
+        return { pages: sayfalar, text: sayfalar.join('\n\n'), sayfalar, metin: sayfalar.join('\n\n') };
+      } finally { sinyal?.removeEventListener('abort', iptalEt); await görev.destroy(); }
+    },
+    async rapor(seçenekler = {}) {
+      const başlık = seçenekler.başlık ?? seçenekler.title ?? 'Rapor';
+      const satırlar = seçenekler.satırlar ?? seçenekler.lines ?? [];
+      const veriSatırları = seçenekler.veriSatırları ?? seçenekler.rows ?? [];
+      const sütunlar = seçenekler.sütunlar ?? seçenekler.columns;
+      const yazıTipiBaytları = seçenekler.yazıTipiBaytları ?? seçenekler.fontBytes;
+      const yazıBoyu = seçenekler.yazıBoyu ?? seçenekler.fontSize ?? 11;
+      const kenarBoşluğu = seçenekler.kenarBoşluğu ?? seçenekler.margin ?? 44;
+      if (!sonlu(yazıBoyu) || yazıBoyu < 6 || yazıBoyu > 36 || !sonlu(kenarBoşluğu) || kenarBoşluğu < 10 || kenarBoşluğu > 150) throw new RangeError('Geçersiz PDF yerleşimi');
+      const kütüphane = await bağlayıcıAl('pdf'), belge = await kütüphane.PDFDocument.create();
+      if (yazıTipiBaytları) belge.registerFontkit(await bağlayıcıAl('fontkit'));
+      const yazıTipi = await belge.embedFont(yazıTipiBaytları ? await baytlara(yazıTipiBaytları) : kütüphane.StandardFonts.Helvetica);
+      let sayfa, y; const yükseklik = 841.89, genişlik = 595.28, satırYüksekliği = yazıBoyu * 1.5;
+      function yeniSayfa() { sayfa = belge.addPage([genişlik, yükseklik]); y = yükseklik - kenarBoşluğu; }
+      yeniSayfa();
+      function yaz(satır) { if (y < kenarBoşluğu + satırYüksekliği) yeniSayfa(); sayfa.drawText(satır, { x: kenarBoşluğu, y: y - yazıBoyu, size: yazıBoyu, font: yazıTipi }); y -= satırYüksekliği; }
+      function sar(değer) {
+        for (const paragraf of String(değer).split(/\r?\n/)) {
+          let satır = '';
+          for (const karakter of paragraf) {
+            if (yazıTipi.widthOfTextAtSize(satır + karakter, yazıBoyu) > genişlik - kenarBoşluğu * 2) { yaz(satır); satır = karakter; }
+            else satır += karakter;
+          }
+          yaz(satır);
+        }
+      }
+      sar(başlık); yaz('');
+      satırlar.forEach(sar);
+      if (veriSatırları.length) {
+        const anahtarlar = sütunlar || veri(veriSatırları).sütunlar();
+        sar(anahtarlar.join(' | '));
+        for (const satır of veriSatırları) sar(anahtarlar.map(k => alan(k)(satır) ?? '').join(' | '));
+      }
+      belge.setTitle(başlık); belge.setCreator('Dizge.js');
+      return belge.save();
+    },
+    async birleştir(girdiler, seçenekler = {}) {
+      const enÇokBayt = seçenekler.enÇokBayt ?? seçenekler.maxBytes;
+      if (!girdiler.length) throw new Error('En az bir PDF gerekir');
+      const kütüphane = await bağlayıcıAl('pdf'), çıktı = await kütüphane.PDFDocument.create();
+      for (const girdi of girdiler) {
+        const belge = await kütüphane.PDFDocument.load(await baytlara(girdi, enÇokBayt));
+        for (const sayfa of await çıktı.copyPages(belge, belge.getPageIndices())) çıktı.addPage(sayfa);
+      }
+      return çıktı.save();
+    }
+  };
+  pdf.text = pdf.metin;
+  pdf.report = pdf.rapor;
+  pdf.merge = pdf.birleştir;
+
+  function depo(başlangıç) {
+    let durum = başlangıç, sırada = false, yokEdildi = false;
+    const aboneler = new Set();
+    function boşalt() { sırada = false; if (!yokEdildi) for (const fn of [...aboneler]) fn(durum); }
+    const sonuç = {
+      al: () => durum,
+      ayarla(sonraki) {
+        if (yokEdildi) throw new Error('Depo kapatıldı');
+        const değer = typeof sonraki === 'function' ? sonraki(durum) : sonraki;
+        if (Object.is(değer, durum)) return;
+        durum = değer;
+        if (!sırada) { sırada = true; queueMicrotask(boşalt); }
+      },
+      aboneOl(fn, hemen = true) {
+        if (yokEdildi) throw new Error('Depo kapatıldı');
+        aboneler.add(fn); if (hemen) fn(durum);
+        return () => aboneler.delete(fn);
+      },
+      yokEt() { yokEdildi = true; aboneler.clear(); }
+    };
+    sonuç.get = sonuç.al; sonuç.set = sonuç.ayarla; sonuç.subscribe = sonuç.aboneOl; sonuç.destroy = sonuç.yokEt;
+    return sonuç;
+  }
+  function geciktir(fn, gecikme = 150) {
+    let zamanlayıcı;
+    const sarmal = (...args) => { clearTimeout(zamanlayıcı); zamanlayıcı = setTimeout(() => fn(...args), gecikme); };
+    sarmal.iptal = () => clearTimeout(zamanlayıcı);
+    sarmal.cancel = sarmal.iptal;
+    return sarmal;
+  }
+  async function parçala(öğeler, fn, seçenekler = {}) {
+    const boyut = seçenekler.boyut ?? seçenekler.size ?? 1000;
+    const sinyal = seçenekler.sinyal ?? seçenekler.signal;
+    const ilerleme = seçenekler.ilerleme ?? seçenekler.onProgress;
+    tamsayı(boyut);
+    const sonuç = [];
+    for (let baş = 0; baş < öğeler.length; baş += boyut) {
+      iptal(sinyal);
+      const son = Math.min(öğeler.length, baş + boyut);
+      for (let i = baş; i < son; i++) sonuç.push(fn(öğeler[i], i));
+      ilerleme?.(son / öğeler.length);
+      await new Promise(r => setTimeout(r, 0));
+    }
+    iptal(sinyal);
+    return sonuç;
+  }
+  function eşzamansızAnalizEt(satırlar, işlemler, seçenekler = {}) {
+    const işçiAdresi = seçenekler.işçiAdresi ?? seçenekler.workerUrl;
+    const sinyal = seçenekler.sinyal ?? seçenekler.signal;
+    if (!işçiAdresi) return Promise.reject(new Error('işçiAdresi (workerUrl) gerekli'));
+    return new Promise((çöz, reddet) => {
+      iptal(sinyal);
+      const işçi = new Worker(işçiAdresi);
+      const bitir = (hata, değer) => { işçi.terminate(); sinyal?.removeEventListener('abort', iptalEt); hata ? reddet(hata) : çöz(değer); };
+      const iptalEt = () => bitir(sinyal.reason || new DOMException('İptal edildi', 'AbortError'));
+      sinyal?.addEventListener('abort', iptalEt, { once: true });
+      işçi.onmessage = e => e.data.error ? bitir(new Error(e.data.error)) : bitir(null, e.data.result);
+      işçi.onerror = e => bitir(new Error(e.message));
+      try { işçi.postMessage({ rows: satırlar, operations: işlemler }); }
+      catch (hata) { bitir(hata); }
+    });
+  }
+  function analizEt(satırlar, işlemler) {
+    let tablo = veri(satırlar);
+    for (const işlem of işlemler) {
+      const tür = işlem.tür ?? işlem.type;
+      const anahtar = işlem.anahtar ?? işlem.key;
+      const yön = işlem.yön ?? işlem.direction;
+      const anahtarlar = işlem.anahtarlar ?? işlem.keys;
+      const baş = işlem.baş ?? işlem.start;
+      const son = işlem.son ?? işlem.end;
+      const işleç = işlem.işleç ?? işlem.operator;
+      const değer = işlem.değer ?? işlem.value;
+      if (tür === 'sort' || tür === 'sırala') tablo = tablo.sırala(anahtar, yön);
+      else if (tür === 'select' || tür === 'seç') tablo = tablo.seç(...anahtarlar);
+      else if (tür === 'slice' || tür === 'dilimle') tablo = tablo.dilimle(baş, son);
+      else if (tür === 'filter' || tür === 'süz') {
+        const yüklemler = {
+          eq: (a, b) => a === b, gt: (a, b) => a > b, gte: (a, b) => a >= b, lt: (a, b) => a < b, lte: (a, b) => a <= b,
+          contains: (a, b) => String(a ?? '').includes(String(b)),
+          eşit: (a, b) => a === b, büyük: (a, b) => a > b, büyükEşit: (a, b) => a >= b,
+          küçük: (a, b) => a < b, küçükEşit: (a, b) => a <= b, içerir: (a, b) => String(a ?? '').includes(String(b))
+        };
+        if (!kendi(yüklemler, işleç)) throw new Error('Bilinmeyen süzme işleci');
+        tablo = tablo.süz(satır => yüklemler[işleç](alan(anahtar)(satır), değer));
+      }
+      else if (tür === 'describe' || tür === 'betimle') return tablo.betimle(...(anahtarlar || []));
+      else throw new Error('Bilinmeyen işlem: ' + tür);
+    }
+    return tablo.diziye();
+  }
+  const analyze = analizEt;
+  const analyzeAsync = eşzamansızAnalizEt;
+
+  const stiller = `
   .dz{--dz-bg:#f4f6fb;--dz-panel:#fff;--dz-text:#17243a;--dz-muted:#59677e;--dz-line:#dce3ef;--dz-accent:#364ccc;--dz-soft:#edf0ff;--dz-radius:16px;color:var(--dz-text);background:var(--dz-bg);font:15px/1.55 system-ui,sans-serif;color-scheme:light}
   .dz[data-theme=dark]{--dz-bg:#101521;--dz-panel:#1a2232;--dz-text:#eef2ff;--dz-muted:#aab8d0;--dz-line:#35415a;--dz-accent:#a6b4ff;--dz-soft:#29334d;color-scheme:dark}
   .dz *{box-sizing:border-box}.dz button,.dz input,.dz select{font:inherit}.dz button{cursor:pointer}.dz button:disabled{cursor:default;opacity:.5}.dz :focus-visible{outline:3px solid var(--dz-accent);outline-offset:3px}
@@ -299,130 +472,265 @@
   .dz-field{display:grid;gap:6px}.dz-input{min-width:0;width:100%;border:1px solid var(--dz-line);border-radius:9px;padding:10px 12px;background:var(--dz-panel);color:var(--dz-text)}.dz-table-wrap{overflow:auto;max-width:100%;border:1px solid var(--dz-line);border-radius:12px}.dz table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}.dz th,.dz td{padding:12px 16px;border-bottom:1px solid var(--dz-line)}.dz th{background:var(--dz-soft);font-size:12px;letter-spacing:.04em}.dz th button{border:0;background:transparent;color:inherit;font:inherit;padding:0}.dz tbody tr:hover{background:var(--dz-soft)}.dz-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}.dz-error{color:#bd2439}.dz-badge{display:inline-block;background:var(--dz-soft);color:var(--dz-accent);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:650}.dz-chart{width:100%;height:auto;display:block}.dz dialog{border:1px solid var(--dz-line);border-radius:16px;background:var(--dz-panel);color:var(--dz-text);max-width:min(560px,90vw);padding:28px}.dz dialog::backdrop{background:#10152199}.dz-toast{position:fixed;bottom:24px;right:24px;max-width:calc(100vw - 48px);z-index:1000}.dz-tabs [role=tablist]{display:flex;gap:8px;border-bottom:1px solid var(--dz-line);padding-bottom:12px;margin-bottom:18px}.dz-tabs [aria-selected=true]{background:var(--dz-soft);color:var(--dz-accent)}
   .dz-chart text{font-size:14px}@media(max-width:600px){.dz-header{align-items:flex-start;flex-direction:column}.dz-card{padding:18px}.dz-pagination{flex-wrap:wrap}.dz-chart text{font-size:21px}}@media(prefers-reduced-motion:reduce){.dz *{scroll-behavior:auto!important;animation:none!important}}
   `;
-  function installStyles({ nonce } = {}) {
+  function stilleriKur({ nonce } = {}) {
     if (document.getElementById('dizge-styles')) return;
-    const style = document.createElement('style'); style.id = 'dizge-styles'; if (nonce) style.nonce = nonce; style.textContent = styles; document.head.append(style);
+    const stil = document.createElement('style');
+    stil.id = 'dizge-styles'; if (nonce) stil.nonce = nonce; stil.textContent = stiller;
+    document.head.append(stil);
   }
-  function el(tag, props = {}, ...children) {
-    if (!/^[a-z][a-z0-9-]*$/i.test(tag) || /^(script|iframe|object|embed|style)$/i.test(tag)) throw new Error('Unsupported element');
-    const node = document.createElement(tag);
-    for (const [key, value] of Object.entries(props || {})) {
-      if (key === 'className' || key === 'class') node.className = value;
-      else if (key === 'text') node.textContent = value;
-      else if (key === 'on') { for (const [event, fn] of Object.entries(value)) node.addEventListener(event, fn); }
-      else if (key === 'style') { for (const [k, v] of Object.entries(value)) node.style.setProperty(k, v); }
-      else if (/^on/i.test(key) || ['innerHTML', 'outerHTML', 'srcdoc'].includes(key)) throw new Error('Unsafe DOM property: ' + key);
-      else if (['href', 'src', 'action', 'formaction', 'xlink:href'].includes(key.toLowerCase())) {
-        const url = new URL(String(value), document.baseURI); if (!['http:', 'https:', 'mailto:', 'tel:', 'blob:'].includes(url.protocol)) throw new Error('Unsupported URL protocol'); node.setAttribute(key, value);
-      } else if (value != null && value !== false) { if (key === 'value' || key === 'checked' || key === 'selected') node[key] = value; else node.setAttribute(key, value === true ? '' : String(value)); }
-    }
-    function append(child) { if (Array.isArray(child)) child.forEach(append); else if (child != null && child !== false) node.append(child?.nodeType ? child : document.createTextNode(String(child))); }
-    children.forEach(append); return node;
-  }
-  const button = (label, onClick, props = {}) => el('button', { type: 'button', class: 'dz-button', ...props, on: { click: onClick } }, label);
-  const card = (title, ...children) => el('section', { class: 'dz-card' }, title ? el('h2', {}, title) : null, children);
-  const metric = (label, value, note) => card(null, el('div', { class: 'dz-muted' }, label), el('div', { class: 'dz-metric' }, value), note ? el('p', { class: 'dz-muted' }, note) : null);
-  let uid = 0;
-  function tableComponent({ rows = [], columns, pageSize = 25, searchable = true, label = 'Data table' } = {}) {
-    integer(pageSize); let source = data(rows), filtered = source, page = 1, sortKey, direction = 'asc', query = '';
-    columns = columns || source.columns().map(key => ({ key, label: key }));
-    const root = el('div'), wrap = el('div', { class: 'dz-table-wrap', tabindex: '0', 'aria-label': label }), table = el('table', {}, el('caption', { class: 'dz-muted' }, label));
-    const head = el('thead'), body = el('tbody'), status = el('span', { role: 'status' }); table.append(head, body); wrap.append(table);
-    const prev = button('←', () => { page--; render(); }, { 'aria-label': 'Previous page' }), next = button('→', () => { page++; render(); }, { 'aria-label': 'Next page' });
-    const search = el('input', { class: 'dz-input', type: 'search', placeholder: 'Ara / Search', 'aria-label': 'Search table' });
-    const updateSearch = debounce(() => { query = search.value.toLocaleLowerCase(); page = 1; recompute(); }); search.addEventListener('input', updateSearch);
-    if (searchable) root.append(el('label', { class: 'dz-field' }, el('span', { class: 'dz-muted' }, 'Ara / Search'), search));
-    root.className = 'dz-stack'; root.append(wrap, el('div', { class: 'dz-pagination' }, status, el('div', { class: 'dz-row' }, prev, next)));
-    function recompute() {
-      filtered = query ? source.filter(row => columns.some(c => String(field(c.key)(row) ?? '').toLocaleLowerCase().includes(query))) : source;
-      if (sortKey) filtered = filtered.sort(sortKey, direction); render();
-    }
-    function render() {
-      const pages = Math.max(1, Math.ceil(filtered.length / pageSize)); page = Math.max(1, Math.min(page, pages));
-      head.replaceChildren(el('tr', {}, columns.map(c => el('th', { scope: 'col', 'aria-sort': sortKey === c.key ? (direction === 'asc' ? 'ascending' : 'descending') : 'none' },
-        c.sortable === false ? c.label || c.key : button((c.label || c.key) + (sortKey === c.key ? direction === 'asc' ? ' ↑' : ' ↓' : ''), () => { direction = sortKey === c.key && direction === 'asc' ? 'desc' : 'asc'; sortKey = c.key; recompute(); })))));
-      const fragment = document.createDocumentFragment();
-      for (const row of filtered.page(page, pageSize)._rows) fragment.append(el('tr', {}, columns.map(c => el('td', {}, c.format ? c.format(field(c.key)(row), row) : field(c.key)(row) ?? '—'))));
-      if (!filtered.length) fragment.append(el('tr', {}, el('td', { colspan: Math.max(1, columns.length) }, 'No results / Sonuç yok')));
-      body.replaceChildren(fragment); status.textContent = `${filtered.length} kayıt · ${page} / ${pages}`; prev.disabled = page === 1; next.disabled = page === pages;
-    }
-    render(); return { el: root, setRows(rows) { source = data(rows); page = 1; recompute(); }, destroy() { updateSearch.cancel(); root.remove(); } };
-  }
-  function chart({ values = [], labels = [], type = 'bar', label = 'Chart', maxPoints = 300 } = {}) {
-    if (!['bar', 'line'].includes(type)) throw new Error('Chart type: bar | line'); integer(maxPoints);
-    if (maxPoints > 10000) throw new RangeError('At most 10000 chart points');
-    if (values.some(v => !finite(v))) throw new TypeError('Chart values must be finite');
-    const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', '0 0 640 240'); svg.setAttribute('class', 'dz-chart'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', label);
-    const add = (tag, attrs, text) => { const n = document.createElementNS(ns, tag); for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v); if (text != null) n.textContent = text; svg.append(n); return n; };
-    add('title', {}, label); if (!values.length) { add('text', { x: 30, y: 120, fill: 'currentColor' }, 'No data'); return svg; }
-    // Bucket averages bound SVG size. Full data remains in the caller's table.
-    const stride = Math.ceil(values.length / maxPoints), samples = [];
-    for (let i = 0; i < values.length; i += stride) samples.push({ value: summary(values.slice(i, i + stride)).mean, label: labels[i] ?? String(i + 1) });
-    const min = Math.min(0, ...samples.map(x => x.value)), max = Math.max(0, ...samples.map(x => x.value)), span = max - min || 1;
-    const y = v => 195 - (v - min) / span * 165, step = 550 / samples.length, zero = y(0);
-    add('line', { x1: 55, y1: zero, x2: 605, y2: zero, stroke: 'var(--dz-line)' });
-    const axisLabel = value => new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
-    add('text', { x: 4, y: 35, fill: 'currentColor', 'font-size': 11 }, axisLabel(max));
-    add('text', { x: 4, y: 195, fill: 'currentColor', 'font-size': 11 }, axisLabel(min));
-    if (type === 'line') add('polyline', { points: samples.map((s, i) => `${55 + step * (i + .5)},${y(s.value)}`).join(' '), fill: 'none', stroke: 'var(--dz-accent)', 'stroke-width': 3 });
-    samples.forEach((s, i) => {
-      if (type === 'bar') { const rect = add('rect', { x: 55 + step * i + step * .14, y: Math.min(zero, y(s.value)), width: step * .72, height: Math.max(.5, Math.abs(y(s.value) - zero)), rx: 3, fill: 'var(--dz-accent)' }); const title = document.createElementNS(ns, 'title'); title.textContent = `${s.label}: ${s.value}`; rect.append(title); }
-      if (i % Math.max(1, Math.ceil(samples.length / 6)) === 0) add('text', { x: 55 + step * (i + .5), y: 220, 'text-anchor': 'middle', fill: 'currentColor', 'font-size': 11 }, String(s.label).slice(0, 12));
-    }); return svg;
-  }
-  function form({ fields, onSubmit, submitLabel = 'Kaydet / Save' }) {
-    const controls = new Map(), root = el('form', { class: 'dz-stack' }), error = el('div', { class: 'dz-error', role: 'alert' }); let disposed = false;
-    for (const f of fields) {
-      if (controls.has(f.name)) throw new Error('Duplicate field: ' + f.name);
-      const id = 'dz-field-' + ++uid, props = { id, name: f.name, class: 'dz-input', required: !!f.required, value: f.value ?? '', min: f.min, max: f.max, step: f.step };
-      const input = f.options ? el('select', props, f.options.map(v => el('option', { value: v }, v))) : el('input', { ...props, type: f.type || 'text' });
-      if (f.options && f.value != null) input.value = f.value;
-      controls.set(f.name, { input, f }); root.append(el('label', { class: 'dz-field', for: id }, f.label || f.name, input));
-    }
-    const submit = el('button', { type: 'submit', class: 'dz-button', 'data-variant': 'primary' }, submitLabel); root.append(error, submit);
-    root.addEventListener('submit', async e => {
-      e.preventDefault(); if (submit.disabled || !root.reportValidity()) return;
-      const entries = []; error.textContent = '';
-      for (const [name, { input, f }] of controls) {
-        const value = f.type === 'number' ? input.value === '' ? null : Number(input.value) : input.value;
-        const message = f.validate?.(value); if (message) { error.textContent = message; input.focus(); return; } entries.push([name, value]);
+  function öğe(etiket, özellikler = {}, ...çocuklar) {
+    if (!/^[a-z][a-z0-9-]*$/i.test(etiket) || /^(script|iframe|object|embed|style)$/i.test(etiket)) throw new Error('Desteklenmeyen öğe');
+    const düğüm = document.createElement(etiket);
+    for (const [anahtar, değer] of Object.entries(özellikler || {})) {
+      if (anahtar === 'className' || anahtar === 'class') düğüm.className = değer;
+      else if (anahtar === 'text') düğüm.textContent = değer;
+      else if (anahtar === 'on') { for (const [olay, fn] of Object.entries(değer)) düğüm.addEventListener(olay, fn); }
+      else if (anahtar === 'style') { for (const [k, v] of Object.entries(değer)) düğüm.style.setProperty(k, v); }
+      else if (/^on/i.test(anahtar) || ['innerHTML', 'outerHTML', 'srcdoc'].includes(anahtar)) throw new Error('Güvensiz DOM özelliği: ' + anahtar);
+      else if (['href', 'src', 'action', 'formaction', 'xlink:href'].includes(anahtar.toLowerCase())) {
+        const adres = new URL(String(değer), document.baseURI);
+        if (!['http:', 'https:', 'mailto:', 'tel:', 'blob:'].includes(adres.protocol)) throw new Error('Desteklenmeyen URL protokolü');
+        düğüm.setAttribute(anahtar, değer);
       }
-      submit.disabled = true;
-      try { await onSubmit(record(entries)); } catch (e) { if (!disposed) error.textContent = e.message || String(e); } finally { if (!disposed) submit.disabled = false; }
+      else if (değer != null && değer !== false) {
+        if (anahtar === 'value' || anahtar === 'checked' || anahtar === 'selected') düğüm[anahtar] = değer;
+        else düğüm.setAttribute(anahtar, değer === true ? '' : String(değer));
+      }
+    }
+    function ekle(çocuk) {
+      if (Array.isArray(çocuk)) çocuk.forEach(ekle);
+      else if (çocuk != null && çocuk !== false) düğüm.append(çocuk?.nodeType ? çocuk : document.createTextNode(String(çocuk)));
+    }
+    çocuklar.forEach(ekle);
+    return düğüm;
+  }
+  const düğme = (etiket, tıklama, özellikler = {}) => öğe('button', { type: 'button', class: 'dz-button', ...özellikler, on: { click: tıklama } }, etiket);
+  const kart = (başlık, ...çocuklar) => öğe('section', { class: 'dz-card' }, başlık ? öğe('h2', {}, başlık) : null, çocuklar);
+  const ölçüt = (etiket, değer, not) => kart(null, öğe('div', { class: 'dz-muted' }, etiket), öğe('div', { class: 'dz-metric' }, değer), not ? öğe('p', { class: 'dz-muted' }, not) : null);
+  let kimlik = 0;
+  function tabloBileşeni(seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { satırlar: 'rows', sütunlar: 'columns', sayfaBoyu: 'pageSize', aranabilir: 'searchable', etiket: 'label', yerel: 'locale' });
+    const yerel = s.yerel ?? 'tr-TR';
+    tamsayı(s.sayfaBoyu ?? 25);
+    let kaynak = veri(s.satırlar ?? []), süzülmüş = kaynak, sayfa = 1, sıralamaAnahtarı, yön = 'asc', sorgu = '';
+    const sütunlar = (s.sütunlar ?? kaynak.sütunlar().map(anahtar => ({ anahtar }))).map(sütun => ({
+      anahtar: sütun.anahtar ?? sütun.key,
+      etiket: sütun.etiket ?? sütun.label,
+      sıralanabilir: sütun.sıralanabilir ?? sütun.sortable,
+      biçimle: sütun.biçimle ?? sütun.format
+    }));
+    const etiket = s.etiket ?? 'Veri tablosu', sayfaBoyu = s.sayfaBoyu ?? 25;
+    const kök = öğe('div'), sarmal = öğe('div', { class: 'dz-table-wrap', tabindex: '0', 'aria-label': etiket }), tablo = öğe('table', {}, öğe('caption', { class: 'dz-muted' }, etiket));
+    const başlık = öğe('thead'), gövde = öğe('tbody'), durum = öğe('span', { role: 'status' });
+    tablo.append(başlık, gövde); sarmal.append(tablo);
+    const önceki = düğme('←', () => { sayfa--; çiz(); }, { 'aria-label': 'Önceki sayfa' });
+    const sonraki = düğme('→', () => { sayfa++; çiz(); }, { 'aria-label': 'Sonraki sayfa' });
+    const arama = öğe('input', { class: 'dz-input', type: 'search', placeholder: 'Ara', 'aria-label': 'Tabloda ara' });
+    const aramayıGüncelle = geciktir(() => { sorgu = arama.value.toLocaleLowerCase(yerel); sayfa = 1; yenidenHesapla(); });
+    arama.addEventListener('input', aramayıGüncelle);
+    if (s.aranabilir !== false) kök.append(öğe('label', { class: 'dz-field' }, öğe('span', { class: 'dz-muted' }, 'Ara'), arama));
+    kök.className = 'dz-stack';
+    kök.append(sarmal, öğe('div', { class: 'dz-pagination' }, durum, öğe('div', { class: 'dz-row' }, önceki, sonraki)));
+    function yenidenHesapla() {
+      süzülmüş = sorgu ? kaynak.süz(satır => sütunlar.some(sütun => String(alan(sütun.anahtar)(satır) ?? '').toLocaleLowerCase(yerel).includes(sorgu))) : kaynak;
+      if (sıralamaAnahtarı) süzülmüş = süzülmüş.sırala(sıralamaAnahtarı, yön);
+      çiz();
+    }
+    function çiz() {
+      const sayfalar = Math.max(1, Math.ceil(süzülmüş.uzunluk / sayfaBoyu));
+      sayfa = Math.max(1, Math.min(sayfa, sayfalar));
+      başlık.replaceChildren(öğe('tr', {}, sütunlar.map(sütun => öğe('th', { scope: 'col', 'aria-sort': sıralamaAnahtarı === sütun.anahtar ? (yön === 'asc' ? 'ascending' : 'descending') : 'none' },
+        sütun.sıralanabilir === false ? sütun.etiket || sütun.anahtar : düğme((sütun.etiket || sütun.anahtar) + (sıralamaAnahtarı === sütun.anahtar ? yön === 'asc' ? ' ↑' : ' ↓' : ''), () => { yön = sıralamaAnahtarı === sütun.anahtar && yön === 'asc' ? 'desc' : 'asc'; sıralamaAnahtarı = sütun.anahtar; yenidenHesapla(); })))));
+      const parça = document.createDocumentFragment();
+      for (const satır of süzülmüş.sayfala(sayfa, sayfaBoyu)._satırlar) parça.append(öğe('tr', {}, sütunlar.map(sütun => öğe('td', {}, sütun.biçimle ? sütun.biçimle(alan(sütun.anahtar)(satır), satır) : alan(sütun.anahtar)(satır) ?? '—'))));
+      if (!süzülmüş.uzunluk) parça.append(öğe('tr', {}, öğe('td', { colspan: Math.max(1, sütunlar.length) }, 'Sonuç yok')));
+      gövde.replaceChildren(parça);
+      durum.textContent = `${süzülmüş.uzunluk} kayıt · ${sayfa} / ${sayfalar}`;
+      önceki.disabled = sayfa === 1; sonraki.disabled = sayfa === sayfalar;
+    }
+    çiz();
+    const sonuç = { el: kök };
+    sonuç.satırlarıAyarla = satırlar => { kaynak = veri(satırlar); sayfa = 1; yenidenHesapla(); };
+    sonuç.setRows = sonuç.satırlarıAyarla;
+    sonuç.yokEt = () => { aramayıGüncelle.iptal(); kök.remove(); };
+    sonuç.destroy = sonuç.yokEt;
+    return sonuç;
+  }
+  function grafik(seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { değerler: 'values', etiketler: 'labels', tür: 'type', etiket: 'label', enÇokNokta: 'maxPoints' });
+    const değerler = s.değerler ?? [], etiketler = s.etiketler ?? [], tür = s.tür ?? 'bar', etiket = s.etiket ?? 'Grafik', enÇokNokta = s.enÇokNokta ?? 300;
+    if (!['bar', 'line'].includes(tür)) throw new Error('Grafik türü: bar | line');
+    tamsayı(enÇokNokta);
+    if (enÇokNokta > 10000) throw new RangeError('En çok 10000 grafik noktası kullanılabilir');
+    if (değerler.some(v => !sonlu(v))) throw new TypeError('Grafik değerleri sonlu olmalıdır');
+    const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 640 240'); svg.setAttribute('class', 'dz-chart'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', etiket);
+    const ekle = (tag, nitelikler, metin) => {
+      const düğüm = document.createElementNS(ns, tag);
+      for (const [k, v] of Object.entries(nitelikler)) düğüm.setAttribute(k, v);
+      if (metin != null) düğüm.textContent = metin;
+      svg.append(düğüm); return düğüm;
+    };
+    ekle('title', {}, etiket);
+    if (!değerler.length) { ekle('text', { x: 30, y: 120, fill: 'currentColor' }, 'Veri yok'); return svg; }
+    // Kova ortalamaları SVG boyutunu sınırlar; ham veri çağıranın tablosunda kalır.
+    const adım = Math.ceil(değerler.length / enÇokNokta), örnekler = [];
+    for (let i = 0; i < değerler.length; i += adım) örnekler.push({ değer: özet(değerler.slice(i, i + adım)).ortalama, etiket: etiketler[i] ?? String(i + 1) });
+    const enKüçük = Math.min(0, ...örnekler.map(x => x.değer)), enBüyük = Math.max(0, ...örnekler.map(x => x.değer)), aralık = enBüyük - enKüçük || 1;
+    const y = v => 195 - (v - enKüçük) / aralık * 165, adımX = 550 / örnekler.length, sıfır = y(0);
+    ekle('line', { x1: 55, y1: sıfır, x2: 605, y2: sıfır, stroke: 'var(--dz-line)' });
+    const eksenEtiketi = değer => new Intl.NumberFormat('tr-TR', { notation: 'compact', maximumFractionDigits: 1 }).format(değer);
+    ekle('text', { x: 4, y: 35, fill: 'currentColor', 'font-size': 11 }, eksenEtiketi(enBüyük));
+    ekle('text', { x: 4, y: 195, fill: 'currentColor', 'font-size': 11 }, eksenEtiketi(enKüçük));
+    if (tür === 'line') ekle('polyline', { points: örnekler.map((s, i) => `${55 + adımX * (i + .5)},${y(s.değer)}`).join(' '), fill: 'none', stroke: 'var(--dz-accent)', 'stroke-width': 3 });
+    örnekler.forEach((s, i) => {
+      if (tür === 'bar') {
+        const dikdörtgen = ekle('rect', { x: 55 + adımX * i + adımX * .14, y: Math.min(sıfır, y(s.değer)), width: adımX * .72, height: Math.max(.5, Math.abs(y(s.değer) - sıfır)), rx: 3, fill: 'var(--dz-accent)' });
+        const başlık = document.createElementNS(ns, 'title'); başlık.textContent = `${s.etiket}: ${s.değer}`; dikdörtgen.append(başlık);
+      }
+      if (i % Math.max(1, Math.ceil(örnekler.length / 6)) === 0) ekle('text', { x: 55 + adımX * (i + .5), y: 220, 'text-anchor': 'middle', fill: 'currentColor', 'font-size': 11 }, String(s.etiket).slice(0, 12));
     });
-    return { el: root, destroy() { disposed = true; root.remove(); } };
+    return svg;
   }
-  function tabs(items) {
-    if (!items.length) throw new Error('At least one tab required');
-    const root = el('div', { class: 'dz-tabs' }), nav = el('div', { role: 'tablist', 'aria-label': 'Sections' }), panels = [], buttons = [];
-    function select(i, focus = false) { buttons.forEach((b, j) => { b.setAttribute('aria-selected', String(i === j)); b.tabIndex = i === j ? 0 : -1; panels[j].hidden = i !== j; }); if (focus) buttons[i].focus(); }
-    items.forEach((item, i) => {
-      const id = 'dz-tab-' + ++uid, panel = el('section', { id: id + '-panel', role: 'tabpanel', 'aria-labelledby': id, tabindex: '0' }, item.content);
-      const b = button(item.label, () => select(i), { id, role: 'tab', 'aria-controls': id + '-panel' });
-      b.addEventListener('keydown', e => { const next = e.key === 'ArrowRight' ? (i + 1) % items.length : e.key === 'ArrowLeft' ? (i - 1 + items.length) % items.length : e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : -1; if (next >= 0) { e.preventDefault(); select(next, true); } });
-      panels.push(panel); buttons.push(b); nav.append(b);
-    }); root.append(nav, ...panels); select(0); return root;
+  function form(seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { alanlar: 'fields', gönder: 'onSubmit', düğmeMetni: 'submitLabel' });
+    const alanlar = (s.alanlar ?? []).map(alan => ({
+      ad: alan.ad ?? alan.name,
+      etiket: alan.etiket ?? alan.label,
+      tür: alan.tür ?? alan.type ?? 'text',
+      değer: alan.değer ?? alan.value,
+      zorunlu: alan.zorunlu ?? alan.required,
+      enAz: alan.enAz ?? alan.min,
+      enÇok: alan.enÇok ?? alan.max,
+      adım: alan.adım ?? alan.step,
+      seçenekler: alan.seçenekler ?? alan.options,
+      doğrula: alan.doğrula ?? alan.validate
+    }));
+    const denetimler = new Map(), kök = öğe('form', { class: 'dz-stack' }), hata = öğe('div', { class: 'dz-error', role: 'alert' });
+    let yokEdildi = false;
+    for (const alan of alanlar) {
+      if (denetimler.has(alan.ad)) throw new Error('Yinelenen alan: ' + alan.ad);
+      const kimlikNo = 'dz-field-' + ++kimlik;
+      const özellikler = { id: kimlikNo, name: alan.ad, class: 'dz-input', required: !!alan.zorunlu, value: alan.değer ?? '', min: alan.enAz, max: alan.enÇok, step: alan.adım };
+      const girdi = alan.seçenekler ? öğe('select', özellikler, alan.seçenekler.map(v => öğe('option', { value: v }, v))) : öğe('input', { ...özellikler, type: alan.tür });
+      if (alan.seçenekler && alan.değer != null) girdi.value = alan.değer;
+      denetimler.set(alan.ad, { girdi, alan });
+      kök.append(öğe('label', { class: 'dz-field', for: kimlikNo }, alan.etiket || alan.ad, girdi));
+    }
+    const gönder = öğe('button', { type: 'submit', class: 'dz-button', 'data-variant': 'primary' }, s.düğmeMetni ?? 'Kaydet');
+    kök.append(hata, gönder);
+    kök.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (gönder.disabled || !kök.reportValidity()) return;
+      const girdiler = []; hata.textContent = '';
+      for (const [ad, { girdi, alan }] of denetimler) {
+        const değer = alan.tür === 'number' ? girdi.value === '' ? null : Number(girdi.value) : girdi.value;
+        const mesaj = alan.doğrula?.(değer);
+        if (mesaj) { hata.textContent = mesaj; girdi.focus(); return; }
+        girdiler.push([ad, değer]);
+      }
+      gönder.disabled = true;
+      try { await s.gönder?.(kayıt(girdiler)); }
+      catch (hataNesnesi) { if (!yokEdildi) hata.textContent = hataNesnesi.message || String(hataNesnesi); }
+      finally { if (!yokEdildi) gönder.disabled = false; }
+    });
+    const sonuç = { el: kök };
+    sonuç.yokEt = () => { yokEdildi = true; kök.remove(); };
+    sonuç.destroy = sonuç.yokEt;
+    return sonuç;
   }
-  function modal({ title, content, parent = document.body }) {
-    const previous = document.activeElement, id = 'dz-dialog-' + ++uid, dialog = el('dialog', { 'aria-labelledby': id }, el('h2', { id }, title), content);
-    const close = () => { dialog.close(); dialog.remove(); previous?.focus(); };
-    dialog.append(button('Kapat / Close', close)); dialog.addEventListener('cancel', e => { e.preventDefault(); close(); }); parent.append(dialog); dialog.showModal(); return { el: dialog, close };
+  function sekmeler(öğeler) {
+    if (!öğeler.length) throw new Error('En az bir sekme gerekir');
+    const kök = öğe('div', { class: 'dz-tabs' }), gezinme = öğe('div', { role: 'tablist', 'aria-label': 'Bölümler' }), paneller = [], düğmeler = [];
+    function seç(i, odakla = false) {
+      düğmeler.forEach((b, j) => { b.setAttribute('aria-selected', String(i === j)); b.tabIndex = i === j ? 0 : -1; paneller[j].hidden = i !== j; });
+      if (odakla) düğmeler[i].focus();
+    }
+    öğeler.forEach((öğeVerisi, i) => {
+      const kimlikNo = 'dz-tab-' + ++kimlik;
+      const panel = öğe('section', { id: kimlikNo + '-panel', role: 'tabpanel', 'aria-labelledby': kimlikNo, tabindex: '0' }, öğeVerisi.içerik ?? öğeVerisi.content);
+      const düğmeVerisi = düğme(öğeVerisi.etiket ?? öğeVerisi.label, () => seç(i), { id: kimlikNo, role: 'tab', 'aria-controls': kimlikNo + '-panel' });
+      düğmeVerisi.addEventListener('keydown', e => {
+        const sonraki = e.key === 'ArrowRight' ? (i + 1) % öğeler.length : e.key === 'ArrowLeft' ? (i - 1 + öğeler.length) % öğeler.length : e.key === 'Home' ? 0 : e.key === 'End' ? öğeler.length - 1 : -1;
+        if (sonraki >= 0) { e.preventDefault(); seç(sonraki, true); }
+      });
+      paneller.push(panel); düğmeler.push(düğmeVerisi); gezinme.append(düğmeVerisi);
+    });
+    kök.append(gezinme, ...paneller); seç(0); return kök;
   }
-  function toast(message, { parent = document.body, duration = 4000 } = {}) {
-    const node = el('div', { class: 'dz dz-card dz-toast', role: 'status' }, message); parent.append(node);
-    const timer = setTimeout(() => node.remove(), duration); return () => { clearTimeout(timer); node.remove(); };
+  function pencere(seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { başlık: 'title', içerik: 'content', üst: 'parent' });
+    const öncekiOdak = document.activeElement, kimlikNo = 'dz-dialog-' + ++kimlik;
+    const kutu = öğe('dialog', { 'aria-labelledby': kimlikNo }, öğe('h2', { id: kimlikNo }, s.başlık), s.içerik);
+    const kapat = () => { kutu.close(); kutu.remove(); öncekiOdak?.focus(); };
+    kutu.append(düğme('Kapat', kapat));
+    kutu.addEventListener('cancel', e => { e.preventDefault(); kapat(); });
+    (s.üst ?? document.body).append(kutu); kutu.showModal();
+    return { el: kutu, close: kapat, kapat };
   }
-  function app(target, { title = 'Dizge', subtitle, theme = 'light', actions = [], content = [], nonce } = {}) {
-    const host = typeof target === 'string' ? document.querySelector(target) : target; if (!host) throw new Error('Mount target not found');
-    installStyles({ nonce }); const root = el('div', { class: 'dz', 'data-theme': theme }, el('main', { class: 'dz-app dz-stack' },
-      el('header', { class: 'dz-header' }, el('div', {}, el('span', { class: 'dz-badge' }, 'DIZGE.JS'), el('h1', {}, title), subtitle ? el('p', { class: 'dz-muted' }, subtitle) : null), el('div', { class: 'dz-row' }, actions)), content)); host.append(root);
-    const disposers = new Set(); return { el: root, theme(value) { root.dataset.theme = value; }, use(component) { if (component.destroy) disposers.add(() => component.destroy()); return component.el || component; }, destroy() { for (const dispose of disposers) dispose(); disposers.clear(); root.remove(); } };
+  function bildirim(mesaj, seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { üst: 'parent', süre: 'duration' });
+    const düğüm = öğe('div', { class: 'dz dz-card dz-toast', role: 'status' }, mesaj);
+    (s.üst ?? document.body).append(düğüm);
+    const zamanlayıcı = setTimeout(() => düğüm.remove(), s.süre ?? 4000);
+    return () => { clearTimeout(zamanlayıcı); düğüm.remove(); };
   }
-  const ui = { el, button, card, metric, table: tableComponent, chart, form, tabs, modal, toast, app, installStyles,
-    grid: (...children) => el('div', { class: 'dz-grid' }, children), stack: (...children) => el('div', { class: 'dz-stack' }, children) };
-  const format = { number: (n, options = {}, locale = 'tr-TR') => new Intl.NumberFormat(locale, options).format(n),
-    currency: (n, currency = 'TRY', locale = 'tr-TR') => new Intl.NumberFormat(locale, { style: 'currency', currency }).format(n),
-    date: (value, options = {}, locale = 'tr-TR') => new Intl.DateTimeFormat(locale, options).format(new Date(value)) };
-  return { version, data, Table, stats, csv: { parse: parseCSV, stringify: stringifyCSV }, configure, xlsx, pdf, download, store, debounce, chunks, analyze, analyzeAsync, ui, format, styles };
+  function uygulama(hedef, seçenekler = {}) {
+    const s = seçenekÇöz(seçenekler, { başlık: 'title', altBaşlık: 'subtitle', tema: 'theme', eylemler: 'actions', içerik: 'content' });
+    const üst = typeof hedef === 'string' ? document.querySelector(hedef) : hedef;
+    if (!üst) throw new Error('Uygulama hedefi bulunamadı');
+    stilleriKur({ nonce: s.nonce });
+    const kök = öğe('div', { class: 'dz', 'data-theme': s.tema ?? 'light' }, öğe('main', { class: 'dz-app dz-stack' },
+      öğe('header', { class: 'dz-header' }, öğe('div', {}, öğe('span', { class: 'dz-badge' }, 'DİZGE.JS'), öğe('h1', {}, s.başlık ?? 'Dizge'), s.altBaşlık ? öğe('p', { class: 'dz-muted' }, s.altBaşlık) : null), öğe('div', { class: 'dz-row' }, s.eylemler)),
+      s.içerik));
+    üst.append(kök);
+    const temizleyiciler = new Set();
+    const sonuç = {
+      el: kök,
+      tema(değer) { kök.dataset.theme = değer; },
+      kullan(bileşen) { if (bileşen.destroy) temizleyiciler.add(() => bileşen.destroy()); return bileşen.el || bileşen; },
+      yokEt() { for (const temizle of temizleyiciler) temizle(); temizleyiciler.clear(); kök.remove(); }
+    };
+    sonuç.theme = sonuç.tema; sonuç.use = sonuç.kullan; sonuç.destroy = sonuç.yokEt;
+    return sonuç;
+  }
+  const arayüz = {
+    öğe, düğme, kart, ölçüt,
+    tablo: tabloBileşeni,
+    grafik, form, sekmeler, pencere, bildirim, uygulama,
+    stilleriKur,
+    ızgara: (...çocuklar) => öğe('div', { class: 'dz-grid' }, çocuklar),
+    yığın: (...çocuklar) => öğe('div', { class: 'dz-stack' }, çocuklar)
+  };
+  Object.assign(arayüz, {
+    el: öğe, button: düğme, card: kart, metric: ölçüt, table: tabloBileşeni,
+    chart: grafik, form, tabs: sekmeler, modal: pencere, toast: bildirim,
+    app: uygulama, installStyles: stilleriKur,
+    grid: arayüz.ızgara, stack: arayüz.yığın
+  });
+  const biçim = {
+    sayı: (n, seçenekler = {}, yerel = 'tr-TR') => new Intl.NumberFormat(yerel, seçenekler).format(n),
+    para: (n, birim = 'TRY', yerel = 'tr-TR') => new Intl.NumberFormat(yerel, { style: 'currency', currency: birim }).format(n),
+    tarih: (değer, seçenekler = {}, yerel = 'tr-TR') => new Intl.DateTimeFormat(yerel, seçenekler).format(new Date(değer))
+  };
+  biçim.number = biçim.sayı; biçim.currency = biçim.para; biçim.date = biçim.tarih;
+
+  return {
+    sürüm, version: sürüm,
+    veri, data: veri,
+    Tablo, Table: Tablo,
+    istatistik, stats: istatistik,
+    csv,
+    yapılandır, configure: yapılandır,
+    xlsx, pdf,
+    indir, download: indir,
+    depo, store: depo,
+    geciktir, debounce: geciktir,
+    parçala, chunks: parçala,
+    analizEt, analyze: analizEt,
+    eşzamansızAnalizEt, analyzeAsync: eşzamansızAnalizEt,
+    arayüz, ui: arayüz,
+    biçim, format: biçim,
+    stiller, styles: stiller
+  };
 });
