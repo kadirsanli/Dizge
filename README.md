@@ -1,5 +1,27 @@
 # Dizge — Türkçe Mantık Motoru ve Programlama Dili
 
+## Yeni: Dizge.js — kendi HTML uygulamanızda kullanın
+
+**Tek dosyalık UI ve veri araç kutusu:** responsive bileşenler, sayfalı/aranabilir tablolar, SVG grafikler, formlar, gruplama/birleştirme/istatistik, CSV, Web Worker; isteğe bağlı PDF ve XLSX bağlayıcıları. Framework veya derleme zorunlu değildir.
+
+```html
+<div id="app"></div>
+<script src="dizge.js"></script>
+<script>
+  const table = Dizge.ui.table({ rows: [{ ürün: 'Kalem', tutar: 30 }] });
+  const app = Dizge.ui.app('#app', { title: 'İlk uygulamam', content: [table.el] });
+  app.use(table);
+</script>
+```
+
+[dizge.js](dizge.js) · [Küçültülmüş dağıtım](dizge.min.js) · [Tam kullanım/API rehberi](docs/javascript.md) · [Çalışan HTML örneği](examples/javascript/index.html) · [AI ile uygulama üretme rehberi](docs/javascript-ai.md) · [TypeScript](dizge.d.ts)
+
+Örneği çalıştırmak için depoda `python -m http.server 8080`, ardından `http://localhost:8080/examples/javascript/`. PDF/Excel örneği bağımlılıkları ilk kullanımda indirir; üretimde yerel vendor dosyaları kullanılabilir. Çekirdek çevrimdışı çalışır. JS katmanı MIT lisanslıdır ve mevcut `.dzg` dilinden ayrıdır; `.dzg` derleyicisinin yerini almaz. npm kayıt sistemine yayımlanmamıştır.
+
+![Dizge.js Veri Atölyesi](docs/javascript-desktop.png)
+
+---
+
 **Türkçe eklerle yazılan akışlar, gerçek AST, doğrulanabilir sayısal sonuçlar.**
 
 Dizge (`.dzg`), Türkçenin sondan eklemeli yapısını işlem semantiğine bağlayan deneysel bir dildir. Hâl ekleri parametreleri bağlar; fiil çatısı kopya veya yerinde değişimi seçer; uygun koşullar NumPy maskelerine derlenir.

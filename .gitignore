@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 derlenmis/
 .venv/
+node_modules/
+test-results/
+*.tgz
+debug.log
