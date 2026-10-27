@@ -1,8 +1,8 @@
 # Dizge.js — HTML uygulamaları için araç kutusu
 
-**Sürüm 0.2.0.** Tek script ile UI, veri işlemleri ve CSV; isteğe bağlı bağlayıcılarla XLSX ve PDF. Derleyici veya framework gerektirmez. İnsanların ve AI kod üreticilerinin aynı küçük API ile okunabilir HTML araçları kurması için tasarlanmıştır.
+**Sürüm 0.3.0.** Tek script ile UI, veri işlemleri ve CSV; isteğe bağlı bağlayıcılarla XLSX ve PDF. Derleyici veya framework gerektirmez. İnsanların ve AI kod üreticilerinin aynı küçük API ile okunabilir HTML araçları kurması için tasarlanmıştır.
 
-**Türkçe kaynak:** 0.2.0 ile `dizge.js` içi Türkçeleştirildi. Türkçe API (`Dizge.veri`, `Dizge.arayüz.tablo`, `Dizge.istatistik.özet`) birincil, İngilizce adlar (`Dizge.data`, `Dizge.ui.table`, `Dizge.stats.summary`) geriye uyumluluk için alias'dır. Tek dosya HTML'de küçültülmemiş `dizge.js` gömülürse kaynak Türkçe görünür. Ayrıntılı Türkçe rehber: [javascript-tr.md](javascript-tr.md).
+**Türkçe kaynak:** 0.3.0 ile `dizge.js` içi Türkçeleştirildi. Türkçe API (`Dizge.veri`, `Dizge.arayüz.tablo`, `Dizge.istatistik.özet`) birincil, İngilizce adlar (`Dizge.data`, `Dizge.ui.table`, `Dizge.stats.summary`) geriye uyumluluk için alias'dır. **Vitrin modu**, dış HTML'yi JS'siz tutar ve uygulamayı Base64 iframe içinde çalıştırır. Ayrıntılı Türkçe rehber: [javascript-tr.md](javascript-tr.md).
 
 Bu kütüphane mevcut `.dzg → Python/NumPy` dilinden ayrı bir JavaScript katmanıdır. `.dzg` derlemez. İlk sürümün desteklediği kapsam aşağıda açıkça tanımlıdır; her belge formatını, her grafik türünü veya her veri büyüklüğünü kapsama iddiası yoktur.
 
@@ -31,6 +31,23 @@ Depodan `dizge.js` veya `dizge.min.js` dosyasını indirin ve HTML dosyanızın 
 ```
 
 Tek dosya HTML için `dizge.js` içeriğini `<script>` etiketinin içine kopyalayın. `dizge.min.js` yalnızca boyut içindir; küçültülmüş kodda değişken adları kısaldığı için Türkçe kaynak görünümü kaybolur.
+
+### Vitrin modu
+
+Dış HTML'de JS anahtar kelimesi görünmesini istemiyorsanız uygulamayı Base64 iframe'e paketleyin:
+
+```sh
+node scripts/vitrin.cjs uygulama.html vitrin.html --baslik "Satış Paneli" --aciklama "Tek dosya uygulama"
+```
+
+Dış kabuk yalnızca HTML/CSS ve Türkçe metin içerir:
+
+```html
+<iframe title="Dizge uygulaması"
+  src="data:text/html;base64,PCFkb2N0eXBlIGh0bWw+..."></iframe>
+```
+
+Hazır örnek: [examples/tek-dosya.html](../examples/tek-dosya.html). İç uygulama: [examples/tek-dosya-uygulama.html](../examples/tek-dosya-uygulama.html). `data:` iframe opaque origin'dir; `localStorage`, göreli `fetch` ve klasik `Worker` çalışmayabilir. Geliştirici araçları iframe içeriğini inceleyebilir; bu bir güvenlik sınırı değildir.
 
 Çekirdek kendi başına ağ isteği yapmaz. Stil ilk `arayüz.uygulama()` çağrısında eklenir. Tek bileşen kullanırken `arayüz.stilleriKur()` çağırın ve üst öğeye `class="dz"` verin. CSP nonce için `arayüz.uygulama('#app', { nonce: 'sunucunun-nonce-değeri' })` kullanın. Sıkı CSP ortamında `Dizge.stiller` içeriğini ayrı CSS dosyası olarak sunabilirsiniz.
 

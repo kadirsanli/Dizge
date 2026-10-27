@@ -37,7 +37,7 @@ const server = http.createServer((req, res) => {
       try { await pending; } catch (e) { cancelled = e.name === 'AbortError'; }
       try { await Dizge.eşzamansızAnalizEt([], [{ type: 'invalid' }], { işçiAdresi: '../../dizge.worker.js' }); } catch { rejected = true; }
       return { cancelled, rejected, version: module.default.version };
-    }); assert.deepEqual(worker, { cancelled: true, rejected: true, version: '0.2.0' });
+    }); assert.deepEqual(worker, { cancelled: true, rejected: true, version: '0.3.0' });
     const csvDownload = page.waitForEvent('download'); await page.getByRole('button', { name: 'CSV indir', exact: true }).click(); const csv = await csvDownload; const csvPath = path.join(root, 'test-results/roundtrip.csv'); await csv.saveAs(csvPath);
     assert.match(fs.readFileSync(csvPath, 'utf8'), /İstanbul/); await page.locator('input[type=file]').setInputFiles(csvPath); await page.waitForFunction(() => document.querySelector('[role=status]').textContent.includes('okundu'));
     // Use pinned local dependencies to make file tests deterministic and offline.
@@ -57,23 +57,37 @@ const server = http.createServer((req, res) => {
     await page.setViewportSize({ width: 390, height: 844 }); await page.screenshot({ path: path.join(root, 'docs/javascript-mobile.png'), fullPage: true });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No page-level horizontal overflow');
     assert.deepEqual(errors, []);
-    // Tek dosya örneği: Dizge.js gömülü, Türkçe API, dış istek yok.
+    // Vitrin: dış kabuk JS'siz, uygulama Base64 iframe içinde.
     const tek = await context.newPage(), tekHatalar = [], tekIstekler = [];
     tek.on('pageerror', e => tekHatalar.push(e.message));
     tek.on('request', r => tekIstekler.push(r.url()));
-    await tek.goto(base + '/examples/tek-dosya.html'); await tek.locator('tbody tr').first().waitFor();
-    assert.equal(await tek.locator('tbody tr').count(), 5);
-    assert.equal(await tek.locator('.dz-metric').count(), 3);
-    assert.ok((await tek.content()).includes('Türkçe kaynak sürümü'));
-    assert.deepEqual(tekIstekler.filter(u => !u.startsWith(base) && !u.startsWith('data:') && !u.startsWith('blob:')), []);
-    await tek.getByRole('button', { name: '+ Satış ekle' }).click();
-    await tek.getByLabel('Ürün').fill('Çay');
-    await tek.locator('select[name="kategori"]').selectOption('Gıda');
-    await tek.getByLabel('Tutar (₺)').fill('75');
-    await tek.getByLabel('Tarih').fill('2026-10-04');
-    await tek.getByRole('button', { name: 'Kaydet' }).click();
-    await tek.waitForFunction(() => [...document.querySelectorAll('.dz-metric')].some(x => x.textContent === '6'));
+    await tek.goto(base + '/examples/tek-dosya.html');
+    const dış = await tek.content();
+    assert.ok(!/<script[\s>]/i.test(dış), 'Dış vitrinde script olmamalı');
+    assert.match(dış, /data:text\/html;base64,/);
+    assert.match(dış, /DİZGE VİTRİN/);
+    assert.match(dış, /Türkçe kaynak özeti/);
+    const çerçeve = tek.frameLocator('iframe[title="Dizge uygulaması"]');
+    await çerçeve.locator('tbody tr').first().waitFor();
+    assert.equal(await çerçeve.locator('tbody tr').count(), 5);
+    assert.equal(await çerçeve.locator('.dz-metric').count(), 3);
+    await çerçeve.getByRole('button', { name: 'Tema' }).click();
+    assert.equal(await çerçeve.locator('body').getAttribute('data-theme'), 'dark');
+    await çerçeve.getByRole('button', { name: 'Tema' }).click();
+    const indirme = tek.waitForEvent('download');
+    await çerçeve.getByRole('button', { name: 'CSV indir', exact: true }).click();
+    const vitrinIndirme = await indirme, vitrinCsv = path.join(root, 'test-results/vitrin.csv'); await vitrinIndirme.saveAs(vitrinCsv);
+    assert.match(fs.readFileSync(vitrinCsv, 'utf8'), /Kulaklık/);
+    await çerçeve.getByRole('button', { name: '+ Satış ekle' }).click();
+    await çerçeve.getByLabel('Ürün').fill('Çay');
+    await çerçeve.locator('select[name="kategori"]').selectOption('Gıda');
+    await çerçeve.getByLabel('Tutar (₺)').fill('75');
+    await çerçeve.getByLabel('Tarih').fill('2026-10-04');
+    await çerçeve.getByRole('button', { name: 'Kaydet' }).click();
+    await çerçeve.getByRole('button', { name: 'Kaydet' }).waitFor({ state: 'detached' });
+    assert.equal((await çerçeve.locator('.dz-metric').nth(1).textContent()).trim(), '6');
+    assert.deepEqual(tekIstekler.filter(u => !u.startsWith(base) && !u.startsWith('data:') && !u.startsWith('blob:') && !u.startsWith('about:')), []);
     assert.deepEqual(tekHatalar, []); await tek.close();
-    console.log(JSON.stringify({ browser: await browser.version(), desktop: '1440x1100', mobile: '390x844', checks: ['render', 'theme', 'form', 'worker', 'worker abort', 'worker error', 'browser ESM', 'CSV download/import', 'XLSX download/import', 'Unicode PDF download/text', 'mobile overflow', 'page errors', 'tek dosya inline', 'tek dosya form', 'tek dosya dış istek yok'], passed: true }, null, 2));
+    console.log(JSON.stringify({ browser: await browser.version(), desktop: '1440x1100', mobile: '390x844', checks: ['render', 'theme', 'form', 'worker', 'worker abort', 'worker error', 'browser ESM', 'CSV download/import', 'XLSX download/import', 'Unicode PDF download/text', 'mobile overflow', 'page errors', 'vitrin dış kabuk', 'vitrin iframe', 'vitrin form', 'vitrin indirme', 'vitrin dış istek yok'], passed: true }, null, 2));
   } finally { await browser?.close(); await new Promise(r => server.close(r)); }
 })().catch(e => { console.error(e); process.exitCode = 1; });

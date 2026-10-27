@@ -1,6 +1,6 @@
 {
   "name": "@kadirsanli/dizge",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Türkçe kaynaklı, tek dosyalık HTML uygulamaları için UI, veri analizi, PDF ve XLSX araç kutusu",
   "main": "dizge.js",
   "module": "dizge.mjs",
@@ -12,7 +12,11 @@
       "require": "./dizge.js"
     },
     "./worker": "./dizge.worker.js",
+    "./vitrin": "./scripts/vitrin.cjs",
     "./dizge.js": "./dizge.js"
+  },
+  "bin": {
+    "dizge-vitrin": "scripts/vitrin.cjs"
   },
   "files": [
     "dizge.js",
@@ -24,6 +28,9 @@
     "docs/javascript-tr.md",
     "docs/javascript-ai.md",
     "examples/tek-dosya.html",
+    "examples/tek-dosya-uygulama.html",
+    "scripts/vitrin.cjs",
+    "templates/vitrin.html",
     "LICENSE-JS"
   ],
   "keywords": [
@@ -33,7 +40,8 @@
     "veri",
     "csv",
     "xlsx",
-    "pdf"
+    "pdf",
+    "vitrin"
   ],
   "scripts": {
     "test": "node --test tests/*.test.cjs",

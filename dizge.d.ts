@@ -1,4 +1,4 @@
-// Dizge.js 0.2.0 — Türkçe API birincil, İngilizce adlar alias.
+// Dizge.js 0.3.0 — Türkçe API birincil, İngilizce adlar alias.
 export type Row = Record<string, unknown>;
 export interface Summary {
   count: number; missing: number; sum: number; mean: number | null; min: number | null; max: number | null; variance: number | null; std: number | null; sampleVariance: number | null;

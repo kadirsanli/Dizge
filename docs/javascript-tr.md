@@ -1,14 +1,46 @@
 # Dizge.js — Türkçe kaynak ve Türkçe API
 
-**Sürüm 0.2.0.** Bu sürümde `dizge.js` dosyasının içi Türkçedir: değişkenler, fonksiyonlar, yorumlar, hata mesajları ve varsayılan arayüz metinleri Türkçe yazılır. İngilizce API adları geriye uyumluluk için alias olarak korunur.
+**Sürüm 0.3.0.** Bu sürümde `dizge.js` dosyasının içi Türkçedir: değişkenler, fonksiyonlar, yorumlar, hata mesajları ve varsayılan arayüz metinleri Türkçe yazılır. İngilizce API adları geriye uyumluluk için alias olarak korunur.
 
-Tek dosya HTML'de `dizge.js` içeriğini olduğu gibi gömün. Sağ tıkla kaynağı açan kişi ağırlıklı olarak Türkçe kod görür. `dizge.min.js` üretim boyutu içindir; küçültülmüş kodda değişken adları kısaldığı için Türkçe görünüm kaybolur.
+**Ana kapsam: vitrin modu.** Tek dosya çıktısının dış kabuğu JS'siz ve Türkçedir; gerçek uygulama Base64 bir iframe içinde çalışır. Sağ tıkla kaynağı açan kişi `const`, `function`, `document` gibi JS kelimeleri görmez; Base64 veri ve Türkçe HTML görür.
 
 ## 1. Kurulum
 
-### Tek dosya HTML (önerilen)
+### Vitrin modu (önerilen)
 
-`dizge.js` içeriğini `<script>` etiketinin içine kopyalayın. Harici dosya veya ağ isteği gerekmez.
+Dış HTML yalnızca HTML/CSS ve Türkçe metin taşır. Uygulama Base64 çerçevededir:
+
+```html
+<!doctype html>
+<html lang="tr">
+<body>
+  <h1>Satış Paneli</h1>
+  <iframe title="Dizge uygulaması"
+    src="data:text/html;base64,PCFkb2N0eXBlIGh0bWw+..."></iframe>
+</body>
+</html>
+```
+
+Hazır örnek: [examples/tek-dosya.html](../examples/tek-dosya.html). İç uygulama: [examples/tek-dosya-uygulama.html](../examples/tek-dosya-uygulama.html). Yeniden üretmek için:
+
+```sh
+npm run build:tek
+npm run check:tek
+```
+
+Kendi uygulamanızı paketlemek için:
+
+```sh
+node scripts/vitrin.cjs uygulama.html vitrin.html \
+  --baslik "Satış Paneli" \
+  --aciklama "Türkçe tek dosya uygulama"
+```
+
+`dizge-vitrin`, girdi HTML'sini Base64'e çevirir ve `templates/vitrin.html` dış kabuğuna gömer. Dış kabukta `<script>` bulunmaz. Paket kurulduğunda aynı araç `dizge-vitrin` komutu olarak da çalışır.
+
+### Doğrudan gömme (alternatif)
+
+Hata ayıklama veya kaynak okunabilirliği için `dizge.js` içeriğini doğrudan `<script>` içine koyabilirsiniz. Bu durumda JS anahtar kelimeleri görünür; vitrin modu bunu engeller.
 
 ```html
 <script>
@@ -22,12 +54,6 @@ Tek dosya HTML'de `dizge.js` içeriğini olduğu gibi gömün. Sağ tıkla kayna
   });
   uygulama.kullan(tablo);
 </script>
-```
-
-Hazır örnek: [examples/tek-dosya.html](../examples/tek-dosya.html). Yeniden üretmek için:
-
-```sh
-npm run build:tek
 ```
 
 ### Ayrı dosya
@@ -195,21 +221,31 @@ const sonuç = await Dizge.eşzamansızAnalizEt(satırlar, [
 
 Worker dosyası `dizge.js` ile aynı klasörde HTTP üzerinden sunulmalıdır. Tek dosya HTML'de Worker'ı Blob URL ile oluşturmadıkça `eşzamansızAnalizEt` kullanmayın; `analizEt` aynı işi ana iş parçacığında yapar.
 
-## 9. Tek dosya örneği
+## 9. Vitrin örneği
 
-[examples/tek-dosya.html](../examples/tek-dosya.html) dosyası:
+[examples/tek-dosya.html](../examples/tek-dosya.html) dış kabuğu:
 
-- `dizge.js` kaynağını inline taşır,
-- Türkçe API ve Türkçe yorumlar kullanır,
-- tablo, ölçüt, grafik, form, pencere, bildirim ve CSV indirme gösterir,
+- hiç `<script>` içermez,
+- Türkçe başlık, açıklama ve kaynak özeti taşır,
+- uygulamayı `data:text/html;base64,...` iframe içinde çalıştırır,
 - ağ isteği yapmaz.
 
+İç uygulama [examples/tek-dosya-uygulama.html](../examples/tek-dosya-uygulama.html) dosyasıdır; `dizge.js` gömülüdür ve Türkçe API kullanır. Tablo, ölçüt, grafik, form, pencere, bildirim ve CSV indirme gösterir.
+
 `npm run build:tek` ile `examples/tek-dosya.kaynak.html` şablonundan üretilir. `npm run check:tek` güncelliğini denetler.
+
+### Vitrin sınırları
+
+- İframe `data:` kaynaklıdır; opaque origin oluşur. `localStorage`, `sessionStorage`, göreli `fetch` ve klasik `Worker` çalışmayabilir. Bu durumda `analizEt` kullanın.
+- Dış kaynakta JS görünmez; ancak tarayıcı geliştirici araçlarıyla iframe içeriği incelenebilir. Bu bir güvenlik sınırı değil, görünüm tercihidir.
+- CSV/PDF/XLSX indirmeleri `allow-downloads` ile çalışır; test edilmiştir.
+- PDF.js gibi worker gerektiren bağlayıcılar için ayrı yapılandırma gerekir.
 
 ## 10. AI için kısa istem
 
 ```text
-Tek dosya HTML üret. Dizge.js 0.2.0'ı dosyanın içine inline göm.
+Tek dosya HTML üret. Dizge.js 0.3.0 kullan.
+Dış kabuk JS'siz vitrin olsun; uygulamayı Base64 iframe içine göm.
 Türkçe API kullan: Dizge.arayüz.uygulama, arayüz.tablo, arayüz.ölçüt,
 arayüz.düğme, arayüz.pencere, arayüz.bildirim, Dizge.indir, Dizge.csv.
 Değişken adları, yorumlar ve kullanıcı metinleri Türkçe olsun.
@@ -219,8 +255,9 @@ Mevcut olmayan API uydurma; docs/javascript-tr.md ve dizge.d.ts dosyalarına uy.
 
 ## 11. Sınırlar
 
-- JavaScript anahtar kelimeleri ve tarayıcı API'leri İngilizce kalır.
-- `dizge.min.js` küçültülmüştür; Türkçe kaynak görünümü için `dizge.js` kullanın.
+- Dış vitrinde JS anahtar kelimeleri görünmez; iframe içindeki gerçek kod JavaScript'tir.
+- JavaScript anahtar kelimeleri ve tarayıcı API'leri dil olarak İngilizce kalır; vitrin bunları gizler.
+- `dizge.min.js` küçültülmüştür; doğrudan gömme modunda Türkçe kaynak görünümü için `dizge.js` kullanın.
 - OCR, Excel formül hesaplama ve gelişmiş PDF tablo mizanpajı yoktur.
 - PDF/XLSX bağlayıcıları ayrıca yüklenir; tamamen çevrimdışı tek dosya için bunları da gömmek gerekir.
 - 100.000 satır her cihazda akıcı çalışma garantisi değildir.
