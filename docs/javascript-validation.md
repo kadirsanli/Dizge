@@ -7,7 +7,7 @@ Tarih: 28 Ekim 2026 (Europe/Istanbul). Yerel doğrulama; CI sonucu ayrıca GitHu
 | `npm test` | 26/26 test; vitrin paketleme, Türkçe/İngilizce API eşliği, veri, istatistik, CSV, DOM, yaşam döngüsü, gerçek PDF/XLSX |
 | `npm run check` | TypeScript strict: başarılı; Türkçe API tipleri dahil |
 | `npm run build` | 50.184 bayt kaynak → 30.604 bayt küçültülmüş; gzip 12.003 bayt |
-| `npm run build:tek` | İç uygulama 54.376 bayt; vitrin kabuğu 74.892 bayt |
+| `npm run build:tek` | İç uygulama 51.403 bayt; vitrin kabuğu 73.710 bayt |
 | `npm run test:browser` | Chromium 149.0.7827.55; 1440×1100 ve 390×844; vitrin iframe dahil |
 | Vitrin | Dış kabukta `<script>` yok; Base64 iframe; form, CSV indirme, tema; dış istek yok |
 | Dosya akışları | CSV/XLSX indir → yükle; Türkçe PDF üret → metnini oku |

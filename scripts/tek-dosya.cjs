@@ -2,8 +2,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { paketle } = require('./vitrin.cjs');
 const kök = path.resolve(__dirname, '..');
-const içŞablon = fs.readFileSync(path.join(kök, 'examples/tek-dosya.kaynak.html'), 'utf8');
-const kütüphane = fs.readFileSync(path.join(kök, 'dizge.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+const satırSonu = metin => metin.replace(/\r\n/g, '\n');
+const içŞablon = satırSonu(fs.readFileSync(path.join(kök, 'examples/tek-dosya.kaynak.html'), 'utf8'));
+const kütüphane = satırSonu(fs.readFileSync(path.join(kök, 'dizge.js'), 'utf8')).replace(/<\/script/gi, '<\\/script');
 const içHtml = içŞablon.replace('/*__DIZGE__*/', kütüphane);
 if (/\/\*__\w+__\*\//.test(içHtml)) throw new Error('İç uygulama şablonunda yer tutucu kaldı');
 

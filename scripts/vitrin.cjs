@@ -3,19 +3,20 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const varsayılanŞablon = path.join(__dirname, '..', 'templates', 'vitrin.html');
+const satırSonu = metin => String(metin).replace(/\r\n/g, '\n');
 
 function kaçır(değer) {
   return String(değer ?? '').replace(/[&<>"']/g, karakter => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[karakter]));
 }
 
 function şablonOku(yol = varsayılanŞablon) {
-  return fs.readFileSync(yol, 'utf8');
+  return satırSonu(fs.readFileSync(yol, 'utf8'));
 }
 
 function paketle({ uygulama, başlık = 'Dizge Vitrin', açıklama = '', kaynak = '', şablon = şablonOku() } = {}) {
   if (typeof uygulama !== 'string' || !uygulama.trim()) throw new Error('Gömülecek uygulama HTML metni gerekli');
-  const veri = Buffer.from(uygulama, 'utf8').toString('base64');
-  const html = şablon
+  const veri = Buffer.from(satırSonu(uygulama), 'utf8').toString('base64');
+  const html = satırSonu(şablon)
     .replaceAll('/*__BASLIK__*/', kaçır(başlık))
     .replaceAll('/*__ACIKLAMA__*/', kaçır(açıklama))
     .replaceAll('/*__KAYNAK__*/', kaçır(kaynak))
