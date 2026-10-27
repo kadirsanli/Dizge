@@ -1,7 +1,7 @@
 {
   "name": "@kadirsanli/dizge",
-  "version": "0.1.0",
-  "description": "Small, accessible HTML application toolkit with data analysis and optional PDF/XLSX adapters",
+  "version": "0.2.0",
+  "description": "Türkçe kaynaklı, tek dosyalık HTML uygulamaları için UI, veri analizi, PDF ve XLSX araç kutusu",
   "main": "dizge.js",
   "module": "dizge.mjs",
   "types": "dizge.d.ts",
@@ -21,14 +21,28 @@
     "dizge.d.ts",
     "dizge.worker.js",
     "docs/javascript.md",
+    "docs/javascript-tr.md",
+    "docs/javascript-ai.md",
+    "examples/tek-dosya.html",
     "LICENSE-JS"
+  ],
+  "keywords": [
+    "türkçe",
+    "html",
+    "ui",
+    "veri",
+    "csv",
+    "xlsx",
+    "pdf"
   ],
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "build": "node scripts/build.cjs",
+    "build:tek": "node scripts/tek-dosya.cjs",
+    "check:tek": "node scripts/tek-dosya.cjs --check",
     "check": "tsc --noEmit --strict --lib ES2022,DOM tests/types.ts",
     "bench": "node scripts/bench.cjs",
-    "test:browser": "node scripts/browser-test.cjs"
+    "test:browser": "node scripts/tek-dosya.cjs && node scripts/browser-test.cjs"
   },
   "engines": {
     "node": ">=20"

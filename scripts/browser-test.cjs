@@ -22,22 +22,22 @@ const server = http.createServer((req, res) => {
     assert.equal(await page.locator('.dz-metric').count(), 4);
     fs.mkdirSync(path.join(root, 'test-results'), { recursive: true });
     await page.screenshot({ path: path.join(root, 'docs/javascript-desktop.png'), fullPage: true });
-    await page.getByRole('button', { name: 'Açık / Koyu' }).click(); assert.equal(await page.locator('.dz').getAttribute('data-theme'), 'dark');
-    await page.getByRole('button', { name: 'Açık / Koyu' }).click();
+    await page.getByRole('button', { name: 'Tema' }).click(); assert.equal(await page.locator('.dz').getAttribute('data-theme'), 'dark');
+    await page.getByRole('button', { name: 'Tema' }).click();
     await page.getByRole('button', { name: '+ Kayıt ekle' }).click();
-    await page.getByLabel('Tutar (₺)').fill('99.50'); await page.getByRole('button', { name: 'Kaydet / Save' }).click();
+    await page.getByLabel('Tutar (₺)').fill('99.50'); await page.getByRole('button', { name: 'Kaydet' }).click();
     await page.waitForFunction(() => document.querySelectorAll('.dz-metric')[1].textContent === '241');
     await page.getByRole('button', { name: 'Worker ile analiz' }).click(); await page.getByRole('dialog').waitFor();
-    assert.match(await page.getByRole('dialog').textContent(), /241/); await page.getByRole('button', { name: 'Kapat / Close' }).click();
+    assert.match(await page.getByRole('dialog').textContent(), /241/); await page.getByRole('button', { name: 'Kapat' }).click();
     // Real worker cancellation, error propagation and ESM in a browser.
     const worker = await page.evaluate(async () => {
       const module = await import('../../dizge.mjs'); const ctrl = new AbortController();
-      const pending = Dizge.analyzeAsync(Array.from({ length: 10000 }, (_, x) => ({ x })), [{ type: 'sort', key: 'x' }], { workerUrl: '../../dizge.worker.js', signal: ctrl.signal }); ctrl.abort();
+      const pending = Dizge.eşzamansızAnalizEt(Array.from({ length: 10000 }, (_, x) => ({ x })), [{ type: 'sort', key: 'x' }], { işçiAdresi: '../../dizge.worker.js', sinyal: ctrl.signal }); ctrl.abort();
       let cancelled = false, rejected = false;
       try { await pending; } catch (e) { cancelled = e.name === 'AbortError'; }
-      try { await Dizge.analyzeAsync([], [{ type: 'invalid' }], { workerUrl: '../../dizge.worker.js' }); } catch { rejected = true; }
+      try { await Dizge.eşzamansızAnalizEt([], [{ type: 'invalid' }], { işçiAdresi: '../../dizge.worker.js' }); } catch { rejected = true; }
       return { cancelled, rejected, version: module.default.version };
-    }); assert.deepEqual(worker, { cancelled: true, rejected: true, version: '0.1.0' });
+    }); assert.deepEqual(worker, { cancelled: true, rejected: true, version: '0.2.0' });
     const csvDownload = page.waitForEvent('download'); await page.getByRole('button', { name: 'CSV indir', exact: true }).click(); const csv = await csvDownload; const csvPath = path.join(root, 'test-results/roundtrip.csv'); await csv.saveAs(csvPath);
     assert.match(fs.readFileSync(csvPath, 'utf8'), /İstanbul/); await page.locator('input[type=file]').setInputFiles(csvPath); await page.waitForFunction(() => document.querySelector('[role=status]').textContent.includes('okundu'));
     // Use pinned local dependencies to make file tests deterministic and offline.
@@ -53,10 +53,27 @@ const server = http.createServer((req, res) => {
     await page.locator('input[type=file]').setInputFiles(excelPath); await page.waitForFunction(() => document.querySelector('[role=status]').textContent.includes('okundu'));
     const pdfDownload = page.waitForEvent('download'); await page.getByRole('button', { name: 'PDF raporu' }).click(); const pdf = await pdfDownload, pdfPath = path.join(root, 'test-results/report.pdf'); await pdf.saveAs(pdfPath);
     assert.equal(fs.readFileSync(pdfPath).subarray(0, 5).toString(), '%PDF-');
-    await page.locator('input[type=file]').setInputFiles(pdfPath); await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').textContent(), /İstanbul/); await page.getByRole('button', { name: 'Kapat / Close' }).click();
+    await page.locator('input[type=file]').setInputFiles(pdfPath); await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').textContent(), /İstanbul/); await page.getByRole('button', { name: 'Kapat' }).click();
     await page.setViewportSize({ width: 390, height: 844 }); await page.screenshot({ path: path.join(root, 'docs/javascript-mobile.png'), fullPage: true });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No page-level horizontal overflow');
     assert.deepEqual(errors, []);
-    console.log(JSON.stringify({ browser: await browser.version(), desktop: '1440x1100', mobile: '390x844', checks: ['render', 'theme', 'form', 'worker', 'worker abort', 'worker error', 'browser ESM', 'CSV download/import', 'XLSX download/import', 'Unicode PDF download/text', 'mobile overflow', 'page errors'], passed: true }, null, 2));
+    // Tek dosya örneği: Dizge.js gömülü, Türkçe API, dış istek yok.
+    const tek = await context.newPage(), tekHatalar = [], tekIstekler = [];
+    tek.on('pageerror', e => tekHatalar.push(e.message));
+    tek.on('request', r => tekIstekler.push(r.url()));
+    await tek.goto(base + '/examples/tek-dosya.html'); await tek.locator('tbody tr').first().waitFor();
+    assert.equal(await tek.locator('tbody tr').count(), 5);
+    assert.equal(await tek.locator('.dz-metric').count(), 3);
+    assert.ok((await tek.content()).includes('Türkçe kaynak sürümü'));
+    assert.deepEqual(tekIstekler.filter(u => !u.startsWith(base) && !u.startsWith('data:') && !u.startsWith('blob:')), []);
+    await tek.getByRole('button', { name: '+ Satış ekle' }).click();
+    await tek.getByLabel('Ürün').fill('Çay');
+    await tek.locator('select[name="kategori"]').selectOption('Gıda');
+    await tek.getByLabel('Tutar (₺)').fill('75');
+    await tek.getByLabel('Tarih').fill('2026-10-04');
+    await tek.getByRole('button', { name: 'Kaydet' }).click();
+    await tek.waitForFunction(() => [...document.querySelectorAll('.dz-metric')].some(x => x.textContent === '6'));
+    assert.deepEqual(tekHatalar, []); await tek.close();
+    console.log(JSON.stringify({ browser: await browser.version(), desktop: '1440x1100', mobile: '390x844', checks: ['render', 'theme', 'form', 'worker', 'worker abort', 'worker error', 'browser ESM', 'CSV download/import', 'XLSX download/import', 'Unicode PDF download/text', 'mobile overflow', 'page errors', 'tek dosya inline', 'tek dosya form', 'tek dosya dış istek yok'], passed: true }, null, 2));
   } finally { await browser?.close(); await new Promise(r => server.close(r)); }
 })().catch(e => { console.error(e); process.exitCode = 1; });

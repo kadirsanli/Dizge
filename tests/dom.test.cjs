@@ -13,7 +13,7 @@ test('100k-row table bounds DOM, sorts, pages, searches and cleans timers', asyn
   const rows = Array.from({ length: 100000 }, (_, i) => ({ id: i, name: 'Row ' + i }));
   const table = D.ui.table({ rows, pageSize: 20 }); document.body.append(table.el);
   assert.equal(table.el.querySelectorAll('tbody tr').length, 20);
-  table.el.querySelector('[aria-label="Next page"]').click(); assert.equal(table.el.querySelector('tbody td').textContent, '20');
+  table.el.querySelector('[aria-label="Sonraki sayfa"]').click(); assert.equal(table.el.querySelector('tbody td').textContent, '20');
   table.el.querySelector('th button').click(); table.el.querySelector('th button').click(); assert.equal(table.el.querySelector('th').getAttribute('aria-sort'), 'descending');
   const search = table.el.querySelector('input'); search.value = 'Row 99999'; search.dispatchEvent(new window.Event('input')); await new Promise(r => setTimeout(r, 180));
   assert.equal(table.el.querySelectorAll('tbody tr').length, 1); assert.match(table.el.textContent, /99999/);
@@ -27,7 +27,7 @@ test('tab keyboard navigation follows ARIA selection and focus', () => {
 test('chart bounds geometry, handles negatives/empty and rejects nonfinite', () => {
   const chart = D.ui.chart({ values: Array.from({ length: 100000 }, (_, i) => i % 10 - 5), maxPoints: 100 });
   assert.equal(chart.querySelectorAll('rect').length, 100); assert.ok(!chart.outerHTML.includes('NaN')); assert.equal(chart.getAttribute('role'), 'img');
-  assert.throws(() => D.ui.chart({ values: [NaN] })); assert.match(D.ui.chart().textContent, /No data/);
+  assert.throws(() => D.ui.chart({ values: [NaN] })); assert.match(D.ui.chart().textContent, /Veri yok/);
 });
 test('form converts numbers, validates, and reports async errors', async () => {
   let received;
@@ -39,4 +39,18 @@ test('app owns registered component disposal and injects one stylesheet', () => 
   const a = D.ui.app('#root', { title: 'Test' }), b = D.ui.app('#root'); let disposed = false;
   a.use({ el: D.ui.el('div'), destroy() { disposed = true; } }); a.theme('dark'); assert.equal(a.el.dataset.theme, 'dark');
   assert.equal(document.querySelectorAll('#dizge-styles').length, 1); a.destroy(); assert.equal(disposed, true); b.destroy();
+});
+test('Türkçe tablo seçenekleri Türkçe aramayı doğru yapar', async () => {
+  const tablo = D.arayüz.tablo({ satırlar: [{ şehir: 'İstanbul' }, { şehir: 'Ankara' }], sütunlar: [{ anahtar: 'şehir', etiket: 'Şehir' }], sayfaBoyu: 1 });
+  document.body.append(tablo.el);
+  const arama = tablo.el.querySelector('input');
+  arama.value = 'istanbul'; arama.dispatchEvent(new window.Event('input'));
+  await new Promise(r => setTimeout(r, 180));
+  assert.equal(tablo.el.querySelectorAll('tbody tr').length, 1);
+  assert.match(tablo.el.textContent, /İstanbul/);
+  tablo.yokEt();
+});
+test('Türkçe arayüz seçenekleri ve tema çalışır', () => {
+  const a = D.arayüz.uygulama('#root', { başlık: 'Deneme', içerik: [D.arayüz.ölçüt('Toplam', 3)] });
+  assert.match(a.el.textContent, /Deneme/); a.tema('dark'); assert.equal(a.el.dataset.theme, 'dark'); a.yokEt();
 });

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dizge.js — Tek Dosya Örneği</title>
+</head>
+<body>
+<div id="uygulama"></div>
+
+<script>
+/*__DIZGE__*/
+</script>
+
+<script>
+// Bu dosya tek başına çalışır. Dizge.js yukarıda gömülüdür; ağ isteği yapılmaz.
+const { arayüz, veri, istatistik, biçim, csv, indir, depo } = Dizge;
+
+const başlangıç = [
+  { ürün: 'Kalem', kategori: 'Kırtasiye', tutar: 30, tarih: '2026-10-01' },
+  { ürün: 'Defter', kategori: 'Kırtasiye', tutar: 80, tarih: '2026-10-01' },
+  { ürün: 'Kulaklık', kategori: 'Elektronik', tutar: 1250, tarih: '2026-10-02' },
+  { ürün: 'Kahve', kategori: 'Gıda', tutar: 145, tarih: '2026-10-02' },
+  { ürün: 'Kablo', kategori: 'Elektronik', tutar: 220, tarih: '2026-10-03' }
+];
+
+const mağaza = depo(başlangıç);
+let satırlar = başlangıç;
+let karanlık = false;
+
+const durum = arayüz.öğe('p', { role: 'status', class: 'dz-muted' }, 'Veriler yalnızca bu tarayıcıda kalır.');
+const ölçütler = arayüz.ızgara();
+const grafikAlanı = arayüz.öğe('div');
+
+const tablo = arayüz.tablo({
+  satırlar,
+  sayfaBoyu: 5,
+  etiket: 'Satış tablosu',
+  sütunlar: [
+    { anahtar: 'ürün', etiket: 'ÜRÜN' },
+    { anahtar: 'kategori', etiket: 'KATEGORİ' },
+    { anahtar: 'tarih', etiket: 'TARİH' },
+    { anahtar: 'tutar', etiket: 'TUTAR', biçimle: değer => biçim.para(değer) }
+  ]
+});
+
+function grafiğiÇiz() {
+  const gruplar = veri(satırlar).grupla('kategori').özetle({
+    toplam: t => istatistik.özet(t.sütun('tutar')).toplam
+  }).diziye();
+  grafikAlanı.replaceChildren(arayüz.kart('Kategori dağılımı', arayüz.grafik({
+    değerler: gruplar.map(g => g.toplam),
+    etiketler: gruplar.map(g => g.kategori),
+    etiket: 'Kategoriye göre toplam tutar'
+  })));
+}
+
+mağaza.aboneOl(yeni => {
+  satırlar = yeni;
+  const özet = istatistik.özet(satırlar.map(s => s.tutar));
+  ölçütler.replaceChildren(
+    arayüz.ölçüt('TOPLAM', biçim.para(özet.toplam), 'Tüm satışlar'),
+    arayüz.ölçüt('SATIR', biçim.sayı(özet.sayı), 'Kayıt sayısı'),
+    arayüz.ölçüt('ORTALAMA', biçim.para(özet.ortalama ?? 0), 'Eksik değerler hariç')
+  );
+  tablo.satırlarıAyarla(satırlar);
+  grafiğiÇiz();
+});
+
+const uygulama = arayüz.uygulama('#uygulama', {
+  başlık: 'Tek dosya, Türkçe kod.',
+  altBaşlık: 'Dizge.js gömülü; harici dosya yok. Sağ tıkla kaynağı aç, Türkçe oku.',
+  eylemler: [
+    arayüz.düğme('Tema', () => {
+      karanlık = !karanlık;
+      uygulama.tema(karanlık ? 'dark' : 'light');
+    }),
+    arayüz.düğme('CSV indir', () => {
+      indir('\uFEFF' + csv.yaz(satırlar), 'satislar.csv', 'text/csv;charset=utf-8');
+      arayüz.bildirim('CSV indirildi.');
+    }, { 'data-variant': 'primary' })
+  ],
+  içerik: [
+    ölçütler,
+    grafikAlanı,
+    arayüz.kart(
+      'Satışlar',
+      arayüz.yığın(
+        arayüz.öğe('div', { class: 'dz-row' }, arayüz.düğme('+ Satış ekle', () => {
+          const form = arayüz.form({
+            alanlar: [
+              { ad: 'ürün', etiket: 'Ürün', zorunlu: true },
+              { ad: 'kategori', etiket: 'Kategori', seçenekler: ['Kırtasiye', 'Elektronik', 'Gıda'] },
+              { ad: 'tutar', etiket: 'Tutar (₺)', tür: 'number', enAz: 0, adım: .01, zorunlu: true },
+              { ad: 'tarih', etiket: 'Tarih', tür: 'date', zorunlu: true }
+            ],
+            gönder: değerler => {
+              mağaza.ayarla([...mağaza.al(), { ...değerler, tutar: Number(değerler.tutar) }]);
+              pencere.kapat();
+              form.yokEt();
+              arayüz.bildirim('Satış eklendi.');
+            }
+          });
+          const pencere = arayüz.pencere({ başlık: 'Yeni satış', içerik: form.el });
+        })),
+        durum,
+        tablo.el
+      )
+    )
+  ]
+});
+
+uygulama.kullan(tablo);
+window.addEventListener('pagehide', () => { mağaza.yokEt(); uygulama.yokEt(); }, { once: true });
+</script>
+</body>
+</html>

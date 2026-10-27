@@ -54,4 +54,17 @@ test('chunking reports progress and honors cancellation', async () => {
   const progress = []; assert.deepEqual(await D.chunks([1, 2, 3], x => x * 2, { size: 2, onProgress: x => progress.push(x) }), [2, 4, 6]); assert.equal(progress.at(-1), 1);
   const ctrl = new AbortController(); ctrl.abort(); await assert.rejects(D.chunks([1], x => x, { signal: ctrl.signal }), { name: 'AbortError' });
 });
-test('ESM and CommonJS exports agree', async () => { const esm = await import('../dizge.mjs'); assert.equal(esm.default.version, D.version); assert.equal(esm.data([{ a: 1 }]).length, 1); });
+test('ESM and CommonJS exports agree', async () => { const esm = await import('../dizge.mjs'); assert.equal(esm.default.version, D.version); assert.equal(esm.data([{ a: 1 }]).length, 1); assert.equal(esm.veri([{ a: 1 }]).uzunluk, 1); assert.equal(esm.sürüm, D.sürüm); });
+test('Türkçe API İngilizce aliaslarla aynı sonucu verir', async () => {
+  const satırlar = [{ x: 3, tür: 'A' }, { x: 1, tür: 'B' }, { x: 2, tür: 'A' }];
+  assert.deepEqual(D.veri(satırlar).süz(r => r.x > 1).türet({ iki: r => r.x * 2 }).sırala('x').seç('iki').diziye(),
+    D.data(satırlar).filter(r => r.x > 1).derive({ iki: r => r.x * 2 }).sort('x').select('iki').toArray());
+  assert.equal(D.veri(satırlar).uzunluk, 3);
+  const özet = D.istatistik.özet([1, 2, 3, 4, null, NaN, Infinity, '8']);
+  assert.equal(özet.ortalama, 2.5); assert.equal(özet.mean, 2.5); assert.equal(özet.eksik, 4);
+  assert.equal(D.istatistik.yüzdelik([4, 1, 2, 3], .25), 1.75);
+  assert.deepEqual(D.csv.çöz(D.csv.yaz([{ ad: 'İstanbul', not: 'a,b' }])), [{ ad: 'İstanbul', not: 'a,b' }]);
+  assert.deepEqual(D.analizEt(satırlar, [{ tür: 'süz', anahtar: 'x', işleç: 'büyük', değer: 1 }]), [{ x: 3, tür: 'A' }, { x: 2, tür: 'A' }]);
+  const d = D.depo(0), görülen = []; d.aboneOl(v => görülen.push(v)); d.ayarla(1); assert.equal(d.al(), 1); await Promise.resolve(); assert.deepEqual(görülen, [0, 1]); d.yokEt();
+  assert.deepEqual(await D.parçala([1, 2, 3], x => x * 2, { boyut: 2 }), [2, 4, 6]);
+});

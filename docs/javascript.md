@@ -1,6 +1,8 @@
 # Dizge.js — HTML uygulamaları için araç kutusu
 
-**Sürüm 0.1.0.** Tek script ile UI, veri işlemleri ve CSV; isteğe bağlı bağlayıcılarla XLSX ve PDF. Derleyici veya framework gerektirmez. İnsanların ve AI kod üreticilerinin aynı küçük API ile okunabilir HTML araçları kurması için tasarlanmıştır.
+**Sürüm 0.2.0.** Tek script ile UI, veri işlemleri ve CSV; isteğe bağlı bağlayıcılarla XLSX ve PDF. Derleyici veya framework gerektirmez. İnsanların ve AI kod üreticilerinin aynı küçük API ile okunabilir HTML araçları kurması için tasarlanmıştır.
+
+**Türkçe kaynak:** 0.2.0 ile `dizge.js` içi Türkçeleştirildi. Türkçe API (`Dizge.veri`, `Dizge.arayüz.tablo`, `Dizge.istatistik.özet`) birincil, İngilizce adlar (`Dizge.data`, `Dizge.ui.table`, `Dizge.stats.summary`) geriye uyumluluk için alias'dır. Tek dosya HTML'de küçültülmemiş `dizge.js` gömülürse kaynak Türkçe görünür. Ayrıntılı Türkçe rehber: [javascript-tr.md](javascript-tr.md).
 
 Bu kütüphane mevcut `.dzg → Python/NumPy` dilinden ayrı bir JavaScript katmanıdır. `.dzg` derlemez. İlk sürümün desteklediği kapsam aşağıda açıkça tanımlıdır; her belge formatını, her grafik türünü veya her veri büyüklüğünü kapsama iddiası yoktur.
 
@@ -17,20 +19,22 @@ Depodan `dizge.js` veya `dizge.min.js` dosyasını indirin ve HTML dosyanızın 
 <div id="app"></div>
 <script src="dizge.js"></script>
 <script>
-  const rows = [{ ürün: 'Kalem', tutar: 30 }, { ürün: 'Defter', tutar: 80 }];
-  const table = Dizge.ui.table({ rows });
-  const app = Dizge.ui.app('#app', {
-    title: 'Satışlar',
-    content: [Dizge.ui.metric('Toplam', Dizge.format.currency(110)), table.el]
+  const satırlar = [{ ürün: 'Kalem', tutar: 30 }, { ürün: 'Defter', tutar: 80 }];
+  const tablo = Dizge.arayüz.tablo({ satırlar });
+  const uygulama = Dizge.arayüz.uygulama('#app', {
+    başlık: 'Satışlar',
+    içerik: [Dizge.arayüz.ölçüt('Toplam', Dizge.biçim.para(110)), tablo.el]
   });
-  app.use(table); // app.destroy() tabloyu da temizler
+  uygulama.kullan(tablo); // uygulama.yokEt() tabloyu da temizler
 </script>
 </html>
 ```
 
-Çekirdek kendi başına ağ isteği yapmaz. Stil ilk `ui.app()` çağrısında eklenir. Tek bileşen kullanırken `ui.installStyles()` çağırın ve üst öğeye `class="dz"` verin. CSP nonce için `ui.app('#app', { nonce: 'sunucunun-nonce-değeri' })` kullanın. Sıkı CSP ortamında `Dizge.styles` içeriğini ayrı CSS dosyası olarak sunabilirsiniz.
+Tek dosya HTML için `dizge.js` içeriğini `<script>` etiketinin içine kopyalayın. `dizge.min.js` yalnızca boyut içindir; küçültülmüş kodda değişken adları kısaldığı için Türkçe kaynak görünümü kaybolur.
 
-ESM: `import D, { data, ui } from './dizge.mjs'`. CommonJS: `const D = require('./dizge.js')`. Paket npm kayıt sistemine yayımlanmış değildir; `npm pack` ile yerel paket üretilebilir. TypeScript tanımları `dizge.d.ts` içindedir. Hedef: güncel Chrome/Edge, Firefox, Safari; Node ≥20 (UI hariç). Chromium otomatik test edilmiştir, diğer tarayıcılar için bu sürümde çalıştırılmış uyumluluk kanıtı yoktur.
+Çekirdek kendi başına ağ isteği yapmaz. Stil ilk `arayüz.uygulama()` çağrısında eklenir. Tek bileşen kullanırken `arayüz.stilleriKur()` çağırın ve üst öğeye `class="dz"` verin. CSP nonce için `arayüz.uygulama('#app', { nonce: 'sunucunun-nonce-değeri' })` kullanın. Sıkı CSP ortamında `Dizge.stiller` içeriğini ayrı CSS dosyası olarak sunabilirsiniz.
+
+ESM: `import D, { veri, arayüz } from './dizge.mjs'`. CommonJS: `const D = require('./dizge.js')`. İngilizce `data`, `ui` ihracı da korunur. Paket npm kayıt sistemine yayımlanmış değildir; `npm pack` ile yerel paket üretilebilir. TypeScript tanımları `dizge.d.ts` içindedir. Hedef: güncel Chrome/Edge, Firefox, Safari; Node ≥20 (UI hariç). Chromium otomatik test edilmiştir, diğer tarayıcılar için bu sürümde çalıştırılmış uyumluluk kanıtı yoktur.
 
 ## 2. Veri işlemleri
 
@@ -141,6 +145,8 @@ const combined = await D.pdf.merge([pdf1, pdf2]);
 
 ## 6. UI bileşenleri
 
+Türkçe adlar: `arayüz.öğe`, `düğme`, `kart`, `ölçüt`, `tablo`, `grafik`, `form`, `sekmeler`, `pencere`, `bildirim`, `uygulama`, `ızgara`, `yığın`, `stilleriKur`. İngilizce `ui.el`, `button`, `card`, `metric`, `table`, `chart`, `tabs`, `modal`, `toast`, `app`, `grid`, `stack`, `installStyles` alias olarak çalışır.
+
 | İşlev | Sonuç / seçenekler |
 |---|---|
 | `ui.el(tag, props, ...children)` | DOM düğümü; metinler textContent ile. Olaylar `on:{click:fn}`. |
@@ -193,6 +199,8 @@ npm ci
 npm test
 npm run check
 npm run build
+npm run build:tek
+npm run check:tek
 npm run bench
 npm run test:browser
 ```
