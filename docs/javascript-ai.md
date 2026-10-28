@@ -1,5 +1,7 @@
 # Dizge.js ile HTML uygulaması üreten AI için sözleşme
 
+**Türkçe ve okunabilir sayfa kaynağı isteniyorsa:** Önce [Türkçe HTML rehberini](turkce-html.md) kullan. `dizge-html.js` ve `dz-*` etiketleri sayaç, tablo, form akışını kullanıcı JS'si olmadan sağlar. Base64 vitrin tercihi yalnızca özellikle tek dosyalı vitrin istendiğinde geçerlidir. Türkçe HTML motoru `.dzg` çalıştırmaz; desteklenmeyen etiket veya olaylar uydurma. Aşağıdaki kurallar doğrudan Dizge.js API'siyle uygulama üretimi içindir.
+
 1. `dizge.js` 0.3.0 Türkçe kaynak sürümüdür. Tek dosya HTML isteniyorsa **vitrin modu** kullan: iç uygulama HTML'sini `node scripts/vitrin.cjs uygulama.html vitrin.html --baslik "..." --aciklama "..."` ile Base64 iframe'e paketle. Dış kabukta `<script>` olmasın. Doğrudan gömme yalnızca hata ayıklama içindir; `dizge.min.js` kullanma.
 2. `Dizge` globalini kullan; alternatif `dizge.mjs`. API kaynağı `dizge.d.ts`, `docs/javascript-tr.md` ve `docs/javascript.md`.
 3. Tek HTML'de çalışabilir bir uygulama üret. İhtiyaç yoksa framework, build sistemi veya backend ekleme. Verilerin anlamını kullanıcıdan/kaynaktan belirle; eksik veriyi örnek diye açıkça etiketle.
