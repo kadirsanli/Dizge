@@ -21,13 +21,13 @@ npm pack
 
 Paket `dizge-html.js` ve `dizge-html.min.js` tarayıcı girişlerini içerir. Bunlar otomatik kayıt yapan klasik tarayıcı betikleridir; Node.js'te çalışan bir DOM motoru veya ESM modül API'si değildir. npm kurulumu dosyaları sunucunuzda otomatik olarak web adresine açmaz; dağıtım klasörünüze kopyalayın veya paketleyicinizle statik varlık olarak sunun.
 
-GitHub/CDN kullanımı için **bu dosyaların bulunduğu gerçek commit SHA'sını** aşağıdaki `COMMIT_SHA` yerine koyun. Bu bir adres şablonudur; commit seçmeden çalışmaz:
+GitHub/CDN kullanımı için motorun ilk sürümüne sabitlenmiş adres:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/kadirsanli/Dizge@COMMIT_SHA/dizge-html.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/kadirsanli/Dizge@efc8724e17af5ef22027680f427e0bf327121287/dizge-html.min.js" defer></script>
 ```
 
-CDN'nin erişimini dağıtım sırasında ayrıca doğrulayın. Sabit commit sürümü korur; CDN çevrimdışı çalışma sağlamaz. Yerel dosya kullanımı, ağ olmadan çalışır. [jsDelivr dağıtım belgeleri](https://github.com/jsdelivr/jsdelivr#usage-documentation).
+28 Ekim 2026 kontrolünde bu adres HTTP 200 döndürdü; 38.301 baytlık dosyanın SHA-256 özeti yerel dağıtımla aynıydı. [CDN örneği](../examples/turkce-html-cdn.html) yalnız bu HTML dosyasını taşıyarak, internet bağlantısıyla çalışır. Sabit commit sürümü korur; CDN çevrimdışı çalışma sağlamaz. Yerel dosya kullanımı, ağ olmadan çalışır. [jsDelivr dağıtım belgeleri](https://github.com/jsdelivr/jsdelivr#usage-documentation).
 
 ## Etiket sözlüğü
 

@@ -66,6 +66,14 @@ const server = http.createServer((req, res) => {
     await page.goto(base + '/examples/turkce-html.html'); await page.locator('tbody tr').first().waitFor();
     await page.getByRole('button', { name: 'Artır', exact: true }).click(); assert.equal(await page.locator('output').textContent(), '1');
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
+    if (process.argv.includes('--cdn')) {
+      await page.goto(pathToFileURL(path.join(root, 'examples/turkce-html-cdn.html')).href);
+      await page.locator('tbody tr').first().waitFor(); assert.equal(await page.locator('tbody tr').count(), 3);
+      await page.getByRole('button', { name: 'Artır', exact: true }).click(); assert.equal(await page.locator('output').textContent(), '1');
+      assert.deepEqual(errors, []);
+      assert.ok(external.some(url => url.startsWith('https://cdn.jsdelivr.net/gh/kadirsanli/Dizge@efc8724e17af5ef22027680f427e0bf327121287/')));
+      console.log('Canlı CDN örneği geçti.');
+    }
     console.log(JSON.stringify({ browser: browser.version(), passed: true, checks: ['özgün kaynak', 'sayaç/klavye', 'form sınırları', 'form→tablo', 'Türkçe arama', 'tema kalıtımı', '1440px/390px', 'metin güvenliği', 'hata toparlanması', 'file://', 'küçültülmüş dağıtım', 'dış istek yok'] }, null, 2));
   } finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

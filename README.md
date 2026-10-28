@@ -13,7 +13,7 @@ Sayaç, aramalı/sayfalı tablo ve veri kaynağına kayıt ekleyen form artık *
 </dz-sayfa>
 ```
 
-[Çalışan örneğin kaynağı](examples/turkce-html.html) · [Etiketler, kurulum ve sınırlar](docs/turkce-html.md) · [Yol haritası](docs/TURKCE-HTML-YOL-HARITASI.md)
+[Yerel örnek](examples/turkce-html.html) · [CDN ile çalışan örnek](examples/turkce-html-cdn.html) · [Etiketler, kurulum ve sınırlar](docs/turkce-html.md) · [Yol haritası](docs/TURKCE-HTML-YOL-HARITASI.md)
 
 Depoyu indirip `examples/turkce-html.html` dosyasını tarayıcıda açın. Sağ tık → Sayfa Kaynağı'nda Türkçe uygulama tanımı okunur; motor dış dosyadadır. Motor yerelken internet gerekmez. Standart HTML kabuğu (`html`, `script` vb.) korunur; çalışma anında normal DOM üretilir. Bu özellik `.dzg` derleyicisi değildir. npm kayıt sistemine yeni bir yayın yapılmış olduğu anlamına gelmez.
 
