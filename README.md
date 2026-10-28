@@ -1,5 +1,22 @@
 # Dizge — Türkçe Mantık Motoru ve Programlama Dili
 
+## Yeni: Türkçe HTML etiketleri — deneysel 0.1
+
+Sayaç, aramalı/sayfalı tablo ve veri kaynağına kayıt ekleyen form artık **kullanıcı JavaScript'i yazmadan**, Türkçe etiketlerle tanımlanabilir. `dizge-html.js` mevcut Dizge.js çekirdeğini içerir; tek bir yerel dosya yüklemek yeterlidir.
+
+```html
+<script src="dizge-html.js" defer></script>
+<dz-sayfa başlık="Öğrenciler">
+  <dz-veri kimlik="öğrenciler">[{"ad":"Ayşe","puan":85}]</dz-veri>
+  <dz-tablo kaynak="öğrenciler" aranabilir="evet"></dz-tablo>
+  <dz-sayaç başlangıç="0" adım="1"></dz-sayaç>
+</dz-sayfa>
+```
+
+[Çalışan örneğin kaynağı](examples/turkce-html.html) · [Etiketler, kurulum ve sınırlar](docs/turkce-html.md) · [Yol haritası](docs/TURKCE-HTML-YOL-HARITASI.md)
+
+Depoyu indirip `examples/turkce-html.html` dosyasını tarayıcıda açın. Sağ tık → Sayfa Kaynağı'nda Türkçe uygulama tanımı okunur; motor dış dosyadadır. Motor yerelken internet gerekmez. Standart HTML kabuğu (`html`, `script` vb.) korunur; çalışma anında normal DOM üretilir. Bu özellik `.dzg` derleyicisi değildir. npm kayıt sistemine yeni bir yayın yapılmış olduğu anlamına gelmez.
+
 ## Yeni: Dizge.js 0.3.0 — Türkçe kaynak, Türkçe API, vitrin modu
 
 **Tek dosyalık UI ve veri araç kutusu:** responsive bileşenler, sayfalı/aranabilir tablolar, SVG grafikler, formlar, gruplama/birleştirme/istatistik, CSV, Web Worker; isteğe bağlı PDF ve XLSX bağlayıcıları. Framework veya derleme zorunlu değildir.

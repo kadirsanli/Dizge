@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dizge — Türkçe HTML Atölyesi</title>
+  <script src="../dizge-html.js" defer></script>
+</head>
+<body>
+  <dz-sayfa başlık="Türkçe HTML Atölyesi" açıklama="Kaynağı açın: Bu sayfanın davranışları Türkçe etiketlerle tanımlandı." tema="açık">
+    <dz-veri kimlik="öğrenciler">[{"ad":"Ayşe","puan":85},{"ad":"Ali","puan":90},{"ad":"İpek","puan":95}]</dz-veri>
+    <dz-ızgara>
+      <dz-kart>
+        <dz-başlık>01 · Sayaç</dz-başlık>
+        <dz-metin>Bir etiket, üç işlem. Değer klavye ve ekran okuyucuyla da takip edilebilir.</dz-metin>
+        <dz-sayaç kimlik="ziyaret" başlangıç="0" adım="1" etiket="Ziyaret sayısı"></dz-sayaç>
+      </dz-kart>
+      <dz-kart>
+        <dz-başlık>02 · Yeni öğrenci</dz-başlık>
+        <dz-metin>Formu doldurun; kayıt doğrudan aşağıdaki tabloya eklensin.</dz-metin>
+        <dz-form kaynak="öğrenciler" düğme="Öğrenci ekle" başarı="Öğrenci tabloya eklendi.">
+          <dz-alan ad="ad" etiket="Öğrenci adı" zorunlu></dz-alan>
+          <dz-alan ad="puan" etiket="Puan" tür="sayı" en-az="0" en-çok="100" adım="1" zorunlu></dz-alan>
+        </dz-form>
+      </dz-kart>
+    </dz-ızgara>
+    <dz-kart>
+      <dz-başlık>03 · Aranabilir tablo</dz-başlık>
+      <dz-metin>İsim arayın, sütuna tıklayarak sıralayın veya sayfalar arasında gezinin.</dz-metin>
+      <dz-tablo kaynak="öğrenciler" sütunlar="ad,puan" sayfa-boyu="5" aranabilir="evet" etiket="Öğrenci puanları"></dz-tablo>
+    </dz-kart>
+  </dz-sayfa>
+  <noscript>Bu etkileşimli örnek için JavaScript'i etkinleştirin.</noscript>
+</body>
+</html>

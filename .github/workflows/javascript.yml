@@ -18,6 +18,7 @@ jobs:
       - run: npm run check
       - run: npm run build
       - run: npm run build:tek
-      - run: git diff --exit-code -- dizge.min.js examples/tek-dosya.html
+      - run: git diff --exit-code -- dizge.min.js dizge-html.js dizge-html.min.js examples/tek-dosya.html
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+      - run: npm run test:html

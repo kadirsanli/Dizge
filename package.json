@@ -13,7 +13,9 @@
     },
     "./worker": "./dizge.worker.js",
     "./vitrin": "./scripts/vitrin.cjs",
-    "./dizge.js": "./dizge.js"
+    "./dizge.js": "./dizge.js",
+    "./dizge-html.js": "./dizge-html.js",
+    "./dizge-html.min.js": "./dizge-html.min.js"
   },
   "bin": {
     "dizge-vitrin": "scripts/vitrin.cjs"
@@ -24,6 +26,11 @@
     "dizge.mjs",
     "dizge.d.ts",
     "dizge.worker.js",
+    "dizge-html.js",
+    "dizge-html.min.js",
+    "docs/turkce-html.md",
+    "docs/TURKCE-HTML-YOL-HARITASI.md",
+    "examples/turkce-html.html",
     "docs/javascript.md",
     "docs/javascript-tr.md",
     "docs/javascript-ai.md",
@@ -50,7 +57,8 @@
     "check:tek": "node scripts/tek-dosya.cjs --check",
     "check": "tsc --noEmit --strict --lib ES2022,DOM tests/types.ts",
     "bench": "node scripts/bench.cjs",
-    "test:browser": "node scripts/tek-dosya.cjs && node scripts/browser-test.cjs"
+    "test:browser": "node scripts/tek-dosya.cjs && node scripts/browser-test.cjs",
+    "test:html": "node scripts/html-browser-test.cjs"
   },
   "engines": {
     "node": ">=20"
